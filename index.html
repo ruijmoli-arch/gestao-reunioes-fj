@@ -368,7 +368,7 @@ const TENANT_ID='09ae14e9-8398-4ca0-a5cd-994620a0ab3a';
 const SP_SITE='https://fjuventude.sharepoint.com/sites/GestodeReunies';
 const LIST_NAME='FJ_Assuntos';
 
-const msalConfig={auth:{clientId:CLIENT_ID,authority:`https://login.microsoftonline.com/${TENANT_ID}`,redirectUri:'https://ruijmoli-arch.github.io/gestao-reunioes-fj/fj_gestao_reunioes_v2-2.html'}};
+const msalConfig={auth:{clientId:CLIENT_ID,authority:`https://login.microsoftonline.com/${TENANT_ID}`,redirectUri:'https://ruijmoli-arch.github.io/gestao-reunioes-fj/'}};
 const msalInstance=new msal.PublicClientApplication(msalConfig);
 const spScopes=["https://fjuventude.sharepoint.com/AllSites.Write","https://fjuventude.sharepoint.com/AllSites.Read"];
 
