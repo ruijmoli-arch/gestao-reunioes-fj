@@ -437,18 +437,35 @@ async function spGet(url){
 
 async function spPost(url,body,method='POST',etag){
   await refreshToken();
-  const headers={'Content-Type':'application/json;odata=verbose',Accept:'application/json;odata=verbose',Authorization:`Bearer ${accessToken}`,'X-RequestDigest':await getDigest()};
-  if(method!=='POST') headers['X-HTTP-Method']=method;
+  const digest=await getDigest();
+  const headers={
+    'Content-Type':'application/json;odata=verbose',
+    'Accept':'application/json;odata=verbose',
+    'Authorization':`Bearer ${accessToken}`,
+    'X-RequestDigest':digest,
+    'X-HTTP-Method':method==='POST'?'POST':method
+  };
   if(etag) headers['If-Match']=etag;
+  if(method!=='POST'){
+    headers['X-HTTP-Method']=method;
+  }
   const r=await fetch(url,{method:'POST',headers,body:JSON.stringify(body)});
+  if(!r.ok){
+    const err=await r.text();
+    throw new Error(`HTTP ${r.status}: ${err.slice(0,200)}`);
+  }
   return r;
 }
 
 async function getDigest(){
   await refreshToken();
-  const r=await fetch(`${SP_SITE}/_api/contextinfo`,{method:'POST',headers:{Accept:'application/json;odata=verbose',Authorization:`Bearer ${accessToken}`}});
-  const d=await r.json();
-  return d.d.GetContextWebInformation.FormDigestValue;
+  try{
+    const r=await fetch(`${SP_SITE}/_api/contextinfo`,{method:'POST',headers:{Accept:'application/json;odata=verbose',Authorization:`Bearer ${accessToken}`,'Content-Length':'0'}});
+    const d=await r.json();
+    return d.d.GetContextWebInformation.FormDigestValue;
+  }catch(e){
+    return 'digest-error';
+  }
 }
 
 async function loadItems(){
@@ -491,31 +508,47 @@ async function saveItem(){
   if(!titulo){alert('Por favor indique o assunto.');return;}
   const btn=document.getElementById('save-btn');
   btn.textContent='A guardar...';btn.disabled=true;
-  const body={__metadata:{type:`SP.Data.${LIST_NAME}ListItem`},
-    Title:titulo,
-    TipoReuni_x00e3_o:{Value:gv('f-reuniao'),'__metadata':{type:'SP.FieldChoiceValue'}},
-    DataReuniao:gv('f-data')||null,
-    TipoAssunto:{Value:gv('f-tipo'),'__metadata':{type:'SP.FieldChoiceValue'}},
-    Notas:document.getElementById('f-notas').value,
-    Estado:{Value:gv('f-estado'),'__metadata':{type:'SP.FieldChoiceValue'}},
-    Encaminhamento:{Value:gv('f-enc'),'__metadata':{type:'SP.FieldChoiceValue'}},
-    Decis_x00e3_o:{Value:gv('f-dec'),'__metadata':{type:'SP.FieldChoiceValue'}},
-    NivelOrigem:{Value:gv('f-nivel-origem'),'__metadata':{type:'SP.FieldChoiceValue'}},
-    NivelAtual:{Value:gv('f-nivel-atual'),'__metadata':{type:'SP.FieldChoiceValue'}},
-    Confidencial:T.conf,
-    Atrasado:T.atras
-  };
   try{
+    await refreshToken();
+    const digest=await getDigest();
+    const headers={
+      'Content-Type':'application/json;odata=verbose',
+      'Accept':'application/json;odata=verbose',
+      'Authorization':`Bearer ${accessToken}`,
+      'X-RequestDigest':digest
+    };
+    const body={__metadata:{type:`SP.Data.FJ_x005f_AssuntosListItem`},
+      Title:titulo,
+      TipoReuni_x00e3_o:{Value:gv('f-reuniao'),'__metadata':{type:'SP.FieldChoiceValue'}},
+      TipoAssunto:{Value:gv('f-tipo'),'__metadata':{type:'SP.FieldChoiceValue'}},
+      Notas:document.getElementById('f-notas').value,
+      Estado:{Value:gv('f-estado'),'__metadata':{type:'SP.FieldChoiceValue'}},
+      Encaminhamento:{Value:gv('f-enc'),'__metadata':{type:'SP.FieldChoiceValue'}},
+      Decis_x00e3_o:{Value:gv('f-dec'),'__metadata':{type:'SP.FieldChoiceValue'}},
+      NivelOrigem:{Value:gv('f-nivel-origem'),'__metadata':{type:'SP.FieldChoiceValue'}},
+      NivelAtual:{Value:gv('f-nivel-atual'),'__metadata':{type:'SP.FieldChoiceValue'}},
+      Confidencial:T.conf,
+      Atrasado:T.atras
+    };
+    const dataVal=gv('f-data');
+    if(dataVal) body.DataReuniao=dataVal+'T00:00:00Z';
+    let r;
     if(editId){
-      const item=items.find(x=>x.id===editId);
-      await spPost(`${SP_SITE}/_api/web/lists/getbytitle('${LIST_NAME}')/items(${editId})`,body,'POST',item?.etag||'*');
+      headers['X-HTTP-Method']='MERGE';
+      headers['IF-MATCH']='*';
+      r=await fetch(`${SP_SITE}/_api/web/lists/getbytitle('${LIST_NAME}')/items(${editId})`,{method:'POST',headers,body:JSON.stringify(body)});
     }else{
-      await spPost(`${SP_SITE}/_api/web/lists/getbytitle('${LIST_NAME}')/items`,body);
+      r=await fetch(`${SP_SITE}/_api/web/lists/getbytitle('${LIST_NAME}')/items`,{method:'POST',headers,body:JSON.stringify(body)});
+    }
+    if(!r.ok){
+      const txt=await r.text();
+      throw new Error(`Erro ${r.status}: ${txt.slice(0,300)}`);
     }
     closeForm();await loadItems();
     showNotif('Assunto guardado com sucesso!','success');
   }catch(e){
-    showNotif('Erro ao guardar: '+e.message,'error');
+    showNotif('Erro: '+e.message,'error');
+    console.error(e);
   }
   btn.textContent='Guardar';btn.disabled=false;
 }
