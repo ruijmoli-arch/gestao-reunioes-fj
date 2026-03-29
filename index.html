@@ -517,16 +517,16 @@ async function saveItem(){
       'Authorization':`Bearer ${accessToken}`,
       'X-RequestDigest':digest
     };
-    const body={__metadata:{type:`SP.Data.FJ_x005f_AssuntosListItem`},
+    const body={__metadata:{type:'SP.Data.FJ_AssuntosListItem'},
       Title:titulo,
-      TipoReuni_x00e3_o:{Value:gv('f-reuniao'),'__metadata':{type:'SP.FieldChoiceValue'}},
-      TipoAssunto:{Value:gv('f-tipo'),'__metadata':{type:'SP.FieldChoiceValue'}},
+      TipoReuni_x00e3_o:gv('f-reuniao'),
+      TipoAssunto:gv('f-tipo'),
       Notas:document.getElementById('f-notas').value,
-      Estado:{Value:gv('f-estado'),'__metadata':{type:'SP.FieldChoiceValue'}},
-      Encaminhamento:{Value:gv('f-enc'),'__metadata':{type:'SP.FieldChoiceValue'}},
-      Decis_x00e3_o:{Value:gv('f-dec'),'__metadata':{type:'SP.FieldChoiceValue'}},
-      NivelOrigem:{Value:gv('f-nivel-origem'),'__metadata':{type:'SP.FieldChoiceValue'}},
-      NivelAtual:{Value:gv('f-nivel-atual'),'__metadata':{type:'SP.FieldChoiceValue'}},
+      Estado:gv('f-estado'),
+      Encaminhamento:gv('f-enc'),
+      Decis_x00e3_o:gv('f-dec'),
+      NivelOrigem:gv('f-nivel-origem'),
+      NivelAtual:gv('f-nivel-atual'),
       Confidencial:T.conf,
       Atrasado:T.atras
     };
