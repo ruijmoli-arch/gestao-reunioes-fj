@@ -9,7 +9,7 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --fj-blue:#003087;--fj-blue2:#004db3;--fj-orange:#FF6B00;--fj-orange2:#e55f00;
+  --fj-blue:#003087;--fj-blue2:#004db3;--fj-orange:#FF6B00;
   --bg:#f5f6f8;--bg2:#fff;--bg3:#eef1f6;
   --text:#1a1a2e;--text2:#5a6278;--text3:#9aa0b4;
   --border:#dde2ee;--border2:#c8d0e0;
@@ -18,7 +18,6 @@
   --blue-l:#E6F1FB;--blue-d:#0C447C;
   --red:#A32D2D;--red-bg:#FCEBEB;
   --amber:#633806;--amber-bg:#FAEEDA;
-  --teal:#085041;--teal-bg:#E1F5EE;
   --gray:#5F5E5A;--gray-bg:#F1EFE8;
   --r:10px;--r-lg:14px;
 }
@@ -32,16 +31,13 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fo
 .login-sub{font-size:14px;color:var(--text2);margin-bottom:2rem}
 .btn-ms{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:12px;border:none;border-radius:8px;background:var(--fj-blue);color:#fff;font-size:15px;font-weight:500;cursor:pointer}
 .btn-ms:hover{background:var(--fj-blue2)}
-.loading-msg{margin-top:1rem;font-size:13px;color:var(--text2)}
 
 /* TOPBAR */
 .topbar{background:var(--fj-blue);color:#fff;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .topbar-left{display:flex;align-items:center;gap:12px}
 .topbar-logo{width:32px;height:32px;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--fj-blue)}
-.topbar-title{font-size:15px;font-weight:500}
-.topbar-right{display:flex;align-items:center;gap:10px;font-size:13px}
+.topbar-right{display:flex;align-items:center;gap:10px}
 .user-avatar{width:30px;height:30px;border-radius:50%;background:var(--fj-orange);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
-.nivel-badge{font-size:10px;padding:2px 8px;border-radius:20px;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25)}
 
 /* LAYOUT */
 .layout{display:flex;min-height:calc(100vh - 56px)}
@@ -60,7 +56,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fo
 .stat-n{font-size:22px;font-weight:600;display:block;margin-bottom:2px}
 .stat-l{font-size:11px;color:var(--text2)}
 
-/* TOOLBAR */
+/* BUTTONS & INPUTS */
 .toolbar{display:flex;align-items:center;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
 .search-wrap{flex:1;min-width:180px;position:relative}
 .search-wrap input{width:100%;padding:8px 10px 8px 30px;border:0.5px solid var(--border2);border-radius:var(--r);background:var(--bg2);font-size:13px;color:var(--text)}
@@ -71,7 +67,6 @@ select.flt{padding:8px 10px;border:0.5px solid var(--border2);border-radius:var(
 .btn-primary{background:var(--fj-blue);color:#fff;border-color:var(--fj-blue)}
 .btn-primary:hover{background:var(--fj-blue2)}
 .btn-orange{background:var(--fj-orange);color:#fff;border-color:var(--fj-orange)}
-.btn-orange:hover{background:var(--fj-orange2)}
 .btn-sm{padding:5px 10px;font-size:12px}
 .btn-danger{color:var(--red);border-color:#F7C1C1}
 .btn-danger:hover{background:var(--red-bg)}
@@ -99,7 +94,7 @@ tr:hover td{background:var(--bg3)}
 .actions{display:flex;gap:4px}
 .empty{padding:3rem;text-align:center;color:var(--text2)}
 
-/* OVERLAY / FORM */
+/* FORM */
 .overlay{background:rgba(0,0,0,.25);border-radius:var(--r-lg);padding:1.5rem;margin-bottom:1.5rem;display:none}
 .overlay.open{display:block}
 .panel{background:var(--bg2);border-radius:var(--r-lg);padding:1.5rem;max-width:860px;margin:0 auto}
@@ -119,41 +114,80 @@ tr:hover td{background:var(--bg3)}
 .notif.success{background:var(--green-bg);border-color:var(--green-mid);color:var(--green)}
 .notif.error{background:var(--red-bg);border-color:var(--red);color:var(--red)}
 
-/* MODO REUNIÃO — CARROCEL */
+/* ATTACHMENTS */
+.attach-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.attach-item{display:flex;align-items:center;gap:6px;background:var(--blue-l);border:0.5px solid var(--border2);border-radius:6px;padding:4px 10px;font-size:12px;color:var(--blue-d)}
+.attach-item a{color:var(--blue-d);text-decoration:none;font-weight:500}
+.attach-item a:hover{text-decoration:underline}
+.attach-remove{background:none;border:none;cursor:pointer;color:var(--red);font-size:14px;line-height:1;padding:0 2px}
+
+/* MODO REUNIÃO — SETUP */
 .reuniao-setup{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r-lg);padding:2rem;max-width:600px;margin:0 auto;text-align:center}
 .reuniao-setup h2{font-size:20px;font-weight:600;margin-bottom:8px;color:var(--fj-blue)}
 .reuniao-setup p{font-size:14px;color:var(--text2);margin-bottom:1.5rem}
-.reuniao-setup select{width:100%;padding:12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:15px;color:var(--text);margin-bottom:1rem}
-.reuniao-setup .btn-orange{width:100%;padding:14px;font-size:16px;border-radius:var(--r)}
+.reuniao-setup select{width:100%;padding:12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:15px;color:var(--text);margin-bottom:1rem;background:var(--bg2);font-family:inherit}
 
+/* CARROCEL */
 .carousel-wrap{display:none}
 .carousel-header{background:var(--fj-blue);color:#fff;padding:1rem 1.5rem;border-radius:var(--r-lg) var(--r-lg) 0 0;display:flex;align-items:center;justify-content:space-between}
 .carousel-header h2{font-size:16px;font-weight:500}
-.carousel-progress{font-size:13px;opacity:.75}
-.progress-bar-wrap{background:rgba(255,255,255,.2);height:4px;border-radius:2px;margin-top:8px}
-.progress-bar{background:var(--fj-orange);height:4px;border-radius:2px;transition:width .3s}
+.carr-progress-text{font-size:13px;opacity:.7;margin-top:2px}
+.prog-bar-wrap{background:rgba(255,255,255,.2);height:4px}
+.prog-bar{background:var(--fj-orange);height:4px;transition:width .3s}
 
-.carousel-card{background:var(--bg2);border:0.5px solid var(--border);border-left:none;border-right:none;padding:1.5rem}
-.assunto-tipo{display:flex;gap:8px;margin-bottom:1rem}
-.assunto-titulo{font-size:20px;font-weight:600;color:var(--text);margin-bottom:8px}
-.assunto-meta{font-size:13px;color:var(--text2);margin-bottom:1.5rem}
-.assunto-notas{background:var(--bg3);border-radius:var(--r);padding:1rem;font-size:13px;color:var(--text2);margin-bottom:1.5rem;line-height:1.6;min-height:60px}
-.decisao-section{border-top:0.5px solid var(--border);padding-top:1.5rem}
-.decisao-title{font-size:13px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:1rem}
-.decisao-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:1rem}
-.decisao-btn{padding:12px;border:2px solid var(--border);border-radius:var(--r);cursor:pointer;text-align:center;font-size:14px;font-weight:500;background:var(--bg2);transition:all .15s;font-family:inherit}
-.decisao-btn:hover{border-color:var(--fj-blue);background:var(--blue-l)}
-.decisao-btn.selected-aprov{border-color:var(--green-mid);background:var(--green-bg);color:var(--green)}
-.decisao-btn.selected-nap{border-color:var(--red);background:var(--red-bg);color:var(--red)}
-.decisao-btn.selected-pend{border-color:var(--amber);background:var(--amber-bg);color:var(--amber)}
-.enc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
-.enc-btn{padding:8px;border:1px solid var(--border);border-radius:var(--r);cursor:pointer;text-align:center;font-size:12px;font-weight:500;background:var(--bg2);transition:all .15s;font-family:inherit}
+/* LAYOUT 3/4 + 1/4 */
+.carr-body{display:grid;grid-template-columns:3fr 1fr;border:0.5px solid var(--border);border-top:none;min-height:460px}
+.carr-content{padding:2rem;border-right:0.5px solid var(--border);overflow-y:auto}
+.carr-side{padding:1.25rem;background:var(--bg3);display:flex;flex-direction:column;gap:.75rem}
+
+.assunto-badges{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
+.assunto-titulo{font-size:24px;font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.3}
+.assunto-meta{font-size:13px;color:var(--text2);margin-bottom:1.5rem;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.section-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.content-box{background:var(--bg3);border-radius:var(--r);padding:1rem;font-size:14px;color:var(--text);line-height:1.7;margin-bottom:1.25rem;min-height:80px}
+.content-box.empty{color:var(--text3);font-style:italic}
+.proposta-box{background:#fff;border:2px dashed var(--border2);border-radius:var(--r);padding:1rem;font-size:14px;line-height:1.7;margin-bottom:1.25rem;min-height:80px;color:var(--text)}
+.proposta-box.empty{color:var(--text3);font-style:italic}
+.doc-link{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--blue-d);background:var(--blue-l);padding:3px 10px;border-radius:6px;text-decoration:none;border:0.5px solid var(--border2)}
+.doc-link:hover{background:#d0e8f8}
+
+/* PAINEL DECISÃO */
+.dec-label{font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.dec-btn{width:100%;padding:10px;border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;text-align:center;font-size:13px;font-weight:500;background:var(--bg2);transition:all .15s;font-family:inherit;margin-bottom:5px}
+.dec-btn:hover{border-color:var(--fj-blue)}
+.dec-btn.sel-aprov{border-color:var(--green-mid);background:var(--green-bg);color:var(--green)}
+.dec-btn.sel-nap{border-color:var(--red);background:var(--red-bg);color:var(--red)}
+.dec-btn.sel-pend{border-color:var(--amber);background:var(--amber-bg);color:var(--amber)}
+.enc-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-bottom:.75rem}
+.enc-btn{padding:7px 4px;border:1px solid var(--border);border-radius:var(--r);cursor:pointer;text-align:center;font-size:11px;font-weight:500;background:var(--bg2);transition:all .15s;font-family:inherit}
 .enc-btn:hover{border-color:var(--fj-blue)}
-.enc-btn.selected{border-color:var(--fj-blue);background:var(--blue-l);color:var(--fj-blue)}
-.notas-decisao{width:100%;padding:10px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:13px;color:var(--text);font-family:inherit;min-height:60px;resize:vertical;margin-bottom:1rem}
+.enc-btn.sel{border-color:var(--fj-blue);background:var(--blue-l);color:var(--fj-blue)}
+.notas-dec{width:100%;padding:8px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:12px;color:var(--text);font-family:inherit;min-height:80px;resize:vertical;background:var(--bg2)}
+.guardar-dec-btn{width:100%;padding:10px;background:var(--green-mid);color:#fff;border:none;border-radius:var(--r);cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;margin-top:4px}
+.guardar-dec-btn:hover{background:var(--green)}
+.dec-saved-msg{font-size:11px;color:var(--green);text-align:center;min-height:16px}
 
-.carousel-footer{background:var(--bg2);border:0.5px solid var(--border);border-top:none;border-radius:0 0 var(--r-lg) var(--r-lg);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
-.nav-btns{display:flex;gap:8px}
+.carr-footer{background:var(--bg2);border:0.5px solid var(--border);border-top:none;border-radius:0 0 var(--r-lg) var(--r-lg);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+
+/* FULLSCREEN */
+.fs-wrap{display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;flex-direction:column;background:var(--bg2)}
+.fs-wrap.open{display:flex}
+.fs-topbar{background:var(--fj-blue);color:#fff;padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.fs-topbar h2{font-size:15px;font-weight:500}
+.fs-prog-wrap{background:rgba(255,255,255,.2);height:3px;flex-shrink:0}
+.fs-prog-fill{background:var(--fj-orange);height:3px;transition:width .3s}
+.fs-body{flex:1;display:grid;grid-template-columns:3fr 1fr;overflow:hidden}
+.fs-content{padding:3rem 3.5rem;overflow-y:auto;border-right:0.5px solid var(--border)}
+.fs-side{padding:1.5rem;background:var(--bg3);display:flex;flex-direction:column;gap:.75rem;overflow-y:auto}
+.fs-titulo{font-size:36px;font-weight:700;color:var(--text);margin-bottom:10px;line-height:1.2}
+.fs-meta{font-size:14px;color:var(--text2);margin-bottom:1.75rem;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.fs-section-label{font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.fs-content-box{background:var(--bg3);border-radius:12px;padding:1.25rem;font-size:16px;line-height:1.8;margin-bottom:1.5rem;min-height:100px;color:var(--text)}
+.fs-proposta-box{border:2px dashed var(--border2);border-radius:12px;padding:1.25rem;font-size:16px;line-height:1.8;margin-bottom:1.5rem;min-height:80px;color:var(--text);background:#fff}
+.fs-footer{background:var(--bg2);border-top:0.5px solid var(--border);padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
+.fs-nav-btn{padding:8px 20px;border:0.5px solid var(--border2);border-radius:8px;background:var(--bg2);cursor:pointer;font-size:13px;color:var(--text);font-family:inherit}
+.fs-nav-btn:hover{background:var(--bg3)}
+.fs-nav-btn.primary{background:var(--fj-blue);color:#fff;border-color:var(--fj-blue)}
 
 /* SUMÁRIO */
 .sumario-wrap{display:none;background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
@@ -164,9 +198,14 @@ tr:hover td{background:var(--bg3)}
 .sumario-item-title{font-weight:600;font-size:14px;margin-bottom:6px}
 .sumario-item-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
 .sumario-item-notas{font-size:12px;color:var(--text2);font-style:italic}
-.sumario-actions{display:flex;gap:8px;margin-top:1.5rem;justify-content:flex-end}
+.sumario-actions{display:flex;gap:8px;margin-top:1.5rem;justify-content:flex-end;flex-wrap:wrap}
 
-@media(max-width:768px){.sidebar{display:none}.stats{grid-template-columns:repeat(2,1fr)}.fgrid{grid-template-columns:1fr}.decisao-grid{grid-template-columns:1fr}.enc-grid{grid-template-columns:1fr 1fr}}
+@media(max-width:900px){
+  .sidebar{display:none}.stats{grid-template-columns:repeat(2,1fr)}
+  .fgrid{grid-template-columns:1fr}
+  .carr-body,.fs-body{grid-template-columns:1fr}
+  .fs-titulo{font-size:24px}
+}
 </style>
 </head>
 <body>
@@ -181,7 +220,33 @@ tr:hover td{background:var(--bg3)}
       <svg width="18" height="18" viewBox="0 0 21 21" fill="none"><rect width="10" height="10" fill="#F25022"/><rect x="11" width="10" height="10" fill="#7FBA00"/><rect y="11" width="10" height="10" fill="#00A4EF"/><rect x="11" y="11" width="10" height="10" fill="#FFB900"/></svg>
       Entrar com Microsoft
     </button>
-    <div class="loading-msg" id="login-msg"></div>
+    <div id="login-msg" style="margin-top:1rem;font-size:13px;color:#666"></div>
+  </div>
+</div>
+
+<!-- FULLSCREEN -->
+<div id="fs-wrap" class="fs-wrap">
+  <div class="fs-topbar">
+    <div>
+      <h2 id="fs-reuniao-nome"></h2>
+      <div style="font-size:12px;opacity:.6;margin-top:2px" id="fs-prog-txt"></div>
+    </div>
+    <div style="display:flex;gap:8px;align-items:center">
+      <span style="font-size:12px;opacity:.5">ESC para fechar</span>
+      <button class="btn" style="background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3);font-size:12px" onclick="closeFS()">&#10005; Fechar</button>
+    </div>
+  </div>
+  <div class="fs-prog-wrap"><div class="fs-prog-fill" id="fs-prog-fill"></div></div>
+  <div class="fs-body">
+    <div class="fs-content" id="fs-content"></div>
+    <div class="fs-side" id="fs-side"></div>
+  </div>
+  <div class="fs-footer">
+    <div style="display:flex;gap:8px">
+      <button class="fs-nav-btn" id="fs-prev" onclick="prevA()">← Anterior</button>
+      <button class="fs-nav-btn primary" id="fs-next" onclick="nextA()">Seguinte →</button>
+    </div>
+    <div style="font-size:12px;color:var(--text3)">Navegue com ← → do teclado</div>
   </div>
 </div>
 
@@ -201,7 +266,6 @@ tr:hover td{background:var(--bg3)}
         <div id="user-email" style="font-size:11px;opacity:.6"></div>
       </div>
       <div class="user-avatar" id="user-initials"></div>
-      <span class="nivel-badge" id="nivel-badge"></span>
     </div>
   </div>
 
@@ -229,7 +293,7 @@ tr:hover td{background:var(--bg3)}
       <!-- ASSUNTOS -->
       <div class="page active" id="page-assuntos">
         <div class="page-title">Assuntos de reuniões</div>
-        <div class="stats" id="stats">
+        <div class="stats">
           <div class="stat"><span class="stat-n" id="s-total">—</span><span class="stat-l">Total</span></div>
           <div class="stat"><span class="stat-n" id="s-delib" style="color:var(--purple)">—</span><span class="stat-l">Deliberativos</span></div>
           <div class="stat"><span class="stat-n" id="s-aprov" style="color:var(--green-mid)">—</span><span class="stat-l">Aprovados</span></div>
@@ -243,41 +307,28 @@ tr:hover td{background:var(--bg3)}
             <div class="fgrid">
               <div class="fg" style="grid-column:1/-1"><label>Assunto *</label><input type="text" id="f-titulo" placeholder="Título do assunto ou proposta"></div>
               <div class="fg"><label>Tipo de reunião *</label>
-                <select id="f-reuniao">
-                  <option value="Reunião com CAdm">Reunião com CAdm</option>
-                  <option value="Reunião Gestão">Reunião Gestão</option>
-                  <option value="Reunião O.Norte">Reunião O. Norte</option>
-                  <option value="Reunião O.Sul">Reunião O. Sul</option>
-                  <option value="Reunião Financeiro">Reunião Financeiro</option>
-                  <option value="Reunião Impacto">Reunião Impacto</option>
-                </select>
+                <select id="f-reuniao"><option>Reunião com CAdm</option><option>Reunião Gestão</option><option>Reunião O.Norte</option><option>Reunião O.Sul</option><option>Reunião Financeiro</option><option>Reunião Impacto</option></select>
               </div>
               <div class="fg"><label>Data</label><input type="date" id="f-data"></div>
-              <div class="fg"><label>Tipo *</label>
-                <select id="f-tipo"><option value="Deliberativo">Deliberativo</option><option value="Informativo">Informativo</option></select>
-              </div>
+              <div class="fg"><label>Tipo *</label><select id="f-tipo"><option>Deliberativo</option><option>Informativo</option></select></div>
               <div class="fg"><label>Responsável</label><input type="text" id="f-resp" placeholder="Nome do responsável"></div>
-              <div class="fg"><label>Estado</label>
-                <select id="f-estado"><option>Em aberto</option><option>Em processo</option><option>Concluído</option><option>Cancelado</option></select>
-              </div>
-              <div class="fg"><label>Encaminhamento</label>
-                <select id="f-enc"><option>—</option><option>Presidente Executivo</option><option>Segue para CA</option><option>Ambos</option></select>
-              </div>
-              <div class="fg"><label>Decisão</label>
-                <select id="f-dec"><option>Pendente</option><option>Aprovado</option><option>Não aprovado</option><option>N/A</option></select>
-              </div>
-              <div class="fg"><label>Nível origem</label>
-                <select id="f-nivel-origem"><option>Departamento</option><option>Gestão</option><option>CA</option></select>
-              </div>
-              <div class="fg"><label>Nível atual</label>
-                <select id="f-nivel-atual"><option>Departamento</option><option>Gestão</option><option>CA</option></select>
+              <div class="fg"><label>Estado</label><select id="f-estado"><option>Em aberto</option><option>Em processo</option><option>Concluído</option><option>Cancelado</option></select></div>
+              <div class="fg"><label>Encaminhamento</label><select id="f-enc"><option>—</option><option>Presidente Executivo</option><option>Segue para CA</option><option>Ambos</option></select></div>
+              <div class="fg"><label>Decisão</label><select id="f-dec"><option>Pendente</option><option>Aprovado</option><option>Não aprovado</option><option>N/A</option></select></div>
+              <div class="fg"><label>Nível origem</label><select id="f-nivel-origem"><option>Departamento</option><option>Gestão</option><option>CA</option></select></div>
+              <div class="fg"><label>Nível atual</label><select id="f-nivel-atual"><option>Departamento</option><option>Gestão</option><option>CA</option></select></div>
+              <div class="fg" style="grid-column:1/-1"><label>Contextualização / Notas</label><textarea id="f-notas" placeholder="Contexto e observações..."></textarea></div>
+              <div class="fg" style="grid-column:1/-1"><label>Proposta de Decisão <span style="font-size:11px;color:var(--text3)">(apenas deliberativos)</span></label><textarea id="f-proposta" placeholder="Descreve a proposta de decisão..."></textarea></div>
+              <div class="fg" style="grid-column:1/-1">
+                <label>Anexos <span style="font-size:11px;color:var(--text3)">(PDF ou outros documentos)</span></label>
+                <input type="file" id="f-file" multiple accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx" style="padding:6px">
+                <div class="attach-list" id="existing-attachments"></div>
               </div>
             </div>
             <div style="display:flex;gap:24px;margin-top:14px">
               <div style="display:flex;align-items:center;gap:8px"><label style="font-size:12px;color:var(--text2)">Confidencial</label><button class="toggle" id="t-conf" onclick="tog('conf')"></button><span id="l-conf" style="font-size:12px;color:var(--text2)">Não</span></div>
               <div style="display:flex;align-items:center;gap:8px"><label style="font-size:12px;color:var(--text2)">Atrasado</label><button class="toggle" id="t-atras" onclick="tog('atras')"></button><span id="l-atras" style="font-size:12px;color:var(--text2)">Não</span></div>
             </div>
-            <div class="fg" style="margin-top:14px"><label>Notas / Contextualização</label><textarea id="f-notas" placeholder="Observações ou contexto..."></textarea></div>
             <div class="panel-footer">
               <button class="btn" onclick="closeForm()">Cancelar</button>
               <button class="btn btn-primary" id="save-btn" onclick="saveItem()">Guardar</button>
@@ -295,7 +346,7 @@ tr:hover td{background:var(--bg3)}
         </div>
         <div class="table-wrap">
           <table>
-            <colgroup><col style="width:7%"><col style="width:22%"><col style="width:12%"><col style="width:8%"><col style="width:10%"><col style="width:9%"><col style="width:9%"><col style="width:9%"><col style="width:9%"></colgroup>
+            <colgroup><col style="width:7%"><col style="width:21%"><col style="width:12%"><col style="width:8%"><col style="width:10%"><col style="width:9%"><col style="width:9%"><col style="width:9%"><col style="width:10%"></colgroup>
             <thead><tr><th>Data</th><th>Assunto</th><th>Reunião</th><th>Tipo</th><th>Responsável</th><th>Estado</th><th>Encam.</th><th>Decisão</th><th>Ações</th></tr></thead>
             <tbody id="tbody"></tbody>
           </table>
@@ -309,39 +360,34 @@ tr:hover td{background:var(--bg3)}
 
         <div id="reuniao-setup" class="reuniao-setup">
           <h2>Iniciar reunião</h2>
-          <p>Seleciona o tipo de reunião para carregar os assuntos pendentes automaticamente.</p>
-          <select id="r-tipo">
-            <option value="Reunião com CAdm">Reunião com CAdm</option>
-            <option value="Reunião Gestão">Reunião Gestão</option>
-            <option value="Reunião O.Norte">Reunião O. Norte</option>
-            <option value="Reunião O.Sul">Reunião O. Sul</option>
-            <option value="Reunião Financeiro">Reunião Financeiro</option>
-            <option value="Reunião Impacto">Reunião Impacto</option>
-          </select>
-          <select id="r-filtro" style="width:100%;padding:12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:14px;color:var(--text);margin-bottom:1rem">
-            <option value="todos">Incluir todos os assuntos</option>
-            <option value="abertos">Apenas não concluídos</option>
-            <option value="pendentes">Apenas pendentes de decisão</option>
-          </select>
-          <button class="btn-orange" onclick="iniciarReuniao()">Iniciar reunião</button>
+          <p>Seleciona o tipo de reunião para carregar os assuntos automaticamente do SharePoint.</p>
+          <select id="r-tipo"><option>Reunião com CAdm</option><option>Reunião Gestão</option><option>Reunião O.Norte</option><option>Reunião O.Sul</option><option>Reunião Financeiro</option><option>Reunião Impacto</option></select>
+          <select id="r-filtro"><option value="todos">Incluir todos os assuntos</option><option value="abertos">Apenas não concluídos</option><option value="pendentes">Apenas pendentes de decisão</option></select>
+          <button class="btn btn-orange" style="width:100%;padding:14px;font-size:16px;border-radius:var(--r);margin-top:1rem" onclick="iniciarReuniao()">Iniciar reunião</button>
         </div>
 
         <div id="carousel-wrap" class="carousel-wrap">
           <div class="carousel-header">
             <div>
-              <h2 id="carr-titulo-reuniao"></h2>
-              <div class="carousel-progress" id="carr-progress"></div>
+              <h2 id="carr-nome"></h2>
+              <div class="carr-progress-text" id="carr-prog-txt"></div>
             </div>
-            <button class="btn" style="background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3)" onclick="terminarReuniao()">Terminar reunião</button>
+            <div style="display:flex;gap:8px">
+              <button class="btn" style="background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3);font-size:12px" onclick="openFS()">&#9974; Apresentação</button>
+              <button class="btn" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.2);font-size:12px" onclick="terminarReuniao()">Terminar</button>
+            </div>
           </div>
-          <div class="progress-bar-wrap"><div class="progress-bar" id="progress-bar"></div></div>
-          <div class="carousel-card" id="carousel-card"></div>
-          <div class="carousel-footer">
-            <div class="nav-btns">
-              <button class="btn" id="btn-prev" onclick="prevAssunto()">← Anterior</button>
-              <button class="btn btn-primary" id="btn-next" onclick="nextAssunto()">Seguinte →</button>
+          <div class="prog-bar-wrap"><div class="prog-bar" id="prog-bar"></div></div>
+          <div class="carr-body">
+            <div class="carr-content" id="carr-content"></div>
+            <div class="carr-side" id="carr-side"></div>
+          </div>
+          <div class="carr-footer">
+            <div style="display:flex;gap:8px">
+              <button class="btn" id="btn-prev" onclick="prevA()">← Anterior</button>
+              <button class="btn btn-primary" id="btn-next" onclick="nextA()">Seguinte →</button>
             </div>
-            <button class="btn btn-green" onclick="guardarDecisaoAtual()">Guardar decisão</button>
+            <div style="font-size:12px;color:var(--text3)" id="carr-saved-msg"></div>
           </div>
         </div>
 
@@ -353,7 +399,8 @@ tr:hover td{background:var(--bg3)}
           <div class="sumario-body" id="sumario-body"></div>
           <div class="sumario-actions">
             <button class="btn" onclick="novaReuniao()">Nova reunião</button>
-            <button class="btn btn-orange" onclick="showPage('assuntos')">Ver todos os assuntos</button>
+            <button class="btn btn-orange" onclick="exportPPT()">&#8681; Exportar PPT</button>
+            <button class="btn btn-primary" onclick="exportPDF()">&#8681; Exportar PDF</button>
           </div>
         </div>
       </div>
@@ -365,216 +412,111 @@ tr:hover td{background:var(--bg3)}
 <script>
 const CLIENT_ID='b3a66901-ec96-424b-9bcb-370b39a2a210';
 const TENANT_ID='09ae14e9-8398-4ca0-a5cd-994620a0ab3a';
-const SP_SITE='https://fjuventude.sharepoint.com/sites/GestodeReunies';
-const LIST_NAME='FJ_Assuntos';
+const SP='https://fjuventude.sharepoint.com/sites/GestodeReunies';
+const LIST='FJ_Assuntos';
+const SP_TYPE='SP.Data.FJ_x005f_AssuntosListItem';
+const SCOPES=['https://fjuventude.sharepoint.com/AllSites.Write','https://fjuventude.sharepoint.com/AllSites.Read'];
 
-const msalConfig={auth:{clientId:CLIENT_ID,authority:`https://login.microsoftonline.com/${TENANT_ID}`,redirectUri:'https://ruijmoli-arch.github.io/gestao-reunioes-fj/'}};
-const msalInstance=new msal.PublicClientApplication(msalConfig);
-const spScopes=["https://fjuventude.sharepoint.com/AllSites.Write","https://fjuventude.sharepoint.com/AllSites.Read"];
+const msalCfg={auth:{clientId:CLIENT_ID,authority:`https://login.microsoftonline.com/${TENANT_ID}`,redirectUri:'https://ruijmoli-arch.github.io/gestao-reunioes-fj/'}};
+const msal_=new msal.PublicClientApplication(msalCfg);
 
-let currentUser=null,accessToken=null,items=[],editId=null;
-let T={conf:false,atras:false};
-let carrAssuntos=[],carrIndex=0,carrDecisoes={};
+let user=null,token=null,items=[],editId=null,T={conf:false,atras:false};
+let carrItems=[],carrIdx=0,carrDec={},fsOpen=false,currReuniaoNome='';
 
 async function init(){
-  await msalInstance.initialize();
-  const resp=await msalInstance.handleRedirectPromise();
-  if(resp){
-    currentUser=resp.account;
-    accessToken=resp.accessToken;
-    showApp();
-  } else {
-    const accounts=msalInstance.getAllAccounts();
-    if(accounts.length>0){
-      currentUser=accounts[0];
-      await refreshToken();
-      showApp();
-    }
-  }
+  await msal_.initialize();
+  const r=await msal_.handleRedirectPromise();
+  if(r){user=r.account;token=r.accessToken;showApp();}
+  else{const a=msal_.getAllAccounts();if(a.length){user=a[0];await getToken();showApp();}}
 }
-
-async function doLogin(){
-  document.getElementById('login-msg').textContent='A autenticar...';
-  try{
-    await msalInstance.loginRedirect({scopes:spScopes});
-  }catch(e){
-    document.getElementById('login-msg').textContent='Erro: '+e.message;
-  }
+async function doLogin(){document.getElementById('login-msg').textContent='A autenticar...';try{await msal_.loginRedirect({scopes:SCOPES});}catch(e){document.getElementById('login-msg').textContent='Erro: '+e.message;}}
+function doLogout(){msal_.logoutRedirect();}
+async function getToken(){try{const r=await msal_.acquireTokenSilent({scopes:SCOPES,account:user});token=r.accessToken;}catch(e){await msal_.acquireTokenRedirect({scopes:SCOPES});}}
+async function getDigest(){
+  await getToken();
+  const r=await fetch(`${SP}/_api/contextinfo`,{method:'POST',headers:{Accept:'application/json;odata=verbose',Authorization:`Bearer ${token}`,'Content-Length':'0'}});
+  const d=await r.json();return d.d.GetContextWebInformation.FormDigestValue;
 }
-
-async function refreshToken(){
-  try{
-    const r=await msalInstance.acquireTokenSilent({scopes:spScopes,account:currentUser});
-    accessToken=r.accessToken;
-  }catch(e){
-    await msalInstance.acquireTokenRedirect({scopes:spScopes});
-  }
+async function spRead(url){
+  await getToken();
+  const r=await fetch(url,{headers:{Accept:'application/json;odata=verbose',Authorization:`Bearer ${token}`}});
+  if(!r.ok)throw new Error('Erro '+r.status);return r.json();
 }
-
-function doLogout(){
-  msalInstance.logoutRedirect();
+async function spWrite(url,body,method,etag){
+  await getToken();
+  const digest=await getDigest();
+  const hdrs={'Content-Type':'application/json;odata=verbose','Accept':'application/json;odata=verbose','Authorization':`Bearer ${token}`,'X-RequestDigest':digest};
+  if(method==='MERGE'||method==='DELETE'){hdrs['X-HTTP-Method']=method;hdrs['IF-MATCH']=etag||'*';}
+  const r=await fetch(url,{method:'POST',headers:hdrs,body:body?JSON.stringify(body):undefined});
+  if(!r.ok){const t=await r.text();throw new Error(`HTTP ${r.status}: ${t.slice(0,300)}`);}
+  return r;
+}
+async function uploadAttachment(itemId,file){
+  await getToken();
+  const digest=await getDigest();
+  const url=`${SP}/_api/web/lists/getbytitle('${LIST}')/items(${itemId})/AttachmentFiles/add(FileName='${encodeURIComponent(file.name)}')`;
+  const buf=await file.arrayBuffer();
+  const r=await fetch(url,{method:'POST',headers:{Accept:'application/json;odata=verbose',Authorization:`Bearer ${token}`,'X-RequestDigest':digest,'content-length':buf.byteLength},body:buf});
+  if(!r.ok){const t=await r.text();throw new Error(`Upload: HTTP ${r.status}`);}
+}
+async function deleteAttachment(itemId,fileName){
+  await getToken();
+  const digest=await getDigest();
+  const url=`${SP}/_api/web/lists/getbytitle('${LIST}')/items(${itemId})/AttachmentFiles/getByFileName('${encodeURIComponent(fileName)}')`;
+  const r=await fetch(url,{method:'DELETE',headers:{Authorization:`Bearer ${token}`,'X-RequestDigest':digest,'IF-MATCH':'*'}});
+  if(!r.ok)throw new Error('Erro ao eliminar anexo');
 }
 
 function showApp(){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app-screen').style.display='block';
-  const name=currentUser.name||currentUser.username;
-  const email=currentUser.username;
-  const initials=name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
+  const name=user.name||user.username;
   document.getElementById('user-name').textContent=name;
-  document.getElementById('user-email').textContent=email;
-  document.getElementById('user-initials').textContent=initials;
-  document.getElementById('nivel-badge').textContent='Fundação da Juventude';
+  document.getElementById('user-email').textContent=user.username;
+  document.getElementById('user-initials').textContent=name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
   loadItems();
 }
 
-async function spGet(url){
-  await refreshToken();
-  const r=await fetch(url,{headers:{Accept:'application/json;odata=verbose',Authorization:`Bearer ${accessToken}`}});
-  if(!r.ok) throw new Error('Erro '+r.status);
-  return r.json();
-}
-
-async function spPost(url,body,method='POST',etag){
-  await refreshToken();
-  const digest=await getDigest();
-  const headers={
-    'Content-Type':'application/json;odata=verbose',
-    'Accept':'application/json;odata=verbose',
-    'Authorization':`Bearer ${accessToken}`,
-    'X-RequestDigest':digest,
-    'X-HTTP-Method':method==='POST'?'POST':method
-  };
-  if(etag) headers['If-Match']=etag;
-  if(method!=='POST'){
-    headers['X-HTTP-Method']=method;
-  }
-  const r=await fetch(url,{method:'POST',headers,body:JSON.stringify(body)});
-  if(!r.ok){
-    const err=await r.text();
-    throw new Error(`HTTP ${r.status}: ${err.slice(0,200)}`);
-  }
-  return r;
-}
-
-async function getDigest(){
-  await refreshToken();
-  try{
-    const r=await fetch(`${SP_SITE}/_api/contextinfo`,{method:'POST',headers:{Accept:'application/json;odata=verbose',Authorization:`Bearer ${accessToken}`,'Content-Length':'0'}});
-    const d=await r.json();
-    return d.d.GetContextWebInformation.FormDigestValue;
-  }catch(e){
-    return 'digest-error';
-  }
-}
-
 async function loadItems(){
-  showNotif('A carregar assuntos do SharePoint...','info');
+  showNotif('A carregar assuntos...','info');
   try{
-    const url=`${SP_SITE}/_api/web/lists/getbytitle('${LIST_NAME}')/items?$select=*&$orderby=Created desc&$top=500`;
-    const data=await spGet(url);
-    items=data.d.results.map(mapItem);
-    renderStats();
-    renderTable();
-    showNotif('Assuntos carregados com sucesso.','success');
-    setTimeout(()=>document.getElementById('notif').classList.remove('show'),2000);
-  }catch(e){
-    showNotif('Erro ao carregar: '+e.message,'error');
-  }
-}
-
-function mapItem(r){
-  return {
-    id:r.Id,etag:r.__metadata?.etag,
-    titulo:r.Title||'',
-    reuniao:r.TipoReuni_x00e3_o?.Value||r.TipoReuni_x00e3_o||'',
-    data:r.DataReuniao?r.DataReuniao.split('T')[0]:'',
-    tipo:r.TipoAssunto?.Value||r.TipoAssunto||'',
-    responsavel:r.Respons_x00e1_vel?.Title||'',
-    estado:r.Estado?.Value||'Em aberto',
-    encaminhamento:r.Encaminhamento?.Value||'—',
-    decisao:r.Decis_x00e3_o?.Value||'Pendente',
-    confidencial:r.Confidencial||false,
-    atrasado:r.Atrasado||false,
-    notas:r.Notas||'',
-    nivelOrigem:r.NivelOrigem?.Value||'',
-    nivelAtual:r.NivelAtual?.Value||'',
-    historicoEscalada:r.HistoricoEsclada||''
-  };
-}
-
-async function saveItem(){
-  const titulo=document.getElementById('f-titulo').value.trim();
-  if(!titulo){alert('Por favor indique o assunto.');return;}
-  const btn=document.getElementById('save-btn');
-  btn.textContent='A guardar...';btn.disabled=true;
-  try{
-    await refreshToken();
-    const digest=await getDigest();
-    const headers={
-      'Content-Type':'application/json;odata=verbose',
-      'Accept':'application/json;odata=verbose',
-      'Authorization':`Bearer ${accessToken}`,
-      'X-RequestDigest':digest
-    };
-    const body={__metadata:{type:'SP.Data.FJ_x005f_AssuntosListItem'},
-      Title:titulo,
-      TipoReuni_x00e3_o:gv('f-reuniao'),
-      TipoAssunto:gv('f-tipo'),
-      Notas:document.getElementById('f-notas').value,
-      Estado:gv('f-estado'),
-      Encaminhamento:gv('f-enc'),
-      Decis_x00e3_o:gv('f-dec'),
-      NivelOrigem:gv('f-nivel-origem'),
-      NivelAtual:gv('f-nivel-atual'),
-      Confidencial:T.conf,
-      Atrasado:T.atras
-    };
-    if(gv('f-data')) body.DataReuniao=gv('f-data')+'T00:00:00Z';
-    const dataVal=gv('f-data');
-    let r;
-    if(editId){
-      headers['X-HTTP-Method']='MERGE';
-      headers['IF-MATCH']='*';
-      r=await fetch(`${SP_SITE}/_api/web/lists/getbytitle('${LIST_NAME}')/items(${editId})`,{method:'POST',headers,body:JSON.stringify(body)});
-    }else{
-      r=await fetch(`${SP_SITE}/_api/web/lists/getbytitle('${LIST_NAME}')/items`,{method:'POST',headers,body:JSON.stringify(body)});
-    }
-    if(!r.ok){
-      const txt=await r.text();
-      throw new Error(`Erro ${r.status}: ${txt.slice(0,300)}`);
-    }
-    closeForm();await loadItems();
-    showNotif('Assunto guardado com sucesso!','success');
-  }catch(e){
-    showNotif('Erro: '+e.message,'error');
-    console.error(e);
-  }
-  btn.textContent='Guardar';btn.disabled=false;
-}
-
-async function deleteItem(id){
-  if(!confirm('Eliminar este assunto?'))return;
-  try{
-    await spPost(`${SP_SITE}/_api/web/lists/getbytitle('${LIST_NAME}')/items(${id})`,{},'POST','*');
-    await loadItems();showNotif('Assunto eliminado.','success');
+    const d=await spRead(`${SP}/_api/web/lists/getbytitle('${LIST}')/items?$select=*,AttachmentFiles&$expand=AttachmentFiles&$orderby=Created desc&$top=500`);
+    items=d.d.results.map(r=>({
+      id:r.Id,etag:r.__metadata?.etag||'*',
+      titulo:r.Title||'',
+      reuniao:r.TipoReuni_x00e3_o||'',
+      data:r.DataReuniao?r.DataReuniao.split('T')[0]:'',
+      tipo:r.TipoAssunto||'',
+      responsavel:r.Respons_x00e1_vel?.Title||'',
+      estado:r.Estado||'Em aberto',
+      encaminhamento:r.Encaminhamento||'—',
+      decisao:r.Decis_x00e3_o||'Pendente',
+      confidencial:r.Confidencial||false,
+      atrasado:r.Atrasado||false,
+      notas:r.Notas||'',
+      proposta:r.Proposta||'',
+      nivelOrigem:r.NivelOrigem||'',
+      nivelAtual:r.NivelAtual||'',
+      attachments:(r.AttachmentFiles?.results||[]).map(a=>({name:a.FileName,url:a.ServerRelativeUrl}))
+    }));
+    renderStats();renderTable();
+    showNotif('Carregado!','success');
+    setTimeout(()=>document.getElementById('notif').classList.remove('show'),1500);
   }catch(e){showNotif('Erro: '+e.message,'error');}
-}
-
-function renderStats(){
-  const v=items;
-  document.getElementById('s-total').textContent=v.length;
-  document.getElementById('s-delib').textContent=v.filter(i=>i.tipo==='Deliberativo').length;
-  document.getElementById('s-aprov').textContent=v.filter(i=>i.decisao==='Aprovado').length;
-  document.getElementById('s-pend').textContent=v.filter(i=>i.decisao==='Pendente').length;
 }
 
 const RM={'Reunião com CAdm':'b-ca','Reunião Gestão':'b-gestao','Reunião O.Norte':'b-opnorte','Reunião O.Sul':'b-opsul','Reunião Financeiro':'b-fin','Reunião Impacto':'b-imp'};
 const EM={'Em aberto':'b-aberto','Em processo':'b-processo','Concluído':'b-concluido','Cancelado':'b-cancelado'};
 const DM={Aprovado:'b-aprov','Não aprovado':'b-nap',Pendente:'b-pend','N/A':'b-na'};
 const CM={'Presidente Executivo':'b-pe','Segue para CA':'b-segca','Ambos':'b-ambos','—':'b-na'};
-function bdg(map,v,txt){return`<span class="badge ${map[v]||'b-na'}">${txt||v||'—'}</span>`;}
+const bdg=(map,v,txt)=>`<span class="badge ${map[v]||'b-na'}">${txt||v||'—'}</span>`;
 
+function renderStats(){
+  document.getElementById('s-total').textContent=items.length;
+  document.getElementById('s-delib').textContent=items.filter(i=>i.tipo==='Deliberativo').length;
+  document.getElementById('s-aprov').textContent=items.filter(i=>i.decisao==='Aprovado').length;
+  document.getElementById('s-pend').textContent=items.filter(i=>i.decisao==='Pendente').length;
+}
 function filtered(){
   const q=(document.getElementById('q')||{value:''}).value.toLowerCase();
   const fr=gv('ff-r'),ft=gv('ff-t'),fe=gv('ff-e');
@@ -586,13 +528,12 @@ function filtered(){
     return true;
   });
 }
-
 function renderTable(){
   const list=filtered(),tb=document.getElementById('tbody');
-  if(!list.length){tb.innerHTML=`<tr><td colspan="9"><div class="empty">Nenhum assunto encontrado.<br>Clique em "+ Novo assunto" para criar.</div></td></tr>`;document.getElementById('tcount').textContent='';return;}
+  if(!list.length){tb.innerHTML=`<tr><td colspan="9"><div class="empty">Nenhum assunto.<br>Clique em "+ Novo assunto".</div></td></tr>`;document.getElementById('tcount').textContent='';return;}
   tb.innerHTML=list.map(i=>`<tr>
     <td>${fd(i.data)}</td>
-    <td title="${i.titulo}" style="font-weight:500">${i.titulo}${i.confidencial?` <span class="badge b-na" style="font-size:10px">&#128274;</span>`:''}</td>
+    <td title="${i.titulo}" style="font-weight:500">${i.titulo}${i.confidencial?` <span class="badge b-na" style="font-size:10px">&#128274;</span>`:''}${i.attachments?.length?` <span class="badge" style="background:var(--blue-l);color:var(--blue-d);font-size:10px">&#128206; ${i.attachments.length}</span>`:''}</td>
     <td>${bdg(RM,i.reuniao,i.reuniao.replace('Reunião ',''))}</td>
     <td><span class="badge ${i.tipo==='Deliberativo'?'b-delib':'b-info'}">${i.tipo==='Deliberativo'?'Delib.':'Inform.'}</span></td>
     <td>${i.responsavel||'—'}</td>
@@ -605,175 +546,384 @@ function renderTable(){
     </div></td>
   </tr>`).join('');
   const tot=items.length,vis=list.length;
-  document.getElementById('tcount').textContent=vis===tot?`${tot} assunto${tot!==1?'s':''}`:`${vis} de ${tot} assunto${tot!==1?'s':''}`;
+  document.getElementById('tcount').textContent=vis===tot?`${tot} assunto${tot!==1?'s':''}`:`${vis} de ${tot}`;
 }
 
 function openForm(id){
   editId=id||null;
   const p=document.getElementById('frm-ov');p.classList.add('open');p.scrollIntoView({behavior:'smooth',block:'nearest'});
+  document.getElementById('existing-attachments').innerHTML='';
+  document.getElementById('f-file').value='';
   if(id){
     const i=items.find(x=>x.id===id);if(!i)return;
     document.getElementById('frm-title').textContent='Editar assunto';
-    document.getElementById('f-titulo').value=i.titulo;
-    document.getElementById('f-reuniao').value=i.reuniao;
-    document.getElementById('f-data').value=i.data;
-    document.getElementById('f-tipo').value=i.tipo;
-    document.getElementById('f-resp').value=i.responsavel||'';
-    document.getElementById('f-estado').value=i.estado;
-    document.getElementById('f-enc').value=i.encaminhamento||'—';
-    document.getElementById('f-dec').value=i.decisao||'Pendente';
-    document.getElementById('f-nivel-origem').value=i.nivelOrigem||'Departamento';
-    document.getElementById('f-nivel-atual').value=i.nivelAtual||'Departamento';
-    document.getElementById('f-notas').value=i.notas||'';
+    sv('f-titulo',i.titulo);sv('f-reuniao',i.reuniao);sv('f-data',i.data);sv('f-tipo',i.tipo);
+    sv('f-resp',i.responsavel||'');sv('f-estado',i.estado);sv('f-enc',i.encaminhamento||'—');
+    sv('f-dec',i.decisao||'Pendente');sv('f-nivel-origem',i.nivelOrigem||'Departamento');
+    sv('f-nivel-atual',i.nivelAtual||'Departamento');sv('f-notas',i.notas||'');sv('f-proposta',i.proposta||'');
     setTog('conf',!!i.confidencial);setTog('atras',!!i.atrasado);
+    if(i.attachments?.length){
+      document.getElementById('existing-attachments').innerHTML=i.attachments.map(a=>`
+        <div class="attach-item">
+          <a href="${SP}${a.url}" target="_blank">&#128206; ${a.name}</a>
+          <button class="attach-remove" onclick="removeAttach(${id},'${a.name}')" title="Remover">&#10005;</button>
+        </div>`).join('');
+    }
   }else{
     document.getElementById('frm-title').textContent='Novo assunto';
-    ['f-titulo','f-resp','f-notas'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('f-data').value=today();
-    document.getElementById('f-tipo').value='Deliberativo';
-    document.getElementById('f-estado').value='Em aberto';
-    document.getElementById('f-enc').value='—';
-    document.getElementById('f-dec').value='Pendente';
-    document.getElementById('f-nivel-origem').value='Departamento';
-    document.getElementById('f-nivel-atual').value='Departamento';
+    ['f-titulo','f-resp','f-notas','f-proposta'].forEach(id=>sv(id,''));
+    sv('f-data',today());sv('f-tipo','Deliberativo');sv('f-estado','Em aberto');sv('f-enc','—');sv('f-dec','Pendente');sv('f-nivel-origem','Departamento');sv('f-nivel-atual','Departamento');
     setTog('conf',false);setTog('atras',false);
   }
 }
 function editItem(id){openForm(id);}
 function closeForm(){document.getElementById('frm-ov').classList.remove('open');editId=null;}
 
-/* MODO REUNIÃO */
+async function removeAttach(itemId,fileName){
+  if(!confirm(`Remover "${fileName}"?`))return;
+  try{
+    await deleteAttachment(itemId,fileName);
+    await loadItems();
+    if(editId)openForm(editId);
+  }catch(e){showNotif('Erro: '+e.message,'error');}
+}
+
+async function saveItem(){
+  const titulo=document.getElementById('f-titulo').value.trim();
+  if(!titulo){alert('Por favor indique o assunto.');return;}
+  const btn=document.getElementById('save-btn');btn.textContent='A guardar...';btn.disabled=true;
+  try{
+    const body={__metadata:{type:SP_TYPE},
+      Title:titulo,
+      TipoReuni_x00e3_o:gv('f-reuniao'),
+      TipoAssunto:gv('f-tipo'),
+      Notas:gv2('f-notas'),
+      Proposta:gv2('f-proposta'),
+      Estado:gv('f-estado'),
+      Encaminhamento:gv('f-enc'),
+      Decis_x00e3_o:gv('f-dec'),
+      NivelOrigem:gv('f-nivel-origem'),
+      NivelAtual:gv('f-nivel-atual'),
+      Confidencial:T.conf,
+      Atrasado:T.atras
+    };
+    if(gv('f-data'))body.DataReuniao=gv('f-data')+'T00:00:00Z';
+    let itemId=editId;
+    if(editId){
+      await spWrite(`${SP}/_api/web/lists/getbytitle('${LIST}')/items(${editId})`,body,'MERGE',items.find(x=>x.id===editId)?.etag);
+    }else{
+      const r=await spWrite(`${SP}/_api/web/lists/getbytitle('${LIST}')/items`,body,'POST');
+      const d=await r.json();itemId=d.d.Id;
+    }
+    const files=document.getElementById('f-file').files;
+    for(const f of files)await uploadAttachment(itemId,f);
+    closeForm();await loadItems();
+    showNotif('Assunto guardado!','success');
+  }catch(e){showNotif('Erro: '+e.message,'error');}
+  btn.textContent='Guardar';btn.disabled=false;
+}
+
+async function deleteItem(id){
+  if(!confirm('Eliminar este assunto?'))return;
+  try{
+    await getToken();const digest=await getDigest();
+    await fetch(`${SP}/_api/web/lists/getbytitle('${LIST}')/items(${id})`,{method:'DELETE',headers:{Authorization:`Bearer ${token}`,'X-RequestDigest':digest,'IF-MATCH':'*'}});
+    await loadItems();showNotif('Eliminado.','success');
+  }catch(e){showNotif('Erro: '+e.message,'error');}
+}
+
+/* CARROCEL */
 function iniciarReuniao(){
   const tipo=gv('r-tipo'),filtro=gv('r-filtro');
   let lista=items.filter(i=>i.reuniao===tipo);
   if(filtro==='abertos')lista=lista.filter(i=>i.estado!=='Concluído'&&i.estado!=='Cancelado');
   if(filtro==='pendentes')lista=lista.filter(i=>i.decisao==='Pendente');
-  if(!lista.length){alert('Não existem assuntos para esta reunião com os filtros seleccionados.');return;}
-  carrAssuntos=lista;carrIndex=0;carrDecisoes={};
+  if(!lista.length){alert('Nenhum assunto encontrado.');return;}
+  carrItems=lista;carrIdx=0;carrDec={};currReuniaoNome=tipo;
   document.getElementById('reuniao-setup').style.display='none';
   document.getElementById('carousel-wrap').style.display='block';
   document.getElementById('sumario-wrap').style.display='none';
-  document.getElementById('carr-titulo-reuniao').textContent=tipo;
-  renderCarousel();
+  document.getElementById('carr-nome').textContent=tipo;
+  renderCarr();
 }
 
-function renderCarousel(){
-  const it=carrAssuntos[carrIndex];
-  const total=carrAssuntos.length;
-  const pct=Math.round(((carrIndex+1)/total)*100);
-  document.getElementById('carr-progress').textContent=`Assunto ${carrIndex+1} de ${total}`;
-  document.getElementById('progress-bar').style.width=pct+'%';
-  document.getElementById('btn-prev').disabled=carrIndex===0;
-  document.getElementById('btn-next').textContent=carrIndex===total-1?'Ver sumário':'Seguinte →';
+function renderCarr(){
+  const it=carrItems[carrIdx],total=carrItems.length,pct=Math.round(((carrIdx+1)/total)*100);
+  document.getElementById('carr-prog-txt').textContent=`Assunto ${carrIdx+1} de ${total}`;
+  document.getElementById('prog-bar').style.width=pct+'%';
+  document.getElementById('btn-prev').disabled=carrIdx===0;
+  document.getElementById('btn-next').textContent=carrIdx===total-1?'Ver sumário →':'Seguinte →';
+  document.getElementById('carr-content').innerHTML=renderContentHTML(it);
+  document.getElementById('carr-side').innerHTML=renderSideHTML(it);
+  document.getElementById('carr-saved-msg').textContent='';
+}
 
-  const dec=carrDecisoes[it.id]||{decisao:'',encaminhamento:'',notas:''};
-
-  document.getElementById('carousel-card').innerHTML=`
-    <div class="assunto-tipo">
-      <span class="badge ${it.tipo==='Deliberativo'?'b-delib':'b-info'}">${it.tipo}</span>
+function renderContentHTML(it){
+  const isD=it.tipo==='Deliberativo';
+  const attHtml=it.attachments?.length?`<div style="margin-bottom:1.25rem">${it.attachments.map(a=>`<a class="doc-link" href="${SP}${a.url}" target="_blank">&#128206; ${a.name}</a> `).join('')}</div>`:'';
+  return `
+    <div class="assunto-badges">
+      <span class="badge ${isD?'b-delib':'b-info'}">${it.tipo}</span>
       ${it.confidencial?'<span class="badge b-na">&#128274; Confidencial</span>':''}
       ${it.atrasado?'<span class="badge b-nap">Atrasado</span>':''}
     </div>
     <div class="assunto-titulo">${it.titulo}</div>
-    <div class="assunto-meta">${it.responsavel?'Responsável: '+it.responsavel+' · ':''} ${fd(it.data)} · ${bdg(EM,it.estado)}</div>
-    ${it.notas?`<div class="assunto-notas">${it.notas}</div>`:'<div class="assunto-notas" style="color:var(--text3);font-style:italic">Sem notas de contextualização.</div>'}
-
-    <div class="decisao-section">
-      <div class="decisao-title">Decisão</div>
-      <div class="decisao-grid">
-        <button class="decisao-btn ${dec.decisao==='Aprovado'?'selected-aprov':''}" onclick="selDecisao('Aprovado',this)">&#10003; Aprovado</button>
-        <button class="decisao-btn ${dec.decisao==='Não aprovado'?'selected-nap':''}" onclick="selDecisao('Não aprovado',this)">&#10007; Não aprovado</button>
-        <button class="decisao-btn ${dec.decisao==='Pendente'?'selected-pend':''}" onclick="selDecisao('Pendente',this)">&#9646; Pendente</button>
-      </div>
-      <div class="decisao-title">Encaminhamento</div>
-      <div class="enc-grid">
-        <button class="enc-btn ${dec.encaminhamento==='—'?'selected':''}" onclick="selEnc('—',this)">—</button>
-        <button class="enc-btn ${dec.encaminhamento==='Presidente Executivo'?'selected':''}" onclick="selEnc('Presidente Executivo',this)">Pres. Executivo</button>
-        <button class="enc-btn ${dec.encaminhamento==='Segue para CA'?'selected':''}" onclick="selEnc('Segue para CA',this)">Segue para CA</button>
-        <button class="enc-btn ${dec.encaminhamento==='Ambos'?'selected':''}" onclick="selEnc('Ambos',this)">Ambos</button>
-      </div>
-      <div class="decisao-title">Notas da decisão</div>
-      <textarea class="notas-decisao" id="notas-decisao" placeholder="Registe aqui as notas e observações da decisão...">${dec.notas}</textarea>
+    <div class="assunto-meta">
+      ${it.responsavel?`<span>&#128100; ${it.responsavel}</span>`:''}
+      ${it.data?`<span>&#128197; ${fd(it.data)}</span>`:''}
+      ${bdg(EM,it.estado)}
     </div>
+    ${attHtml}
+    <div class="section-label">Contextualização</div>
+    <div class="content-box ${it.notas?'':'empty'}">${it.notas||'Sem contextualização definida.'}</div>
+    ${isD?`<div class="section-label">Proposta de Decisão</div>
+    <div class="proposta-box ${it.proposta?'':'empty'}">${it.proposta||'Sem proposta de decisão definida.'}</div>`:''}
   `;
 }
 
-function selDecisao(val,btn){
-  const it=carrAssuntos[carrIndex];
-  if(!carrDecisoes[it.id])carrDecisoes[it.id]={decisao:'',encaminhamento:'—',notas:''};
-  carrDecisoes[it.id].decisao=val;
-  document.querySelectorAll('.decisao-btn').forEach(b=>{b.classList.remove('selected-aprov','selected-nap','selected-pend');});
-  const cls=val==='Aprovado'?'selected-aprov':val==='Não aprovado'?'selected-nap':'selected-pend';
-  btn.classList.add(cls);
+function renderSideHTML(it){
+  const dec=carrDec[it.id]||{decisao:'',encaminhamento:'—',notas:''};
+  return `
+    <div class="dec-label">Decisão</div>
+    <button class="dec-btn ${dec.decisao==='Aprovado'?'sel-aprov':''}" onclick="selDec('Aprovado',this)">&#10003; Aprovado</button>
+    <button class="dec-btn ${dec.decisao==='Não aprovado'?'sel-nap':''}" onclick="selDec('Não aprovado',this)">&#10007; Não aprovado</button>
+    <button class="dec-btn ${dec.decisao==='Pendente'?'sel-pend':''}" onclick="selDec('Pendente',this)">&#9646; Pendente</button>
+    <hr style="border:none;border-top:0.5px solid var(--border);margin:.25rem 0">
+    <div class="dec-label">Encaminhamento</div>
+    <div class="enc-grid">
+      <button class="enc-btn ${dec.encaminhamento==='—'?'sel':''}" onclick="selEnc('—',this)">—</button>
+      <button class="enc-btn ${dec.encaminhamento==='Presidente Executivo'?'sel':''}" onclick="selEnc('Presidente Executivo',this)">Pres. Exec.</button>
+      <button class="enc-btn ${dec.encaminhamento==='Segue para CA'?'sel':''}" onclick="selEnc('Segue para CA',this)">Segue CA</button>
+      <button class="enc-btn ${dec.encaminhamento==='Ambos'?'sel':''}" onclick="selEnc('Ambos',this)">Ambos</button>
+    </div>
+    <hr style="border:none;border-top:0.5px solid var(--border);margin:.25rem 0">
+    <div class="dec-label">Notas da decisão</div>
+    <textarea class="notas-dec" id="notas-dec-input" placeholder="Registe as observações...">${dec.notas}</textarea>
+    <button class="guardar-dec-btn" onclick="guardarDec()">&#10003; Guardar decisão</button>
+    <div class="dec-saved-msg" id="dec-saved-msg"></div>
+  `;
+}
+
+function selDec(val,btn){
+  const it=carrItems[carrIdx];
+  if(!carrDec[it.id])carrDec[it.id]={decisao:'',encaminhamento:'—',notas:''};
+  carrDec[it.id].decisao=val;
+  document.querySelectorAll('.dec-btn').forEach(b=>b.classList.remove('sel-aprov','sel-nap','sel-pend'));
+  btn.classList.add(val==='Aprovado'?'sel-aprov':val==='Não aprovado'?'sel-nap':'sel-pend');
+  if(fsOpen)renderFSSide();
 }
 function selEnc(val,btn){
-  const it=carrAssuntos[carrIndex];
-  if(!carrDecisoes[it.id])carrDecisoes[it.id]={decisao:'',encaminhamento:'—',notas:''};
-  carrDecisoes[it.id].encaminhamento=val;
-  document.querySelectorAll('.enc-btn').forEach(b=>b.classList.remove('selected'));
-  btn.classList.add('selected');
+  const it=carrItems[carrIdx];
+  if(!carrDec[it.id])carrDec[it.id]={decisao:'',encaminhamento:'—',notas:''};
+  carrDec[it.id].encaminhamento=val;
+  document.querySelectorAll('.enc-btn').forEach(b=>b.classList.remove('sel'));
+  btn.classList.add('sel');
+  if(fsOpen)renderFSSide();
+}
+function saveNotas(){
+  const it=carrItems[carrIdx];
+  const n=document.getElementById('notas-dec-input')||document.getElementById('fs-notas-input');
+  if(n){if(!carrDec[it.id])carrDec[it.id]={decisao:'Pendente',encaminhamento:'—',notas:''};carrDec[it.id].notas=n.value;}
 }
 
-function saveNotasAtual(){
-  const it=carrAssuntos[carrIndex];
-  const notas=document.getElementById('notas-decisao');
-  if(!notas)return;
-  if(!carrDecisoes[it.id])carrDecisoes[it.id]={decisao:'Pendente',encaminhamento:'—',notas:''};
-  carrDecisoes[it.id].notas=notas.value;
-}
-
-function prevAssunto(){saveNotasAtual();if(carrIndex>0){carrIndex--;renderCarousel();}}
-
-function nextAssunto(){
-  saveNotasAtual();
-  if(carrIndex<carrAssuntos.length-1){carrIndex++;renderCarousel();}
-  else{mostrarSumario();}
-}
-
-async function guardarDecisaoAtual(){
-  saveNotasAtual();
-  const it=carrAssuntos[carrIndex];
-  const dec=carrDecisoes[it.id];
-  if(!dec||!dec.decisao){showNotif('Seleciona uma decisão primeiro.','error');return;}
+async function guardarDec(){
+  saveNotas();
+  const it=carrItems[carrIdx],dec=carrDec[it.id];
+  if(!dec?.decisao){showNotif('Seleciona uma decisão primeiro.','error');return;}
   try{
-    const body={__metadata:{type:`SP.Data.${LIST_NAME}ListItem`},
-      Decis_x00e3_o:{Value:dec.decisao,'__metadata':{type:'SP.FieldChoiceValue'}},
-      Encaminhamento:{Value:dec.encaminhamento||'—','__metadata':{type:'SP.FieldChoiceValue'}},
-      Notas:(it.notas?it.notas+'\n\n':'')+'[Decisão '+new Date().toLocaleDateString('pt-PT')+']: '+dec.notas
+    const body={__metadata:{type:SP_TYPE},
+      Decis_x00e3_o:dec.decisao,
+      Encaminhamento:dec.encaminhamento||'—',
+      Notas:(it.notas?it.notas+'\n\n':'')+'['+new Date().toLocaleDateString('pt-PT')+']: '+dec.notas
     };
-    await spPost(`${SP_SITE}/_api/web/lists/getbytitle('${LIST_NAME}')/items(${it.id})`,body,'POST',it.etag||'*');
+    await spWrite(`${SP}/_api/web/lists/getbytitle('${LIST}')/items(${it.id})`,body,'MERGE',it.etag);
+    const msg=document.getElementById('dec-saved-msg');
+    if(msg){msg.textContent='✓ Guardado';setTimeout(()=>msg.textContent='',2500);}
+    document.getElementById('carr-saved-msg').textContent='✓ Decisão guardada';
     showNotif('Decisão guardada no SharePoint!','success');
     setTimeout(()=>document.getElementById('notif').classList.remove('show'),2000);
-  }catch(e){showNotif('Erro ao guardar: '+e.message,'error');}
+  }catch(e){showNotif('Erro: '+e.message,'error');}
 }
 
+function prevA(){saveNotas();if(carrIdx>0){carrIdx--;renderCarr();if(fsOpen)renderFS();}}
+function nextA(){
+  saveNotas();
+  if(carrIdx<carrItems.length-1){carrIdx++;renderCarr();if(fsOpen)renderFS();}
+  else terminarReuniao();
+}
+function terminarReuniao(){saveNotas();mostrarSumario();}
+
+/* FULLSCREEN */
+function openFS(){
+  fsOpen=true;
+  document.getElementById('fs-wrap').classList.add('open');
+  renderFS();
+  document.addEventListener('keydown',fsKey);
+}
+function closeFS(){
+  fsOpen=false;
+  document.getElementById('fs-wrap').classList.remove('open');
+  document.removeEventListener('keydown',fsKey);
+}
+function fsKey(e){
+  if(e.key==='Escape')closeFS();
+  else if(e.key==='ArrowRight'||e.key==='ArrowDown')nextA();
+  else if(e.key==='ArrowLeft'||e.key==='ArrowUp')prevA();
+}
+function renderFS(){
+  const it=carrItems[carrIdx],total=carrItems.length,pct=Math.round(((carrIdx+1)/total)*100);
+  document.getElementById('fs-reuniao-nome').textContent=currReuniaoNome;
+  document.getElementById('fs-prog-txt').textContent=`Assunto ${carrIdx+1} de ${total}`;
+  document.getElementById('fs-prog-fill').style.width=pct+'%';
+  document.getElementById('fs-prev').disabled=carrIdx===0;
+  document.getElementById('fs-next').textContent=carrIdx===total-1?'Ver sumário →':'Seguinte →';
+  const isD=it.tipo==='Deliberativo';
+  const attHtml=it.attachments?.length?`<div style="margin-bottom:1.75rem">${it.attachments.map(a=>`<a class="doc-link" href="${SP}${a.url}" target="_blank" style="margin-right:6px">&#128206; ${a.name}</a>`).join('')}</div>`:'';
+  document.getElementById('fs-content').innerHTML=`
+    <div class="assunto-badges" style="margin-bottom:1.25rem">
+      <span class="badge ${isD?'b-delib':'b-info'}">${it.tipo}</span>
+      ${it.confidencial?'<span class="badge b-na">&#128274; Confidencial</span>':''}
+      ${it.atrasado?'<span class="badge b-nap">Atrasado</span>':''}
+    </div>
+    <div class="fs-titulo">${it.titulo}</div>
+    <div class="fs-meta">
+      ${it.responsavel?`<span>&#128100; ${it.responsavel}</span>`:''}
+      ${it.data?`<span>&#128197; ${fd(it.data)}</span>`:''}
+      ${bdg(EM,it.estado)}
+    </div>
+    ${attHtml}
+    <div class="fs-section-label">Contextualização</div>
+    <div class="fs-content-box ${it.notas?'':'empty'}">${it.notas||'Sem contextualização definida.'}</div>
+    ${isD?`<div class="fs-section-label">Proposta de Decisão</div>
+    <div class="fs-proposta-box ${it.proposta?'':'empty'}">${it.proposta||'Sem proposta definida.'}</div>`:''}
+  `;
+  renderFSSide();
+}
+function renderFSSide(){
+  const it=carrItems[carrIdx],dec=carrDec[it.id]||{decisao:'',encaminhamento:'—',notas:''};
+  document.getElementById('fs-side').innerHTML=`
+    <div class="dec-label">Decisão</div>
+    <button class="dec-btn ${dec.decisao==='Aprovado'?'sel-aprov':''}" onclick="selDec('Aprovado',this)">&#10003; Aprovado</button>
+    <button class="dec-btn ${dec.decisao==='Não aprovado'?'sel-nap':''}" onclick="selDec('Não aprovado',this)">&#10007; Não aprovado</button>
+    <button class="dec-btn ${dec.decisao==='Pendente'?'sel-pend':''}" onclick="selDec('Pendente',this)">&#9646; Pendente</button>
+    <hr style="border:none;border-top:0.5px solid var(--border);margin:.25rem 0">
+    <div class="dec-label">Encaminhamento</div>
+    <div class="enc-grid">
+      <button class="enc-btn ${dec.encaminhamento==='—'?'sel':''}" onclick="selEnc('—',this)">—</button>
+      <button class="enc-btn ${dec.encaminhamento==='Presidente Executivo'?'sel':''}" onclick="selEnc('Presidente Executivo',this)">Pres. Exec.</button>
+      <button class="enc-btn ${dec.encaminhamento==='Segue para CA'?'sel':''}" onclick="selEnc('Segue para CA',this)">Segue CA</button>
+      <button class="enc-btn ${dec.encaminhamento==='Ambos'?'sel':''}" onclick="selEnc('Ambos',this)">Ambos</button>
+    </div>
+    <hr style="border:none;border-top:0.5px solid var(--border);margin:.25rem 0">
+    <div class="dec-label">Notas da decisão</div>
+    <textarea class="notas-dec" id="fs-notas-input" placeholder="Registe as observações...">${dec.notas}</textarea>
+    <button class="guardar-dec-btn" onclick="guardarDec()">&#10003; Guardar decisão</button>
+    <div class="dec-saved-msg" id="dec-saved-msg"></div>
+  `;
+}
+
+/* SUMÁRIO */
 function mostrarSumario(){
-  saveNotasAtual();
   document.getElementById('carousel-wrap').style.display='none';
   document.getElementById('sumario-wrap').style.display='block';
-  document.getElementById('sumario-meta').textContent=`${gv('r-tipo')} · ${carrAssuntos.length} assunto${carrAssuntos.length!==1?'s':''} · ${new Date().toLocaleDateString('pt-PT')}`;
-
-  const body=document.getElementById('sumario-body');
-  body.innerHTML=carrAssuntos.map(it=>{
-    const dec=carrDecisoes[it.id]||{decisao:'Sem decisão',encaminhamento:'—',notas:''};
+  if(fsOpen)closeFS();
+  document.getElementById('sumario-meta').textContent=`${currReuniaoNome} · ${carrItems.length} assunto${carrItems.length!==1?'s':''} · ${new Date().toLocaleDateString('pt-PT')}`;
+  document.getElementById('sumario-body').innerHTML=carrItems.map(it=>{
+    const dec=carrDec[it.id]||{decisao:'—',encaminhamento:'—',notas:''};
     return `<div class="sumario-item">
       <div class="sumario-item-title">${it.titulo}</div>
       <div class="sumario-item-meta">
         <span class="badge ${it.tipo==='Deliberativo'?'b-delib':'b-info'}">${it.tipo}</span>
-        <span class="badge ${DM[dec.decisao]||'b-na'}">${dec.decisao||'Sem decisão'}</span>
+        <span class="badge ${DM[dec.decisao]||'b-na'}">${dec.decisao||'—'}</span>
         <span class="badge ${CM[dec.encaminhamento]||'b-na'}">${dec.encaminhamento||'—'}</span>
       </div>
       ${dec.notas?`<div class="sumario-item-notas">${dec.notas}</div>`:''}
     </div>`;
   }).join('');
 }
-
-function terminarReuniao(){if(confirm('Terminar a reunião e ver o sumário?'))mostrarSumario();}
 function novaReuniao(){
   document.getElementById('reuniao-setup').style.display='block';
   document.getElementById('carousel-wrap').style.display='none';
   document.getElementById('sumario-wrap').style.display='none';
   loadItems();
+}
+
+/* EXPORTAR PPT */
+async function exportPPT(){
+  if(!carrItems.length){alert('Nenhum assunto.');return;}
+  const pptx=new PptxGenJS();
+  pptx.layout='LAYOUT_WIDE';
+  const W=13.33,H=7.5,B='003087',O='FF6B00',WH='FFFFFF',GR='5F5E5A';
+
+  // Capa
+  const cp=pptx.addSlide();
+  cp.addShape(pptx.ShapeType.rect,{x:0,y:0,w:W,h:H,fill:{color:'EEF1F6'}});
+  cp.addShape(pptx.ShapeType.rect,{x:0,y:0,w:W,h:1.4,fill:{color:B}});
+  cp.addShape(pptx.ShapeType.rect,{x:0,y:H-.6,w:W,h:.6,fill:{color:B}});
+  cp.addText('Fundação da Juventude',{x:.5,y:0,w:W-1,h:1.4,fontSize:13,color:'AACCEE',valign:'middle',fontFace:'Calibri'});
+  cp.addText(currReuniaoNome,{x:.6,y:1.6,w:W-1.2,h:2,fontSize:48,bold:true,color:B,align:'center',valign:'middle',fontFace:'Calibri'});
+  cp.addText(new Date().toLocaleDateString('pt-PT'),{x:.6,y:3.8,w:W-1.2,h:.6,fontSize:22,color:GR,align:'center',fontFace:'Calibri'});
+  cp.addText(`${carrItems.length} assunto${carrItems.length!==1?'s':''}`,{x:.6,y:4.5,w:W-1.2,h:.4,fontSize:14,color:GR,align:'center',fontFace:'Calibri'});
+
+  for(const it of carrItems){
+    const sl=pptx.addSlide();
+    const dec=carrDec[it.id]||{decisao:'Pendente',encaminhamento:'—',notas:''};
+    const isD=it.tipo==='Deliberativo';
+    sl.addShape(pptx.ShapeType.rect,{x:0,y:0,w:W,h:H,fill:{color:'F5F6F8'}});
+    sl.addShape(pptx.ShapeType.rect,{x:0,y:0,w:W,h:1.1,fill:{color:B}});
+    sl.addShape(pptx.ShapeType.rect,{x:0,y:H-.06,w:W,h:.06,fill:{color:O}});
+    sl.addText(it.titulo,{x:.3,y:0,w:9.5,h:1.1,fontSize:20,bold:true,color:WH,valign:'middle',fontFace:'Calibri',wrap:true});
+    if(it.responsavel)sl.addText(it.responsavel,{x:9.8,y:.1,w:3.2,h:.42,fontSize:12,color:'AACCEE',align:'right',fontFace:'Calibri'});
+    if(it.data)sl.addText(fd(it.data),{x:9.8,y:.58,w:3.2,h:.34,fontSize:11,color:'AACCEE',align:'right',fontFace:'Calibri'});
+    sl.addText(isD?'Para decisão':'Informativo',{shape:pptx.ShapeType.roundRect,rectRadius:.1,x:.3,y:.76,w:1.6,h:.26,fill:{color:isD?'534AB7':GR},line:{color:isD?'534AB7':GR,width:0},fontSize:10,color:WH,align:'center',valign:'middle',fontFace:'Calibri'});
+    sl.addText('Contextualização:',{x:.3,y:1.18,w:2.5,h:.3,fontSize:11,bold:true,color:B,fontFace:'Calibri'});
+    sl.addShape(pptx.ShapeType.roundRect,{x:.3,y:1.52,w:W-.6,h:isD?1.9:3.8,fill:{color:WH},line:{color:'DDE2EE',width:.8},rectRadius:.12});
+    if(it.notas)sl.addText(it.notas,{x:.5,y:1.62,w:W-1,h:isD?1.7:3.6,fontSize:13,color:'1a1a2e',valign:'top',fontFace:'Calibri',wrap:true});
+    if(isD&&it.proposta){
+      sl.addText('Proposta de Decisão:',{x:.3,y:3.52,w:2.8,h:.3,fontSize:11,bold:true,color:B,fontFace:'Calibri'});
+      sl.addShape(pptx.ShapeType.roundRect,{x:.3,y:3.86,w:W-.6,h:1.6,fill:{color:WH},line:{color:'C8D0E0',width:1.2,dashType:'dash'},rectRadius:.12});
+      if(it.proposta)sl.addText(it.proposta,{x:.5,y:3.96,w:W-1,h:1.4,fontSize:13,color:'1a1a2e',valign:'top',fontFace:'Calibri',wrap:true});
+    }
+    if(isD){
+      const fy=H-.88;
+      const dC=dec.decisao==='Aprovado'?'639922':dec.decisao==='Não aprovado'?'C00000':'888780';
+      sl.addText('Decisão:',{x:.3,y:fy,w:1.4,h:.26,fontSize:10,bold:true,color:GR,fontFace:'Calibri'});
+      sl.addText(dec.decisao||'Pendente',{shape:pptx.ShapeType.roundRect,rectRadius:.1,x:.3,y:fy+.3,w:1.4,h:.3,fill:{color:dC},line:{color:dC,width:0},fontSize:11,color:WH,bold:true,align:'center',valign:'middle',fontFace:'Calibri'});
+      const eC={'Presidente Executivo':'534AB7','Segue para CA':'185FA5','Ambos':'854F0B','—':'888780'}[dec.encaminhamento||'—'];
+      sl.addText('Encaminhamento:',{x:1.9,y:fy,w:2.2,h:.26,fontSize:10,bold:true,color:GR,fontFace:'Calibri'});
+      sl.addText(dec.encaminhamento||'—',{shape:pptx.ShapeType.roundRect,rectRadius:.1,x:1.9,y:fy+.3,w:2.2,h:.3,fill:{color:eC},line:{color:eC,width:0},fontSize:11,color:WH,bold:true,align:'center',valign:'middle',fontFace:'Calibri'});
+      if(dec.notas){sl.addText('Notas:',{x:4.3,y:fy,w:8.7,h:.26,fontSize:10,bold:true,color:GR,fontFace:'Calibri'});sl.addText(dec.notas,{x:4.3,y:fy+.3,w:8.7,h:.3,fontSize:11,color:'1a1a2e',fontFace:'Calibri',wrap:true});}
+    }
+  }
+  await pptx.writeFile({fileName:`${currReuniaoNome.replace(/\s+/g,'_')}_${today()}.pptx`});
+}
+
+function exportPDF(){
+  const linhas=carrItems.map((it,i)=>{
+    const dec=carrDec[it.id]||{decisao:'—',encaminhamento:'—',notas:''};
+    const isD=it.tipo==='Deliberativo';
+    const dC=dec.decisao==='Aprovado'?'#639922':dec.decisao==='Não aprovado'?'#C00000':'#888780';
+    return `<div style="margin-bottom:20px;padding:16px;border:1px solid #dde2ee;border-radius:8px;page-break-inside:avoid">
+      <div style="font-size:16px;font-weight:700;margin-bottom:6px;color:#003087">${i+1}. ${it.titulo}</div>
+      <div style="font-size:12px;color:#5a6278;margin-bottom:10px">${it.tipo} · ${it.responsavel||'—'} · ${fd(it.data)}</div>
+      ${it.notas?`<div style="background:#eef1f6;padding:10px;border-radius:6px;font-size:13px;margin-bottom:8px">${it.notas}</div>`:''}
+      ${isD&&it.proposta?`<div style="border:2px dashed #c8d0e0;padding:10px;border-radius:6px;font-size:13px;margin-bottom:8px"><strong>Proposta:</strong> ${it.proposta}</div>`:''}
+      ${isD?`<div style="display:flex;gap:8px;font-size:12px;flex-wrap:wrap">
+        <span style="background:${dC};color:#fff;padding:3px 10px;border-radius:12px">${dec.decisao||'—'}</span>
+        <span style="background:#eef1f6;color:#5a6278;padding:3px 10px;border-radius:12px">${dec.encaminhamento||'—'}</span>
+        ${dec.notas?`<span style="color:#5a6278;font-style:italic">${dec.notas}</span>`:''}
+      </div>`:''}
+    </div>`;
+  }).join('');
+  const w=window.open('','_blank');
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
+    <style>body{font-family:Arial,sans-serif;padding:40px;max-width:800px;margin:0 auto;color:#1a1a2e}
+    h1{color:#003087;font-size:22px;margin-bottom:4px}.sub{color:#5a6278;font-size:13px;margin-bottom:24px}
+    @media print{body{padding:20px}}</style></head><body>
+    <h1>Gestão de Reuniões — Fundação da Juventude</h1>
+    <div class="sub">${currReuniaoNome} · ${new Date().toLocaleDateString('pt-PT')}</div>
+    ${linhas}</body></html>`);
+  w.document.close();w.print();
 }
 
 /* UTILS */
@@ -785,13 +935,15 @@ function showPage(p){
 }
 function showNotif(msg,type='info'){
   const n=document.getElementById('notif');
-  n.textContent=msg;n.className='notif show '+(type==='success'?'success':type==='error'?'error':'');
+  n.textContent=msg;n.className='notif show'+(type==='success'?' success':type==='error'?' error':'');
 }
 function tog(k){T[k]=!T[k];const b=document.getElementById('t-'+k),l=document.getElementById('l-'+k);if(b)b.className='toggle'+(T[k]?' on':'');if(l)l.textContent=T[k]?'Sim':'Não';}
 function setTog(k,v){T[k]=v;const b=document.getElementById('t-'+k),l=document.getElementById('l-'+k);if(b)b.className='toggle'+(v?' on':'');if(l)l.textContent=v?'Sim':'Não';}
 function gv(id){const el=document.getElementById(id);return el?el.value:'';}
+function gv2(id){const el=document.getElementById(id);return el?el.value:'';}
+function sv(id,v){const el=document.getElementById(id);if(el)el.value=v;}
 function today(){return new Date().toISOString().slice(0,10);}
-function fd(d){if(!d)return'—';const[y,m,day]=d.split('-');return`${day}/${m}/${y}`;}
+function fd(d){if(!d)return'—';try{const[y,m,day]=d.split('-');return`${day}/${m}/${y}`;}catch(e){return d;}}
 
 init();
 </script>
