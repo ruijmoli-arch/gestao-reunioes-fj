@@ -397,6 +397,7 @@ tr:hover td{background:var(--bg3)}
           <select id="r-filtro"><option value="todos">Incluir todos os assuntos</option><option value="abertos">Apenas não concluídos</option><option value="pendentes">Apenas pendentes de decisão</option></select>
           <button class="btn btn-orange" style="width:100%;padding:14px;font-size:16px;border-radius:var(--r);margin-top:1rem" onclick="iniciarReuniao()">Iniciar reunião</button>
         </div>
+        <div id="hist-reunioes-wrap" style="max-width:600px;margin:1.5rem auto 0"></div>
         <div id="carr-wrap" class="carr-wrap">
           <div class="carr-header">
             <div><h2 id="carr-nome"></h2><div style="font-size:12px;opacity:.7;margin-top:2px" id="carr-prog-txt"></div></div>
@@ -418,7 +419,6 @@ tr:hover td{background:var(--bg3)}
             <div style="font-size:12px;color:var(--text3)" id="carr-saved-msg"></div>
           </div>
         </div>
-        <div id="hist-reunioes-wrap" class="hist-reunioes"></div>
         <div id="sumario-wrap" class="sumario-wrap">
           <div class="sumario-header">
             <h2>Sumário da reunião</h2>
@@ -455,7 +455,16 @@ tr:hover td{background:var(--bg3)}
               </div>
               <div class="fg" style="grid-column:1/-1"><label>Participantes</label><textarea id="fe-part" placeholder="Lista de participantes da reunião..."></textarea></div>
               <div class="fg" style="grid-column:1/-1"><label>Resumo da reunião *</label><textarea id="fe-resumo" placeholder="Principais pontos discutidos na reunião..." style="min-height:120px"></textarea></div>
-              <div class="fg" style="grid-column:1/-1"><label>Próximos passos / Compromissos</label><textarea id="fe-passos" placeholder="O que ficou acordado fazer a seguir..."></textarea></div>
+              <div class="fg" style="grid-column:1/-1">
+                <label>Tarefas / Compromissos da reunião</label>
+                <div id="fe-tarefas-list" style="margin-bottom:8px"></div>
+                <div style="display:grid;grid-template-columns:3fr 2fr 1fr auto;gap:8px;align-items:end">
+                  <input type="text" id="fe-tar-titulo" placeholder="Descrição da tarefa...">
+                  <input type="text" id="fe-tar-resp" placeholder="Responsável...">
+                  <input type="date" id="fe-tar-data">
+                  <button type="button" class="btn btn-primary btn-sm" onclick="addTarefaInline()">+ Adicionar</button>
+                </div>
+              </div>
               <div class="fg" style="grid-column:1/-1">
                 <label>Anexos</label>
                 <input type="file" id="fe-file" multiple accept=".pdf,.doc,.docx,.ppt,.pptx" style="padding:6px">
@@ -570,6 +579,18 @@ const REUNIAO_GROUPS={
   'Reunião Financeiro':[GROUPS.CA,GROUPS.Gestao,GROUPS.Financeiro],
   'Reunião Impacto':[GROUPS.CA,GROUPS.Gestao,GROUPS.Impacto]
 };
+
+
+// Meeting level colors
+const REUNIAO_CORES={
+  'Reunião com CAdm':{bg:'#003087',text:'#fff',light:'#E6F1FB',badge:'b-ca',ppt:{header:'003087',accent:'1A5BC9',light:'E6F1FB'}},
+  'Reunião Gestão':{bg:'#0F6E56',text:'#fff',light:'#E1F5EE',badge:'b-opnorte',ppt:{header:'0F6E56',accent:'1D9E75',light:'E1F5EE'}},
+  'Reunião O.Norte':{bg:'#B8860B',text:'#fff',light:'#FAEEDA',badge:'b-ambos',ppt:{header:'B8860B',accent:'D4A017',light:'FAEEDA'}},
+  'Reunião O.Sul':{bg:'#B8860B',text:'#fff',light:'#FAEEDA',badge:'b-ambos',ppt:{header:'B8860B',accent:'D4A017',light:'FAEEDA'}},
+  'Reunião Financeiro':{bg:'#534AB7',text:'#fff',light:'#EEEDFE',badge:'b-fin',ppt:{header:'534AB7',accent:'7B74D0',light:'EEEDFE'}},
+  'Reunião Impacto':{bg:'#D85A30',text:'#fff',light:'#FDE8DF',badge:'b-imp',ppt:{header:'D85A30',accent:'E8784F',light:'FDE8DF'}}
+};
+function getCores(tipo){return REUNIAO_CORES[tipo]||REUNIAO_CORES['Reunião com CAdm'];}
 
 const msalCfg={auth:{clientId:CLIENT_ID,authority:`https://login.microsoftonline.com/${TENANT_ID}`,redirectUri:REDIRECT}};
 const msalI=new msal.PublicClientApplication(msalCfg);
@@ -810,7 +831,7 @@ async function saveItem(){
     if(gv('f-data'))body.DataReuniao=gv('f-data')+'T00:00:00Z';
     let itemId=editId;
     if(editId){
-      await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Assuntos')/items(${editId})`,body,'MERGE',items.find(x=>x.id===editId)?.etag);
+      await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Assuntos')/items(${editId})`,body,'MERGE','*');
     }else{
       const r=await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Assuntos')/items`,body,'POST');
       const d=await r.json();itemId=d.d.Id;
@@ -875,6 +896,7 @@ function renderExtTable(){
 }
 function openExtForm(id){
   editExtId=id||null;
+  feInlineTarefas=[];renderInlineTarefas();
   el('frm-ext-ov').classList.add('open');
   el('fe-attachments').innerHTML='';el('fe-file').value='';
   if(id){
@@ -904,19 +926,20 @@ async function saveExt(){
     const body={__metadata:{type:'SP.Data.FJ_x005f_ReunioesExternasListItem'},
       Title:titulo,Entidade:gv('fe-entidade'),Local:gv('fe-local'),
       Participantes:gv2t('fe-part'),Resumo:gv2t('fe-resumo'),
-      ProximosPassos:gv2t('fe-passos'),Departamento:gv('fe-dep')
+      Departamento:gv('fe-dep')
     };
     if(gv('fe-data'))body.DataReuniao=gv('fe-data')+'T00:00:00Z';
     let itemId=editExtId;
     if(editExtId){
-      await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_ReunioesExternas')/items(${editExtId})`,body,'MERGE');
+      await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_ReunioesExternas')/items(${editExtId})`,body,'MERGE','*');
     }else{
       const r=await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_ReunioesExternas')/items`,body,'POST');
       const d=await r.json();itemId=d.d.Id;
     }
     const files=el('fe-file').files;
     for(const f of files)await uploadAttachment('FJ_ReunioesExternas',itemId,f);
-    closeExtForm();await loadExtItems();showNotif('Reunião externa guardada!','success');
+    if(feInlineTarefas.length)await saveInlineTarefas(itemId,titulo);
+    closeExtForm();await loadExtItems();await loadTarefas();showNotif('Reunião externa guardada!','success');
   }catch(e){showNotif('Erro: '+e.message,'error');}
   btn.textContent='Guardar';btn.disabled=false;
 }
@@ -927,6 +950,48 @@ async function deleteExt(id){
     await fetch(`${SP}/_api/web/lists/getbytitle('FJ_ReunioesExternas')/items(${id})`,{method:'DELETE',headers:{Authorization:`Bearer ${spToken}`,'X-RequestDigest':digest,'IF-MATCH':'*'}});
     await loadExtItems();showNotif('Eliminado.','success');
   }catch(e){showNotif('Erro: '+e.message,'error');}
+}
+
+// INLINE TASKS FOR EXT MEETINGS
+let feInlineTarefas=[];
+function addTarefaInline(){
+  const titulo=document.getElementById('fe-tar-titulo').value.trim();
+  if(!titulo)return;
+  const resp=document.getElementById('fe-tar-resp').value.trim();
+  const data=document.getElementById('fe-tar-data').value;
+  feInlineTarefas.push({titulo,resp,data});
+  document.getElementById('fe-tar-titulo').value='';
+  document.getElementById('fe-tar-resp').value='';
+  document.getElementById('fe-tar-data').value='';
+  renderInlineTarefas();
+}
+function removeInlineTarefa(idx){
+  feInlineTarefas.splice(idx,1);
+  renderInlineTarefas();
+}
+function renderInlineTarefas(){
+  const list=document.getElementById('fe-tarefas-list');
+  if(!feInlineTarefas.length){list.innerHTML='';return;}
+  list.innerHTML=feInlineTarefas.map((t,i)=>`
+    <div style="display:flex;align-items:center;gap:8px;background:var(--bg3);border-radius:8px;padding:8px 10px;margin-bottom:4px">
+      <div style="flex:1;font-size:13px;font-weight:500">${t.titulo}</div>
+      <div style="font-size:12px;color:var(--text2)">${t.resp||'—'}</div>
+      <div style="font-size:12px;color:var(--text2)">${t.data?fd(t.data):'—'}</div>
+      <button class="btn btn-sm btn-danger" onclick="removeInlineTarefa(${i})">&#10005;</button>
+    </div>`).join('');
+}
+async function saveInlineTarefas(reuniaoId,reuniaoTitulo){
+  for(const t of feInlineTarefas){
+    const body={__metadata:{type:'SP.Data.FJ_x005f_TarefasListItem'},
+      Title:t.titulo,Departamento:document.getElementById('fe-dep').value,
+      Origem:'Reunião Externa',ReuniaoOrigem:reuniaoTitulo
+    };
+    if(t.resp)body.Descricao='Responsável: '+t.resp;
+    if(t.data)body.DataLimite=t.data+'T00:00:00Z';
+    await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Tarefas')/items`,body,'POST');
+  }
+  feInlineTarefas=[];
+  renderInlineTarefas();
 }
 
 // TAREFAS
@@ -1016,7 +1081,7 @@ async function saveTarefa(){
     };
     if(gv('ft-data'))body.DataLimite=gv('ft-data')+'T00:00:00Z';
     if(editTarId){
-      await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Tarefas')/items(${editTarId})`,body,'MERGE');
+      await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Tarefas')/items(${editTarId})`,body,'MERGE','*');
     }else{
       await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Tarefas')/items`,body,'POST');
     }
@@ -1050,6 +1115,9 @@ function iniciarReuniao(){
   el('carr-wrap').style.display='block';
   el('sumario-wrap').style.display='none';
   el('carr-nome').textContent=tipo;
+  const cores=getCores(tipo);
+  el('carr-wrap').querySelector('.carr-header').style.background=cores.bg;
+  el('prog-bar').style.background=cores.bg==='#003087'?'#FF6B00':cores.accent||cores.bg;
   renderCarr();
 }
 
@@ -1083,9 +1151,9 @@ function renderContentHTML(it){
     ${attHtml}
     ${histEnc}
     <div class="sec-label">Contextualização</div>
-    <div class="content-box ${it.notas?'':'empty'}">${it.notas||'Sem contextualização.'}</div>
+    <div class="content-box ${it.notas?'':'empty'}">${it.notas?(it.notas.replace(/\n/g,'<br>')):'Sem contextualização.'}</div>
     ${isD?`<div class="sec-label">Proposta de Decisão</div>
-    <div class="proposta-box ${it.proposta?'':'empty'}">${it.proposta||'Sem proposta definida.'}</div>`:''}
+    <div class="proposta-box ${it.proposta?'':'empty'}">${it.proposta?(it.proposta.replace(/\n/g,'<br>')):'Sem proposta definida.'}</div>`:''}
   `;
 }
 
@@ -1157,7 +1225,7 @@ async function guardarDec(){
       TipoReuni_x00e3_o:novoTipo
     };
     if(dec.notas){body.Notas=(it.notas?it.notas+'\n\n':'')+`[${now.toLocaleDateString('pt-PT')}] ${dec.notas}`;}
-    await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Assuntos')/items(${it.id})`,body,'MERGE',it.etag);
+    await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Assuntos')/items(${it.id})`,body,'MERGE','*');
 
     // Update local item
     const idx=items.findIndex(x=>x.id===it.id);
@@ -1197,17 +1265,31 @@ async function guardarReuniao(){
 
 async function loadHistReunioes(){
   try{
-    const d=await spRead(`${SP}/_api/web/lists/getbytitle('FJ_Reunioes')/items?$select=*&$orderby=Created desc&$top=20`);
+    const d=await spRead(`${SP}/_api/web/lists/getbytitle('FJ_Reunioes')/items?$select=*&$orderby=Created desc&$top=30`);
     const reunioes=d.d.results.filter(r=>canSeeReuniao(r.TipoReuniao||''));
     const wrap=el('hist-reunioes-wrap');
-    if(!reunioes.length){wrap.innerHTML='';return;}
-    wrap.innerHTML=`<div class="hist-reunioes">
-      <div class="hist-reunioes-title">&#128196; Histórico de reuniões recentes</div>
-      ${reunioes.map(r=>`<div class="hist-item">
-        <div style="font-weight:500;font-size:13px">${r.Title||'Reunião'}</div>
-        <div style="font-size:11px;color:var(--text2);margin-top:3px">${r.NotasGerais||''}</div>
-      </div>`).join('')}
-    </div>`;
+    if(!reunioes.length){
+      wrap.innerHTML=`<div style="text-align:center;color:var(--text3);font-size:13px;padding:1.5rem">Ainda não há reuniões registadas.</div>`;
+      return;
+    }
+    const RM2={'Reunião com CAdm':'b-ca','Reunião Gestão':'b-gestao','Reunião O.Norte':'b-opnorte','Reunião O.Sul':'b-opsul','Reunião Financeiro':'b-fin','Reunião Impacto':'b-imp'};
+    wrap.innerHTML=`<div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:.75rem;display:flex;align-items:center;gap:8px">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="12" height="12" rx="2"/><line x1="5" y1="6" x2="11" y2="6"/><line x1="5" y1="9" x2="9" y2="9"/></svg>
+      Histórico de reuniões
+    </div>
+    ${reunioes.map(r=>{
+      const data=r.Data?r.Data.split('T')[0]:'';
+      const [y,m,day]=data?data.split('-'):['','',''];
+      const dataFmt=data?`${day}/${m}/${y}`:'—';
+      return `<div class="hist-item" style="border-left:3px solid var(--fj-blue)">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+          <div style="font-weight:600;font-size:13px">${r.Title||'Reunião'}</div>
+          <span class="badge ${RM2[r.TipoReuniao]||'b-na'}" style="font-size:10px">${(r.TipoReuniao||'').replace('Reunião ','')}</span>
+        </div>
+        <div style="font-size:11px;color:var(--text2);margin-bottom:4px">📅 ${dataFmt} · 👤 ${r.Participantes||'—'}</div>
+        ${r.NotasGerais?`<div style="font-size:12px;color:var(--text2);background:var(--bg3);padding:6px 8px;border-radius:6px">${r.NotasGerais}</div>`:''}
+      </div>`;
+    }).join('')}`;
   }catch(e){console.warn('Hist reunioes error',e);}
 }
 
@@ -1228,6 +1310,8 @@ function fsKey(e){
 function renderFS(){
   const it=carrItems[carrIdx],total=carrItems.length,pct=Math.round(((carrIdx+1)/total)*100);
   el('fs-nome').textContent=currReuniao;
+  const fsCores=getCores(currReuniao);
+  el('fs-wrap').querySelector('.fs-topbar').style.background=fsCores.bg;
   el('fs-prog-txt').textContent=`Assunto ${carrIdx+1} de ${total}`;
   el('fs-prog-fill').style.width=pct+'%';
   el('fs-prev').disabled=carrIdx===0;
@@ -1248,9 +1332,9 @@ function renderFS(){
     </div>
     ${attHtml}${histEnc}
     <div class="fs-sec-label">Contextualização</div>
-    <div class="fs-content-box ${it.notas?'':'empty'}">${it.notas||'Sem contextualização.'}</div>
+    <div class="fs-content-box ${it.notas?'':'empty'}">${it.notas?(it.notas.replace(/\n/g,'<br>')):'Sem contextualização.'}</div>
     ${isD?`<div class="fs-sec-label">Proposta de Decisão</div>
-    <div class="fs-proposta-box ${it.proposta?'':'empty'}">${it.proposta||'Sem proposta definida.'}</div>`:''}
+    <div class="fs-proposta-box ${it.proposta?'':'empty'}">${it.proposta?(it.proposta.replace(/\n/g,'<br>')):'Sem proposta definida.'}</div>`:''}
   `;
   el('fs-side').innerHTML=renderSideHTML(it).replace('notas-dec-input','fs-notas-input').replace("id='dec-saved-msg'","id='fs-dec-saved-msg'");
 }
@@ -1285,9 +1369,11 @@ function novaReuniao(){
 async function exportPPT(){
   if(!carrItems.length){alert('Nenhum assunto.');return;}
   const pptx=new PptxGenJS();pptx.layout='LAYOUT_WIDE';
-  const W=13.33,H=7.5,B='003087',O='FF6B00',WH='FFFFFF',GR='5F5E5A';
+  const W=13.33,H=7.5,WH='FFFFFF',GR='5F5E5A';
+  const pptCores=getCores(currReuniao).ppt;
+  const B=pptCores.header,O='FF6B00',BLIGHT=pptCores.light;
   const cp=pptx.addSlide();
-  cp.addShape(pptx.ShapeType.rect,{x:0,y:0,w:W,h:H,fill:{color:'EEF1F6'}});
+  cp.addShape(pptx.ShapeType.rect,{x:0,y:0,w:W,h:H,fill:{color:BLIGHT}});
   cp.addShape(pptx.ShapeType.rect,{x:0,y:0,w:W,h:1.4,fill:{color:B}});
   cp.addShape(pptx.ShapeType.rect,{x:0,y:H-.6,w:W,h:.6,fill:{color:B}});
   cp.addText('Fundação da Juventude',{x:.5,y:0,w:W-1,h:1.4,fontSize:13,color:'AACCEE',valign:'middle',fontFace:'Calibri'});
@@ -1295,7 +1381,7 @@ async function exportPPT(){
   cp.addText(new Date().toLocaleDateString('pt-PT'),{x:.6,y:3.8,w:W-1.2,h:.6,fontSize:20,color:GR,align:'center',fontFace:'Calibri'});
   for(const it of carrItems){
     const sl=pptx.addSlide();const dec=carrDec[it.id]||{decisao:'Pendente',encaminhamento:'—',notas:''};const isD=it.tipo==='Deliberativo';
-    sl.addShape(pptx.ShapeType.rect,{x:0,y:0,w:W,h:H,fill:{color:'F5F6F8'}});
+    sl.addShape(pptx.ShapeType.rect,{x:0,y:0,w:W,h:H,fill:{color:BLIGHT}});
     sl.addShape(pptx.ShapeType.rect,{x:0,y:0,w:W,h:1.1,fill:{color:B}});
     sl.addShape(pptx.ShapeType.rect,{x:0,y:H-.06,w:W,h:.06,fill:{color:O}});
     sl.addText(it.titulo,{x:.3,y:0,w:9.5,h:1.1,fontSize:19,bold:true,color:WH,valign:'middle',fontFace:'Calibri',wrap:true});
