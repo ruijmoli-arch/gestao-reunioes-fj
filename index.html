@@ -36,8 +36,18 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fo
 .topbar{background:var(--fj-blue);color:#fff;padding:0 1.5rem;height:56px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100}
 .topbar-left{display:flex;align-items:center;gap:12px}
 .topbar-logo{width:32px;height:32px;background:#fff;border-radius:6px;display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;color:var(--fj-blue)}
-.topbar-right{display:flex;align-items:center;gap:10px}
-.user-avatar{width:30px;height:30px;border-radius:50%;background:var(--fj-orange);display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600}
+.topbar-right{display:flex;align-items:center;gap:10px;position:relative}
+.user-avatar{width:34px;height:34px;border-radius:50%;background:var(--fj-orange);display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:600;cursor:pointer;border:2px solid rgba(255,255,255,.3)}
+.user-avatar:hover{border-color:#fff}
+.user-dropdown{position:absolute;top:44px;right:0;background:#fff;border:0.5px solid var(--border);border-radius:var(--r-lg);box-shadow:0 8px 24px rgba(0,0,0,.12);min-width:200px;display:none;z-index:200}
+.user-dropdown.open{display:block}
+.user-dropdown-header{padding:12px 14px;border-bottom:0.5px solid var(--border)}
+.user-dropdown-name{font-size:13px;font-weight:600;color:var(--text)}
+.user-dropdown-email{font-size:11px;color:var(--text2);margin-top:2px}
+.user-dropdown-groups{padding:8px 14px;border-bottom:0.5px solid var(--border)}
+.user-dropdown-groups-label{font-size:10px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.user-dropdown-btn{width:100%;padding:10px 14px;text-align:left;background:none;border:none;cursor:pointer;font-size:13px;color:var(--red);font-family:inherit;display:flex;align-items:center;gap:8px}
+.user-dropdown-btn:hover{background:var(--red-bg)}
 
 /* LAYOUT */
 .layout{display:flex;min-height:calc(100vh - 56px)}
@@ -46,6 +56,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fo
 .nav-item{display:flex;align-items:center;gap:10px;padding:.6rem .75rem;border-radius:7px;cursor:pointer;color:rgba(255,255,255,.75);font-size:13px;margin:1px .5rem;transition:background .12s}
 .nav-item:hover{background:rgba(255,255,255,.1);color:#fff}
 .nav-item.active{background:var(--fj-orange);color:#fff}
+.nav-item.hidden{display:none}
 .main{flex:1;padding:1.5rem;overflow-x:hidden}
 .page{display:none}.page.active{display:block}
 .page-title{font-size:18px;font-weight:600;margin-bottom:1.25rem}
@@ -56,7 +67,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif;fo
 .stat-n{font-size:22px;font-weight:600;display:block;margin-bottom:2px}
 .stat-l{font-size:11px;color:var(--text2)}
 
-/* BUTTONS & INPUTS */
+/* BUTTONS */
 .toolbar{display:flex;align-items:center;gap:8px;margin-bottom:1rem;flex-wrap:wrap}
 .search-wrap{flex:1;min-width:180px;position:relative}
 .search-wrap input{width:100%;padding:8px 10px 8px 30px;border:0.5px solid var(--border2);border-radius:var(--r);background:var(--bg2);font-size:13px;color:var(--text)}
@@ -91,6 +102,8 @@ tr:hover td{background:var(--bg3)}
 .b-concluido{background:var(--green-bg);color:var(--green)}.b-cancelado{background:var(--red-bg);color:var(--red)}
 .b-pe{background:var(--purple-bg);color:var(--purple)}.b-segca{background:var(--blue-l);color:var(--blue-d)}
 .b-ambos{background:var(--amber-bg);color:var(--amber)}
+.b-alta{background:var(--red-bg);color:var(--red)}.b-media{background:var(--amber-bg);color:var(--amber)}.b-baixa{background:var(--green-bg);color:var(--green)}
+.b-pfazer{background:var(--gray-bg);color:var(--gray)}.b-emcurso{background:var(--blue-l);color:var(--blue-d)}
 .actions{display:flex;gap:4px}
 .empty{padding:3rem;text-align:center;color:var(--text2)}
 
@@ -114,44 +127,46 @@ tr:hover td{background:var(--bg3)}
 .notif.success{background:var(--green-bg);border-color:var(--green-mid);color:var(--green)}
 .notif.error{background:var(--red-bg);border-color:var(--red);color:var(--red)}
 
+/* PEOPLE PICKER */
+.people-wrap{position:relative}
+.people-suggestions{position:absolute;top:100%;left:0;right:0;background:#fff;border:0.5px solid var(--border2);border-radius:var(--r);box-shadow:0 4px 12px rgba(0,0,0,.1);z-index:50;max-height:200px;overflow-y:auto;display:none}
+.people-suggestions.open{display:block}
+.people-item{padding:8px 12px;cursor:pointer;font-size:13px;display:flex;align-items:center;gap:8px}
+.people-item:hover{background:var(--bg3)}
+.people-avatar{width:24px;height:24px;border-radius:50%;background:var(--fj-orange);display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:600;color:#fff;flex-shrink:0}
+
 /* ATTACHMENTS */
 .attach-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
 .attach-item{display:flex;align-items:center;gap:6px;background:var(--blue-l);border:0.5px solid var(--border2);border-radius:6px;padding:4px 10px;font-size:12px;color:var(--blue-d)}
 .attach-item a{color:var(--blue-d);text-decoration:none;font-weight:500}
-.attach-item a:hover{text-decoration:underline}
-.attach-remove{background:none;border:none;cursor:pointer;color:var(--red);font-size:14px;line-height:1;padding:0 2px}
+.attach-remove{background:none;border:none;cursor:pointer;color:var(--red);font-size:14px;padding:0 2px}
 
-/* MODO REUNIÃO — SETUP */
+/* HISTORICO DECISOES */
+.hist-dec-wrap{background:var(--bg3);border-radius:var(--r);padding:1rem;margin-top:1rem}
+.hist-dec-title{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px}
+.hist-dec-item{background:#fff;border:0.5px solid var(--border);border-radius:8px;padding:8px 10px;margin-bottom:6px;font-size:12px}
+.hist-dec-item:last-child{margin-bottom:0}
+
+/* MODO REUNIÃO */
 .reuniao-setup{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r-lg);padding:2rem;max-width:600px;margin:0 auto;text-align:center}
 .reuniao-setup h2{font-size:20px;font-weight:600;margin-bottom:8px;color:var(--fj-blue)}
-.reuniao-setup p{font-size:14px;color:var(--text2);margin-bottom:1.5rem}
 .reuniao-setup select{width:100%;padding:12px;border:0.5px solid var(--border2);border-radius:var(--r);font-size:15px;color:var(--text);margin-bottom:1rem;background:var(--bg2);font-family:inherit}
-
-/* CARROCEL */
-.carousel-wrap{display:none}
-.carousel-header{background:var(--fj-blue);color:#fff;padding:1rem 1.5rem;border-radius:var(--r-lg) var(--r-lg) 0 0;display:flex;align-items:center;justify-content:space-between}
-.carousel-header h2{font-size:16px;font-weight:500}
-.carr-progress-text{font-size:13px;opacity:.7;margin-top:2px}
+.carr-wrap{display:none}
+.carr-header{background:var(--fj-blue);color:#fff;padding:1rem 1.5rem;border-radius:var(--r-lg) var(--r-lg) 0 0;display:flex;align-items:center;justify-content:space-between}
+.carr-header h2{font-size:16px;font-weight:500}
 .prog-bar-wrap{background:rgba(255,255,255,.2);height:4px}
 .prog-bar{background:var(--fj-orange);height:4px;transition:width .3s}
-
-/* LAYOUT 3/4 + 1/4 */
 .carr-body{display:grid;grid-template-columns:3fr 1fr;border:0.5px solid var(--border);border-top:none;min-height:460px}
 .carr-content{padding:2rem;border-right:0.5px solid var(--border);overflow-y:auto}
-.carr-side{padding:1.25rem;background:var(--bg3);display:flex;flex-direction:column;gap:.75rem}
-
-.assunto-badges{display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
-.assunto-titulo{font-size:24px;font-weight:700;color:var(--text);margin-bottom:8px;line-height:1.3}
+.carr-side{padding:1.25rem;background:var(--bg3);display:flex;flex-direction:column;gap:.75rem;overflow-y:auto}
+.assunto-titulo{font-size:24px;font-weight:700;margin-bottom:8px;line-height:1.3}
 .assunto-meta{font-size:13px;color:var(--text2);margin-bottom:1.5rem;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
-.section-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
-.content-box{background:var(--bg3);border-radius:var(--r);padding:1rem;font-size:14px;color:var(--text);line-height:1.7;margin-bottom:1.25rem;min-height:80px}
+.sec-label{font-size:11px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px}
+.content-box{background:var(--bg3);border-radius:var(--r);padding:1rem;font-size:14px;line-height:1.7;margin-bottom:1.25rem;min-height:80px}
 .content-box.empty{color:var(--text3);font-style:italic}
-.proposta-box{background:#fff;border:2px dashed var(--border2);border-radius:var(--r);padding:1rem;font-size:14px;line-height:1.7;margin-bottom:1.25rem;min-height:80px;color:var(--text)}
+.proposta-box{background:#fff;border:2px dashed var(--border2);border-radius:var(--r);padding:1rem;font-size:14px;line-height:1.7;margin-bottom:1.25rem;min-height:80px}
 .proposta-box.empty{color:var(--text3);font-style:italic}
-.doc-link{display:inline-flex;align-items:center;gap:5px;font-size:12px;color:var(--blue-d);background:var(--blue-l);padding:3px 10px;border-radius:6px;text-decoration:none;border:0.5px solid var(--border2)}
-.doc-link:hover{background:#d0e8f8}
-
-/* PAINEL DECISÃO */
+.hist-enc-box{background:var(--amber-bg);border:0.5px solid var(--amber);border-radius:var(--r);padding:.75rem;font-size:12px;color:var(--amber);margin-bottom:1rem}
 .dec-label{font-size:10px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
 .dec-btn{width:100%;padding:10px;border:1.5px solid var(--border);border-radius:var(--r);cursor:pointer;text-align:center;font-size:13px;font-weight:500;background:var(--bg2);transition:all .15s;font-family:inherit;margin-bottom:5px}
 .dec-btn:hover{border-color:var(--fj-blue)}
@@ -166,8 +181,13 @@ tr:hover td{background:var(--bg3)}
 .guardar-dec-btn{width:100%;padding:10px;background:var(--green-mid);color:#fff;border:none;border-radius:var(--r);cursor:pointer;font-size:13px;font-weight:500;font-family:inherit;margin-top:4px}
 .guardar-dec-btn:hover{background:var(--green)}
 .dec-saved-msg{font-size:11px;color:var(--green);text-align:center;min-height:16px}
-
 .carr-footer{background:var(--bg2);border:0.5px solid var(--border);border-top:none;border-radius:0 0 var(--r-lg) var(--r-lg);padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+
+/* HISTORICO REUNIOES */
+.hist-reunioes{margin-top:1.5rem}
+.hist-reunioes-title{font-size:13px;font-weight:600;color:var(--text2);margin-bottom:.75rem;display:flex;align-items:center;gap:8px}
+.hist-item{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:6px;font-size:12px;cursor:pointer;transition:background .12s}
+.hist-item:hover{background:var(--bg3)}
 
 /* FULLSCREEN */
 .fs-wrap{display:none;position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:9999;flex-direction:column;background:var(--bg2)}
@@ -179,15 +199,12 @@ tr:hover td{background:var(--bg3)}
 .fs-body{flex:1;display:grid;grid-template-columns:3fr 1fr;overflow:hidden}
 .fs-content{padding:3rem 3.5rem;overflow-y:auto;border-right:0.5px solid var(--border)}
 .fs-side{padding:1.5rem;background:var(--bg3);display:flex;flex-direction:column;gap:.75rem;overflow-y:auto}
-.fs-titulo{font-size:36px;font-weight:700;color:var(--text);margin-bottom:10px;line-height:1.2}
+.fs-titulo{font-size:36px;font-weight:700;margin-bottom:10px;line-height:1.2}
 .fs-meta{font-size:14px;color:var(--text2);margin-bottom:1.75rem;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
-.fs-section-label{font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
-.fs-content-box{background:var(--bg3);border-radius:12px;padding:1.25rem;font-size:16px;line-height:1.8;margin-bottom:1.5rem;min-height:100px;color:var(--text)}
-.fs-proposta-box{border:2px dashed var(--border2);border-radius:12px;padding:1.25rem;font-size:16px;line-height:1.8;margin-bottom:1.5rem;min-height:80px;color:var(--text);background:#fff}
+.fs-sec-label{font-size:12px;font-weight:600;color:var(--text2);text-transform:uppercase;letter-spacing:.06em;margin-bottom:10px}
+.fs-content-box{background:var(--bg3);border-radius:12px;padding:1.25rem;font-size:16px;line-height:1.8;margin-bottom:1.5rem;min-height:100px}
+.fs-proposta-box{border:2px dashed var(--border2);border-radius:12px;padding:1.25rem;font-size:16px;line-height:1.8;margin-bottom:1.5rem;min-height:80px;background:#fff}
 .fs-footer{background:var(--bg2);border-top:0.5px solid var(--border);padding:.75rem 1.5rem;display:flex;align-items:center;justify-content:space-between;flex-shrink:0}
-.fs-nav-btn{padding:8px 20px;border:0.5px solid var(--border2);border-radius:8px;background:var(--bg2);cursor:pointer;font-size:13px;color:var(--text);font-family:inherit}
-.fs-nav-btn:hover{background:var(--bg3)}
-.fs-nav-btn.primary{background:var(--fj-blue);color:#fff;border-color:var(--fj-blue)}
 
 /* SUMÁRIO */
 .sumario-wrap{display:none;background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden}
@@ -196,21 +213,21 @@ tr:hover td{background:var(--bg3)}
 .sumario-body{padding:1.5rem}
 .sumario-item{border:0.5px solid var(--border);border-radius:var(--r);padding:1rem;margin-bottom:10px}
 .sumario-item-title{font-weight:600;font-size:14px;margin-bottom:6px}
-.sumario-item-meta{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px}
-.sumario-item-notas{font-size:12px;color:var(--text2);font-style:italic}
 .sumario-actions{display:flex;gap:8px;margin-top:1.5rem;justify-content:flex-end;flex-wrap:wrap}
+
+/* ACCESS DENIED */
+.access-denied{background:var(--red-bg);border:0.5px solid var(--red);border-radius:var(--r-lg);padding:2rem;text-align:center;color:var(--red)}
+.access-denied h3{font-size:16px;font-weight:600;margin-bottom:8px}
 
 @media(max-width:900px){
   .sidebar{display:none}.stats{grid-template-columns:repeat(2,1fr)}
   .fgrid{grid-template-columns:1fr}
   .carr-body,.fs-body{grid-template-columns:1fr}
-  .fs-titulo{font-size:24px}
 }
 </style>
 </head>
 <body>
 
-<!-- LOGIN -->
 <div id="login-screen" class="login-screen">
   <div class="login-card">
     <div class="login-logo">FJ</div>
@@ -227,12 +244,9 @@ tr:hover td{background:var(--bg3)}
 <!-- FULLSCREEN -->
 <div id="fs-wrap" class="fs-wrap">
   <div class="fs-topbar">
-    <div>
-      <h2 id="fs-reuniao-nome"></h2>
-      <div style="font-size:12px;opacity:.6;margin-top:2px" id="fs-prog-txt"></div>
-    </div>
+    <div><h2 id="fs-nome"></h2><div style="font-size:11px;opacity:.6;margin-top:2px" id="fs-prog-txt"></div></div>
     <div style="display:flex;gap:8px;align-items:center">
-      <span style="font-size:12px;opacity:.5">ESC para fechar</span>
+      <span style="font-size:11px;opacity:.5">ESC para fechar · ← → para navegar</span>
       <button class="btn" style="background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3);font-size:12px" onclick="closeFS()">&#10005; Fechar</button>
     </div>
   </div>
@@ -243,14 +257,13 @@ tr:hover td{background:var(--bg3)}
   </div>
   <div class="fs-footer">
     <div style="display:flex;gap:8px">
-      <button class="fs-nav-btn" id="fs-prev" onclick="prevA()">← Anterior</button>
-      <button class="fs-nav-btn primary" id="fs-next" onclick="nextA()">Seguinte →</button>
+      <button class="btn" id="fs-prev" onclick="prevA()">← Anterior</button>
+      <button class="btn btn-primary" id="fs-next" onclick="nextA()">Seguinte →</button>
     </div>
-    <div style="font-size:12px;color:var(--text3)">Navegue com ← → do teclado</div>
+    <div style="font-size:12px;color:var(--text3)" id="fs-saved-msg"></div>
   </div>
 </div>
 
-<!-- APP -->
 <div id="app-screen" style="display:none">
   <div class="topbar">
     <div class="topbar-left">
@@ -265,7 +278,21 @@ tr:hover td{background:var(--bg3)}
         <div id="user-name" style="font-size:13px"></div>
         <div id="user-email" style="font-size:11px;opacity:.6"></div>
       </div>
-      <div class="user-avatar" id="user-initials"></div>
+      <div class="user-avatar" id="user-initials" onclick="toggleDropdown()"></div>
+      <div class="user-dropdown" id="user-dropdown">
+        <div class="user-dropdown-header">
+          <div class="user-dropdown-name" id="dd-name"></div>
+          <div class="user-dropdown-email" id="dd-email"></div>
+        </div>
+        <div class="user-dropdown-groups">
+          <div class="user-dropdown-groups-label">Acesso a</div>
+          <div id="dd-groups" style="font-size:12px;color:var(--text2)"></div>
+        </div>
+        <button class="user-dropdown-btn" onclick="doLogout()">
+          <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2H3a1 1 0 00-1 1v10a1 1 0 001 1h3M10 11l3-3-3-3M13 8H6"/></svg>
+          Terminar sessão
+        </button>
+      </div>
     </div>
   </div>
 
@@ -280,10 +307,13 @@ tr:hover td{background:var(--bg3)}
         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polygon points="5,3 14,8 5,13"/></svg>
         Conduzir reunião
       </div>
-      <div class="sidebar-label" style="margin-top:1rem">Conta</div>
-      <div class="nav-item" onclick="doLogout()" style="color:rgba(255,255,255,.5)">
-        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M6 2H3a1 1 0 00-1 1v10a1 1 0 001 1h3M10 11l3-3-3-3M13 8H6"/></svg>
-        Sair
+      <div class="nav-item" id="nav-externas" onclick="showPage('externas')">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M8 4v4l3 2"/></svg>
+        Reuniões externas
+      </div>
+      <div class="nav-item" id="nav-tarefas" onclick="showPage('tarefas')">
+        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><polyline points="4,8 7,11 12,5"/><rect x="2" y="2" width="12" height="12" rx="2"/></svg>
+        Tarefas
       </div>
     </div>
 
@@ -299,8 +329,6 @@ tr:hover td{background:var(--bg3)}
           <div class="stat"><span class="stat-n" id="s-aprov" style="color:var(--green-mid)">—</span><span class="stat-l">Aprovados</span></div>
           <div class="stat"><span class="stat-n" id="s-pend" style="color:var(--amber)">—</span><span class="stat-l">Pendentes</span></div>
         </div>
-
-        <!-- FORM -->
         <div class="overlay" id="frm-ov">
           <div class="panel">
             <div class="panel-title" id="frm-title">Novo assunto</div>
@@ -311,7 +339,12 @@ tr:hover td{background:var(--bg3)}
               </div>
               <div class="fg"><label>Data</label><input type="date" id="f-data"></div>
               <div class="fg"><label>Tipo *</label><select id="f-tipo"><option>Deliberativo</option><option>Informativo</option></select></div>
-              <div class="fg"><label>Responsável</label><input type="text" id="f-resp" placeholder="Nome do responsável"></div>
+              <div class="fg"><label>Responsável</label>
+                <div class="people-wrap">
+                  <input type="text" id="f-resp" placeholder="Pesquisar pessoa..." autocomplete="off" oninput="searchPeople(this.value,'f-resp-suggestions','f-resp')">
+                  <div class="people-suggestions" id="f-resp-suggestions"></div>
+                </div>
+              </div>
               <div class="fg"><label>Estado</label><select id="f-estado"><option>Em aberto</option><option>Em processo</option><option>Concluído</option><option>Cancelado</option></select></div>
               <div class="fg"><label>Encaminhamento</label><select id="f-enc"><option>—</option><option>Presidente Executivo</option><option>Segue para CA</option><option>Ambos</option></select></div>
               <div class="fg"><label>Decisão</label><select id="f-dec"><option>Pendente</option><option>Aprovado</option><option>Não aprovado</option><option>N/A</option></select></div>
@@ -320,7 +353,7 @@ tr:hover td{background:var(--bg3)}
               <div class="fg" style="grid-column:1/-1"><label>Contextualização / Notas</label><textarea id="f-notas" placeholder="Contexto e observações..."></textarea></div>
               <div class="fg" style="grid-column:1/-1"><label>Proposta de Decisão <span style="font-size:11px;color:var(--text3)">(apenas deliberativos)</span></label><textarea id="f-proposta" placeholder="Descreve a proposta de decisão..."></textarea></div>
               <div class="fg" style="grid-column:1/-1">
-                <label>Anexos <span style="font-size:11px;color:var(--text3)">(PDF ou outros documentos)</span></label>
+                <label>Anexos</label>
                 <input type="file" id="f-file" multiple accept=".pdf,.doc,.docx,.ppt,.pptx,.xls,.xlsx" style="padding:6px">
                 <div class="attach-list" id="existing-attachments"></div>
               </div>
@@ -329,19 +362,19 @@ tr:hover td{background:var(--bg3)}
               <div style="display:flex;align-items:center;gap:8px"><label style="font-size:12px;color:var(--text2)">Confidencial</label><button class="toggle" id="t-conf" onclick="tog('conf')"></button><span id="l-conf" style="font-size:12px;color:var(--text2)">Não</span></div>
               <div style="display:flex;align-items:center;gap:8px"><label style="font-size:12px;color:var(--text2)">Atrasado</label><button class="toggle" id="t-atras" onclick="tog('atras')"></button><span id="l-atras" style="font-size:12px;color:var(--text2)">Não</span></div>
             </div>
+            <div id="hist-dec-panel"></div>
             <div class="panel-footer">
               <button class="btn" onclick="closeForm()">Cancelar</button>
               <button class="btn btn-primary" id="save-btn" onclick="saveItem()">Guardar</button>
             </div>
           </div>
         </div>
-
         <div class="toolbar">
           <div class="search-wrap"><span class="si">&#9906;</span><input type="text" id="q" placeholder="Pesquisar..." oninput="renderTable()"></div>
           <select class="flt" id="ff-r" onchange="renderTable()"><option value="">Reunião: todas</option><option>Reunião com CAdm</option><option>Reunião Gestão</option><option>Reunião O.Norte</option><option>Reunião O.Sul</option><option>Reunião Financeiro</option><option>Reunião Impacto</option></select>
           <select class="flt" id="ff-t" onchange="renderTable()"><option value="">Tipo: todos</option><option>Deliberativo</option><option>Informativo</option></select>
           <select class="flt" id="ff-e" onchange="renderTable()"><option value="">Estado: todos</option><option>Em aberto</option><option>Em processo</option><option>Concluído</option><option>Cancelado</option></select>
-          <button class="btn" onclick="loadItems()">&#8635; Atualizar</button>
+          <button class="btn" onclick="loadItems()">&#8635;</button>
           <button class="btn btn-primary" onclick="openForm()">+ Novo assunto</button>
         </div>
         <div class="table-wrap">
@@ -357,24 +390,19 @@ tr:hover td{background:var(--bg3)}
       <!-- CONDUZIR REUNIÃO -->
       <div class="page" id="page-reuniao">
         <div class="page-title">Conduzir reunião</div>
-
         <div id="reuniao-setup" class="reuniao-setup">
           <h2>Iniciar reunião</h2>
-          <p>Seleciona o tipo de reunião para carregar os assuntos automaticamente do SharePoint.</p>
+          <p style="font-size:14px;color:var(--text2);margin-bottom:1.5rem">Seleciona o tipo de reunião para carregar os assuntos.</p>
           <select id="r-tipo"><option>Reunião com CAdm</option><option>Reunião Gestão</option><option>Reunião O.Norte</option><option>Reunião O.Sul</option><option>Reunião Financeiro</option><option>Reunião Impacto</option></select>
           <select id="r-filtro"><option value="todos">Incluir todos os assuntos</option><option value="abertos">Apenas não concluídos</option><option value="pendentes">Apenas pendentes de decisão</option></select>
           <button class="btn btn-orange" style="width:100%;padding:14px;font-size:16px;border-radius:var(--r);margin-top:1rem" onclick="iniciarReuniao()">Iniciar reunião</button>
         </div>
-
-        <div id="carousel-wrap" class="carousel-wrap">
-          <div class="carousel-header">
-            <div>
-              <h2 id="carr-nome"></h2>
-              <div class="carr-progress-text" id="carr-prog-txt"></div>
-            </div>
+        <div id="carr-wrap" class="carr-wrap">
+          <div class="carr-header">
+            <div><h2 id="carr-nome"></h2><div style="font-size:12px;opacity:.7;margin-top:2px" id="carr-prog-txt"></div></div>
             <div style="display:flex;gap:8px">
               <button class="btn" style="background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3);font-size:12px" onclick="openFS()">&#9974; Apresentação</button>
-              <button class="btn" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.2);font-size:12px" onclick="terminarReuniao()">Terminar</button>
+              <button class="btn" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);border-color:rgba(255,255,255,.2);font-size:12px" onclick="terminarReuniao()">Terminar</button>
             </div>
           </div>
           <div class="prog-bar-wrap"><div class="prog-bar" id="prog-bar"></div></div>
@@ -390,7 +418,7 @@ tr:hover td{background:var(--bg3)}
             <div style="font-size:12px;color:var(--text3)" id="carr-saved-msg"></div>
           </div>
         </div>
-
+        <div id="hist-reunioes-wrap" class="hist-reunioes"></div>
         <div id="sumario-wrap" class="sumario-wrap">
           <div class="sumario-header">
             <h2>Sumário da reunião</h2>
@@ -399,10 +427,116 @@ tr:hover td{background:var(--bg3)}
           <div class="sumario-body" id="sumario-body"></div>
           <div class="sumario-actions">
             <button class="btn" onclick="novaReuniao()">Nova reunião</button>
-            <button class="btn btn-orange" onclick="exportPPT()">&#8681; Exportar PPT</button>
-            <button class="btn btn-primary" onclick="exportPDF()">&#8681; Exportar PDF</button>
+            <button class="btn btn-orange" onclick="exportPPT()">&#8681; PPT</button>
+            <button class="btn btn-primary" onclick="exportPDF()">&#8681; PDF</button>
           </div>
         </div>
+      </div>
+
+      <!-- REUNIÕES EXTERNAS -->
+      <div class="page" id="page-externas">
+        <div class="page-title">Reuniões com entidades externas</div>
+        <div class="overlay" id="frm-ext-ov">
+          <div class="panel">
+            <div class="panel-title" id="frm-ext-title">Nova reunião externa</div>
+            <div class="fgrid">
+              <div class="fg" style="grid-column:1/-1"><label>Título / Assunto da reunião *</label><input type="text" id="fe-titulo" placeholder="Ex: Reunião com IPDJ sobre candidatura X"></div>
+              <div class="fg"><label>Entidade *</label><input type="text" id="fe-entidade" placeholder="Nome da entidade ou organização"></div>
+              <div class="fg"><label>Data *</label><input type="date" id="fe-data"></div>
+              <div class="fg"><label>Local</label><input type="text" id="fe-local" placeholder="Presencial ou Online"></div>
+              <div class="fg"><label>Departamento</label>
+                <select id="fe-dep"><option>Gestão</option><option>Op. Norte</option><option>Op. Sul</option><option>Financeiro</option><option>Impacto</option><option>CA</option></select>
+              </div>
+              <div class="fg"><label>Responsável FJ</label>
+                <div class="people-wrap">
+                  <input type="text" id="fe-resp" placeholder="Pesquisar pessoa..." autocomplete="off" oninput="searchPeople(this.value,'fe-resp-suggestions','fe-resp')">
+                  <div class="people-suggestions" id="fe-resp-suggestions"></div>
+                </div>
+              </div>
+              <div class="fg" style="grid-column:1/-1"><label>Participantes</label><textarea id="fe-part" placeholder="Lista de participantes da reunião..."></textarea></div>
+              <div class="fg" style="grid-column:1/-1"><label>Resumo da reunião *</label><textarea id="fe-resumo" placeholder="Principais pontos discutidos na reunião..." style="min-height:120px"></textarea></div>
+              <div class="fg" style="grid-column:1/-1"><label>Próximos passos / Compromissos</label><textarea id="fe-passos" placeholder="O que ficou acordado fazer a seguir..."></textarea></div>
+              <div class="fg" style="grid-column:1/-1">
+                <label>Anexos</label>
+                <input type="file" id="fe-file" multiple accept=".pdf,.doc,.docx,.ppt,.pptx" style="padding:6px">
+                <div class="attach-list" id="fe-attachments"></div>
+              </div>
+            </div>
+            <div class="panel-footer">
+              <button class="btn" onclick="closeExtForm()">Cancelar</button>
+              <button class="btn btn-primary" id="save-ext-btn" onclick="saveExt()">Guardar</button>
+            </div>
+          </div>
+        </div>
+        <div class="toolbar">
+          <div class="search-wrap"><span class="si">&#9906;</span><input type="text" id="qe" placeholder="Pesquisar entidade ou assunto..." oninput="renderExtTable()"></div>
+          <select class="flt" id="ffe-dep" onchange="renderExtTable()"><option value="">Departamento: todos</option><option>Gestão</option><option>Op. Norte</option><option>Op. Sul</option><option>Financeiro</option><option>Impacto</option><option>CA</option></select>
+          <input type="date" class="flt" id="ffe-from" onchange="renderExtTable()" style="font-size:13px;padding:8px">
+          <input type="date" class="flt" id="ffe-to" onchange="renderExtTable()" style="font-size:13px;padding:8px">
+          <button class="btn" onclick="loadExtItems()">&#8635;</button>
+          <button class="btn btn-primary" onclick="openExtForm()">+ Nova reunião</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <colgroup><col style="width:8%"><col style="width:22%"><col style="width:15%"><col style="width:10%"><col style="width:10%"><col style="width:25%"><col style="width:10%"></colgroup>
+            <thead><tr><th>Data</th><th>Título</th><th>Entidade</th><th>Departamento</th><th>Responsável</th><th>Próximos passos</th><th>Ações</th></tr></thead>
+            <tbody id="tbody-ext"></tbody>
+          </table>
+        </div>
+        <div id="tcount-ext" style="margin-top:8px;font-size:12px;color:var(--text3)"></div>
+      </div>
+
+      <!-- TAREFAS -->
+      <div class="page" id="page-tarefas">
+        <div class="page-title">Tarefas e compromissos</div>
+        <div class="stats">
+          <div class="stat"><span class="stat-n" id="t-total">—</span><span class="stat-l">Total</span></div>
+          <div class="stat"><span class="stat-n" id="t-pfazer" style="color:var(--gray)">—</span><span class="stat-l">Por fazer</span></div>
+          <div class="stat"><span class="stat-n" id="t-emcurso" style="color:var(--blue-d)">—</span><span class="stat-l">Em curso</span></div>
+          <div class="stat"><span class="stat-n" id="t-atrasadas" style="color:var(--red)">—</span><span class="stat-l">Atrasadas</span></div>
+        </div>
+        <div class="overlay" id="frm-tar-ov">
+          <div class="panel">
+            <div class="panel-title" id="frm-tar-title">Nova tarefa</div>
+            <div class="fgrid">
+              <div class="fg" style="grid-column:1/-1"><label>Título da tarefa *</label><input type="text" id="ft-titulo" placeholder="Descreve a tarefa..."></div>
+              <div class="fg" style="grid-column:1/-1"><label>Descrição / Objetivo</label><textarea id="ft-desc" placeholder="Contexto e objetivo da tarefa..."></textarea></div>
+              <div class="fg"><label>Responsável</label>
+                <div class="people-wrap">
+                  <input type="text" id="ft-resp" placeholder="Pesquisar pessoa..." autocomplete="off" oninput="searchPeople(this.value,'ft-resp-suggestions','ft-resp')">
+                  <div class="people-suggestions" id="ft-resp-suggestions"></div>
+                </div>
+              </div>
+              <div class="fg"><label>Data limite</label><input type="date" id="ft-data"></div>
+              <div class="fg"><label>Estado</label><select id="ft-estado"><option>Por fazer</option><option>Em curso</option><option>Concluída</option><option>Cancelada</option></select></div>
+              <div class="fg"><label>Prioridade</label><select id="ft-prior"><option>Média</option><option>Alta</option><option>Baixa</option></select></div>
+              <div class="fg"><label>Departamento</label><select id="ft-dep"><option>Gestão</option><option>Op. Norte</option><option>Op. Sul</option><option>Financeiro</option><option>Impacto</option><option>CA</option></select></div>
+              <div class="fg"><label>Projeto</label><input type="text" id="ft-proj" placeholder="Nome do projeto (futuro: lista)"></div>
+              <div class="fg"><label>Origem</label><select id="ft-origem"><option>Reunião Externa</option><option>Reunião Interna</option><option>Outro</option></select></div>
+              <div class="fg"><label>Reunião de origem</label><input type="text" id="ft-reuniao-orig" placeholder="Nome ou referência da reunião"></div>
+            </div>
+            <div class="panel-footer">
+              <button class="btn" onclick="closeTarForm()">Cancelar</button>
+              <button class="btn btn-primary" id="save-tar-btn" onclick="saveTarefa()">Guardar</button>
+            </div>
+          </div>
+        </div>
+        <div class="toolbar">
+          <div class="search-wrap"><span class="si">&#9906;</span><input type="text" id="qt" placeholder="Pesquisar tarefa..." oninput="renderTarefasTable()"></div>
+          <select class="flt" id="fft-est" onchange="renderTarefasTable()"><option value="">Estado: todos</option><option>Por fazer</option><option>Em curso</option><option>Concluída</option><option>Cancelada</option></select>
+          <select class="flt" id="fft-dep" onchange="renderTarefasTable()"><option value="">Departamento: todos</option><option>Gestão</option><option>Op. Norte</option><option>Op. Sul</option><option>Financeiro</option><option>Impacto</option><option>CA</option></select>
+          <select class="flt" id="fft-prior" onchange="renderTarefasTable()"><option value="">Prioridade: todas</option><option>Alta</option><option>Média</option><option>Baixa</option></select>
+          <button class="btn" onclick="loadTarefas()">&#8635;</button>
+          <button class="btn btn-primary" onclick="openTarForm()">+ Nova tarefa</button>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <colgroup><col style="width:22%"><col style="width:10%"><col style="width:10%"><col style="width:10%"><col style="width:10%"><col style="width:10%"><col style="width:13%"><col style="width:10%"></colgroup>
+            <thead><tr><th>Tarefa</th><th>Responsável</th><th>Data limite</th><th>Estado</th><th>Prioridade</th><th>Departamento</th><th>Projeto</th><th>Ações</th></tr></thead>
+            <tbody id="tbody-tar"></tbody>
+          </table>
+        </div>
+        <div id="tcount-tar" style="margin-top:8px;font-size:12px;color:var(--text3)"></div>
       </div>
 
     </div>
@@ -413,95 +547,163 @@ tr:hover td{background:var(--bg3)}
 const CLIENT_ID='b3a66901-ec96-424b-9bcb-370b39a2a210';
 const TENANT_ID='09ae14e9-8398-4ca0-a5cd-994620a0ab3a';
 const SP='https://fjuventude.sharepoint.com/sites/GestodeReunies';
-const LIST='FJ_Assuntos';
-const SP_TYPE='SP.Data.FJ_x005f_AssuntosListItem';
+const REDIRECT='https://ruijmoli-arch.github.io/gestao-reunioes-fj/';
 const SCOPES=['https://fjuventude.sharepoint.com/AllSites.Write','https://fjuventude.sharepoint.com/AllSites.Read'];
+const GRAPH_SCOPES=['User.Read','GroupMember.Read.All'];
 
-const msalCfg={auth:{clientId:CLIENT_ID,authority:`https://login.microsoftonline.com/${TENANT_ID}`,redirectUri:'https://ruijmoli-arch.github.io/gestao-reunioes-fj/'}};
-const msal_=new msal.PublicClientApplication(msalCfg);
+// GROUP IDs
+const GROUPS={
+  CA:'0c05918f-4508-45fd-82f4-d5cc3925cd4f',
+  Gestao:'c85b392f-df39-413d-897a-6b0af64a7a8e',
+  Impacto:'cd0afde0-060e-4838-9e34-1ed8e2416c15',
+  Financeiro:'dd09b5dd-79e8-4ecf-a152-ae79098ab711',
+  OpSul:'192fb910-a387-4838-bad5-db6a9e831022',
+  OpNorte:'bbc476e9-8f75-46d1-9fa7-cf9cc5b23535'
+};
 
-let user=null,token=null,items=[],editId=null,T={conf:false,atras:false};
-let carrItems=[],carrIdx=0,carrDec={},fsOpen=false,currReuniaoNome='';
+// Reunião type → required group
+const REUNIAO_GROUPS={
+  'Reunião com CAdm':[GROUPS.CA],
+  'Reunião Gestão':[GROUPS.CA,GROUPS.Gestao],
+  'Reunião O.Norte':[GROUPS.CA,GROUPS.Gestao,GROUPS.OpNorte],
+  'Reunião O.Sul':[GROUPS.CA,GROUPS.Gestao,GROUPS.OpSul],
+  'Reunião Financeiro':[GROUPS.CA,GROUPS.Gestao,GROUPS.Financeiro],
+  'Reunião Impacto':[GROUPS.CA,GROUPS.Gestao,GROUPS.Impacto]
+};
+
+const msalCfg={auth:{clientId:CLIENT_ID,authority:`https://login.microsoftonline.com/${TENANT_ID}`,redirectUri:REDIRECT}};
+const msalI=new msal.PublicClientApplication(msalCfg);
+
+let user=null,spToken=null,graphToken=null;
+let userGroups=[];
+let items=[],extItems=[],tarefas=[];
+let editId=null,editExtId=null,editTarId=null;
+let T={conf:false,atras:false};
+let carrItems=[],carrIdx=0,carrDec={},fsOpen=false,currReuniao='';
 
 async function init(){
-  await msal_.initialize();
-  const r=await msal_.handleRedirectPromise();
-  if(r){user=r.account;token=r.accessToken;showApp();}
-  else{const a=msal_.getAllAccounts();if(a.length){user=a[0];await getToken();showApp();}}
+  await msalI.initialize();
+  const r=await msalI.handleRedirectPromise();
+  if(r){user=r.account;spToken=r.accessToken;await loadUserGroups();showApp();}
+  else{const a=msalI.getAllAccounts();if(a.length){user=a[0];await getSPToken();await loadUserGroups();showApp();}}
 }
-async function doLogin(){document.getElementById('login-msg').textContent='A autenticar...';try{await msal_.loginRedirect({scopes:SCOPES});}catch(e){document.getElementById('login-msg').textContent='Erro: '+e.message;}}
-function doLogout(){msal_.logoutRedirect();}
-async function getToken(){try{const r=await msal_.acquireTokenSilent({scopes:SCOPES,account:user});token=r.accessToken;}catch(e){await msal_.acquireTokenRedirect({scopes:SCOPES});}}
-async function getDigest(){
-  await getToken();
-  const r=await fetch(`${SP}/_api/contextinfo`,{method:'POST',headers:{Accept:'application/json;odata=verbose',Authorization:`Bearer ${token}`,'Content-Length':'0'}});
-  const d=await r.json();return d.d.GetContextWebInformation.FormDigestValue;
+async function doLogin(){
+  document.getElementById('login-msg').textContent='A autenticar...';
+  try{await msalI.loginRedirect({scopes:[...SCOPES,...GRAPH_SCOPES]});}
+  catch(e){document.getElementById('login-msg').textContent='Erro: '+e.message;}
 }
-async function spRead(url){
-  await getToken();
-  const r=await fetch(url,{headers:{Accept:'application/json;odata=verbose',Authorization:`Bearer ${token}`}});
-  if(!r.ok)throw new Error('Erro '+r.status);return r.json();
+function doLogout(){msalI.logoutRedirect();}
+async function getSPToken(){
+  try{const r=await msalI.acquireTokenSilent({scopes:SCOPES,account:user});spToken=r.accessToken;}
+  catch(e){await msalI.acquireTokenRedirect({scopes:SCOPES});}
 }
-async function spWrite(url,body,method,etag){
-  await getToken();
-  const digest=await getDigest();
-  const hdrs={'Content-Type':'application/json;odata=verbose','Accept':'application/json;odata=verbose','Authorization':`Bearer ${token}`,'X-RequestDigest':digest};
-  if(method==='MERGE'||method==='DELETE'){hdrs['X-HTTP-Method']=method;hdrs['IF-MATCH']=etag||'*';}
-  const r=await fetch(url,{method:'POST',headers:hdrs,body:body?JSON.stringify(body):undefined});
-  if(!r.ok){const t=await r.text();throw new Error(`HTTP ${r.status}: ${t.slice(0,300)}`);}
-  return r;
+async function getGraphToken(){
+  try{const r=await msalI.acquireTokenSilent({scopes:GRAPH_SCOPES,account:user});graphToken=r.accessToken;}
+  catch(e){console.warn('Graph token error',e);}
 }
-async function uploadAttachment(itemId,file){
-  await getToken();
-  const digest=await getDigest();
-  const url=`${SP}/_api/web/lists/getbytitle('${LIST}')/items(${itemId})/AttachmentFiles/add(FileName='${encodeURIComponent(file.name)}')`;
-  const buf=await file.arrayBuffer();
-  const r=await fetch(url,{method:'POST',headers:{Accept:'application/json;odata=verbose',Authorization:`Bearer ${token}`,'X-RequestDigest':digest,'content-length':buf.byteLength},body:buf});
-  if(!r.ok){const t=await r.text();throw new Error(`Upload: HTTP ${r.status}`);}
+async function loadUserGroups(){
+  try{
+    await getGraphToken();
+    const r=await fetch('https://graph.microsoft.com/v1.0/me/memberOf?$select=id,displayName',{headers:{Authorization:`Bearer ${graphToken}`}});
+    const d=await r.json();
+    userGroups=(d.value||[]).map(g=>g.id);
+  }catch(e){console.warn('Could not load groups',e);}
 }
-async function deleteAttachment(itemId,fileName){
-  await getToken();
-  const digest=await getDigest();
-  const url=`${SP}/_api/web/lists/getbytitle('${LIST}')/items(${itemId})/AttachmentFiles/getByFileName('${encodeURIComponent(fileName)}')`;
-  const r=await fetch(url,{method:'DELETE',headers:{Authorization:`Bearer ${token}`,'X-RequestDigest':digest,'IF-MATCH':'*'}});
-  if(!r.ok)throw new Error('Erro ao eliminar anexo');
+function hasGroupAccess(groupId){return userGroups.includes(groupId)||userGroups.includes(GROUPS.CA);}
+function canSeeReuniao(tipoReuniao){
+  const req=REUNIAO_GROUPS[tipoReuniao];
+  if(!req)return true;
+  return req.some(gid=>userGroups.includes(gid));
 }
+
+function toggleDropdown(){
+  document.getElementById('user-dropdown').classList.toggle('open');
+}
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.topbar-right'))document.getElementById('user-dropdown').classList.remove('open');
+});
 
 function showApp(){
   document.getElementById('login-screen').style.display='none';
   document.getElementById('app-screen').style.display='block';
   const name=user.name||user.username;
-  document.getElementById('user-name').textContent=name;
-  document.getElementById('user-email').textContent=user.username;
-  document.getElementById('user-initials').textContent=name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
-  loadItems();
+  const initials=name.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase();
+  sv('user-name',name);sv('user-email',user.username);
+  document.getElementById('user-initials').textContent=initials;
+  document.getElementById('dd-name').textContent=name;
+  document.getElementById('dd-email').textContent=user.username;
+  const groupNames=Object.entries(GROUPS).filter(([k,v])=>userGroups.includes(v)).map(([k])=>k).join(', ')||'Sem grupos';
+  document.getElementById('dd-groups').textContent=groupNames;
+  loadItems();loadExtItems();loadTarefas();loadHistReunioes();
 }
 
-async function loadItems(){
-  showNotif('A carregar assuntos...','info');
+async function getDigest(){
+  await getSPToken();
+  const r=await fetch(`${SP}/_api/contextinfo`,{method:'POST',headers:{Accept:'application/json;odata=verbose',Authorization:`Bearer ${spToken}`,'Content-Length':'0'}});
+  const d=await r.json();return d.d.GetContextWebInformation.FormDigestValue;
+}
+async function spRead(url){
+  await getSPToken();
+  const r=await fetch(url,{headers:{Accept:'application/json;odata=verbose',Authorization:`Bearer ${spToken}`}});
+  if(!r.ok)throw new Error('Erro '+r.status);return r.json();
+}
+async function spWrite(url,body,method,etag){
+  await getSPToken();
+  const digest=await getDigest();
+  const h={'Content-Type':'application/json;odata=verbose','Accept':'application/json;odata=verbose','Authorization':`Bearer ${spToken}`,'X-RequestDigest':digest};
+  if(method==='MERGE'||method==='DELETE'){h['X-HTTP-Method']=method;h['IF-MATCH']=etag||'*';}
+  const r=await fetch(url,{method:'POST',headers:h,body:body?JSON.stringify(body):undefined});
+  if(!r.ok){const t=await r.text();throw new Error(`HTTP ${r.status}: ${t.slice(0,200)}`);}
+  return r;
+}
+async function uploadAttachment(list,itemId,file){
+  await getSPToken();const digest=await getDigest();
+  const url=`${SP}/_api/web/lists/getbytitle('${list}')/items(${itemId})/AttachmentFiles/add(FileName='${encodeURIComponent(file.name)}')`;
+  const buf=await file.arrayBuffer();
+  const r=await fetch(url,{method:'POST',headers:{Authorization:`Bearer ${spToken}`,'X-RequestDigest':digest,'content-length':buf.byteLength},body:buf});
+  if(!r.ok)throw new Error('Upload falhou');
+}
+
+// PEOPLE PICKER
+async function searchPeople(q,suggestId,inputId){
+  if(q.length<2){document.getElementById(suggestId).classList.remove('open');return;}
   try{
-    const d=await spRead(`${SP}/_api/web/lists/getbytitle('${LIST}')/items?$select=*,AttachmentFiles&$expand=AttachmentFiles&$orderby=Created desc&$top=500`);
+    await getGraphToken();
+    const r=await fetch(`https://graph.microsoft.com/v1.0/users?$filter=startswith(displayName,'${encodeURIComponent(q)}') or startswith(mail,'${encodeURIComponent(q)}')&$select=displayName,mail,id&$top=8`,{headers:{Authorization:`Bearer ${graphToken}`}});
+    const d=await r.json();
+    const s=document.getElementById(suggestId);
+    if(!d.value?.length){s.classList.remove('open');return;}
+    s.innerHTML=d.value.map(p=>`<div class="people-item" onclick="selectPerson('${inputId}','${suggestId}','${p.displayName.replace(/'/g,"\\'")}')">
+      <div class="people-avatar">${p.displayName.split(' ').map(n=>n[0]).slice(0,2).join('').toUpperCase()}</div>
+      <div><div style="font-weight:500">${p.displayName}</div><div style="font-size:11px;color:var(--text3)">${p.mail||''}</div></div>
+    </div>`).join('');
+    s.classList.add('open');
+  }catch(e){console.warn(e);}
+}
+function selectPerson(inputId,suggestId,name){
+  document.getElementById(inputId).value=name;
+  document.getElementById(suggestId).classList.remove('open');
+}
+
+// ASSUNTOS
+async function loadItems(){
+  showNotif('A carregar...','info');
+  try{
+    const d=await spRead(`${SP}/_api/web/lists/getbytitle('FJ_Assuntos')/items?$select=*,AttachmentFiles&$expand=AttachmentFiles&$orderby=Created desc&$top=500`);
     items=d.d.results.map(r=>({
       id:r.Id,etag:r.__metadata?.etag||'*',
-      titulo:r.Title||'',
-      reuniao:r.TipoReuni_x00e3_o||'',
+      titulo:r.Title||'',reuniao:r.TipoReuni_x00e3_o||'',
       data:r.DataReuniao?r.DataReuniao.split('T')[0]:'',
-      tipo:r.TipoAssunto||'',
-      responsavel:r.Respons_x00e1_vel?.Title||'',
-      estado:r.Estado||'Em aberto',
-      encaminhamento:r.Encaminhamento||'—',
-      decisao:r.Decis_x00e3_o||'Pendente',
-      confidencial:r.Confidencial||false,
-      atrasado:r.Atrasado||false,
-      notas:r.Notas||'',
-      proposta:r.Proposta||'',
-      nivelOrigem:r.NivelOrigem||'',
-      nivelAtual:r.NivelAtual||'',
+      tipo:r.TipoAssunto||'',responsavel:r.Respons_x00e1_vel?.Title||'',
+      estado:r.Estado||'Em aberto',encaminhamento:r.Encaminhamento||'—',
+      decisao:r.Decis_x00e3_o||'Pendente',confidencial:r.Confidencial||false,
+      atrasado:r.Atrasado||false,notas:r.Notas||'',proposta:r.Proposta||'',
+      historicoDecisoes:r.HistoricoDecisoes||'',
+      nivelOrigem:r.NivelOrigem||'',nivelAtual:r.NivelAtual||'',
       attachments:(r.AttachmentFiles?.results||[]).map(a=>({name:a.FileName,url:a.ServerRelativeUrl}))
     }));
     renderStats();renderTable();
-    showNotif('Carregado!','success');
-    setTimeout(()=>document.getElementById('notif').classList.remove('show'),1500);
+    showNotif('Carregado!','success');setTimeout(()=>document.getElementById('notif').classList.remove('show'),1500);
   }catch(e){showNotif('Erro: '+e.message,'error');}
 }
 
@@ -512,15 +714,16 @@ const CM={'Presidente Executivo':'b-pe','Segue para CA':'b-segca','Ambos':'b-amb
 const bdg=(map,v,txt)=>`<span class="badge ${map[v]||'b-na'}">${txt||v||'—'}</span>`;
 
 function renderStats(){
-  document.getElementById('s-total').textContent=items.length;
-  document.getElementById('s-delib').textContent=items.filter(i=>i.tipo==='Deliberativo').length;
-  document.getElementById('s-aprov').textContent=items.filter(i=>i.decisao==='Aprovado').length;
-  document.getElementById('s-pend').textContent=items.filter(i=>i.decisao==='Pendente').length;
+  el('s-total').textContent=items.length;
+  el('s-delib').textContent=items.filter(i=>i.tipo==='Deliberativo').length;
+  el('s-aprov').textContent=items.filter(i=>i.decisao==='Aprovado').length;
+  el('s-pend').textContent=items.filter(i=>i.decisao==='Pendente').length;
 }
-function filtered(){
-  const q=(document.getElementById('q')||{value:''}).value.toLowerCase();
+function filteredItems(){
+  const q=(el('q')||{value:''}).value.toLowerCase();
   const fr=gv('ff-r'),ft=gv('ff-t'),fe=gv('ff-e');
   return items.filter(i=>{
+    if(!canSeeReuniao(i.reuniao))return false;
     if(q&&!(i.titulo.toLowerCase().includes(q)||(i.responsavel||'').toLowerCase().includes(q)))return false;
     if(fr&&i.reuniao!==fr)return false;
     if(ft&&i.tipo!==ft)return false;
@@ -529,8 +732,8 @@ function filtered(){
   });
 }
 function renderTable(){
-  const list=filtered(),tb=document.getElementById('tbody');
-  if(!list.length){tb.innerHTML=`<tr><td colspan="9"><div class="empty">Nenhum assunto.<br>Clique em "+ Novo assunto".</div></td></tr>`;document.getElementById('tcount').textContent='';return;}
+  const list=filteredItems(),tb=el('tbody');
+  if(!list.length){tb.innerHTML=`<tr><td colspan="9"><div class="empty">Nenhum assunto.<br>Clique em "+ Novo assunto".</div></td></tr>`;el('tcount').textContent='';return;}
   tb.innerHTML=list.map(i=>`<tr>
     <td>${fd(i.data)}</td>
     <td title="${i.titulo}" style="font-weight:500">${i.titulo}${i.confidencial?` <span class="badge b-na" style="font-size:10px">&#128274;</span>`:''}${i.attachments?.length?` <span class="badge" style="background:var(--blue-l);color:var(--blue-d);font-size:10px">&#128206; ${i.attachments.length}</span>`:''}</td>
@@ -545,80 +748,76 @@ function renderTable(){
       <button class="btn btn-sm btn-danger" onclick="deleteItem(${i.id})">&#10005;</button>
     </div></td>
   </tr>`).join('');
-  const tot=items.length,vis=list.length;
-  document.getElementById('tcount').textContent=vis===tot?`${tot} assunto${tot!==1?'s':''}`:`${vis} de ${tot}`;
+  el('tcount').textContent=`${list.length} de ${items.length} assunto${items.length!==1?'s':''}`;
 }
 
 function openForm(id){
   editId=id||null;
-  const p=document.getElementById('frm-ov');p.classList.add('open');p.scrollIntoView({behavior:'smooth',block:'nearest'});
-  document.getElementById('existing-attachments').innerHTML='';
-  document.getElementById('f-file').value='';
+  const p=el('frm-ov');p.classList.add('open');p.scrollIntoView({behavior:'smooth',block:'nearest'});
+  el('existing-attachments').innerHTML='';el('f-file').value='';el('hist-dec-panel').innerHTML='';
   if(id){
     const i=items.find(x=>x.id===id);if(!i)return;
-    document.getElementById('frm-title').textContent='Editar assunto';
-    sv('f-titulo',i.titulo);sv('f-reuniao',i.reuniao);sv('f-data',i.data);sv('f-tipo',i.tipo);
-    sv('f-resp',i.responsavel||'');sv('f-estado',i.estado);sv('f-enc',i.encaminhamento||'—');
-    sv('f-dec',i.decisao||'Pendente');sv('f-nivel-origem',i.nivelOrigem||'Departamento');
-    sv('f-nivel-atual',i.nivelAtual||'Departamento');sv('f-notas',i.notas||'');sv('f-proposta',i.proposta||'');
+    el('frm-title').textContent='Editar assunto';
+    sv2('f-titulo',i.titulo);sv2('f-reuniao',i.reuniao);sv2('f-data',i.data);sv2('f-tipo',i.tipo);
+    sv2('f-resp',i.responsavel||'');sv2('f-estado',i.estado);sv2('f-enc',i.encaminhamento||'—');
+    sv2('f-dec',i.decisao||'Pendente');sv2('f-nivel-origem',i.nivelOrigem||'Departamento');
+    sv2('f-nivel-atual',i.nivelAtual||'Departamento');sv2('f-notas',i.notas||'');sv2('f-proposta',i.proposta||'');
     setTog('conf',!!i.confidencial);setTog('atras',!!i.atrasado);
     if(i.attachments?.length){
-      document.getElementById('existing-attachments').innerHTML=i.attachments.map(a=>`
-        <div class="attach-item">
-          <a href="${SP}${a.url}" target="_blank">&#128206; ${a.name}</a>
-          <button class="attach-remove" onclick="removeAttach(${id},'${a.name}')" title="Remover">&#10005;</button>
-        </div>`).join('');
+      el('existing-attachments').innerHTML=i.attachments.map(a=>`
+        <div class="attach-item"><a href="${SP}${a.url}" target="_blank">&#128206; ${a.name}</a>
+        <button class="attach-remove" onclick="removeAttach('FJ_Assuntos',${id},'${a.name}')">&#10005;</button></div>`).join('');
+    }
+    if(i.historicoDecisoes){
+      const entries=i.historicoDecisoes.split('\n---\n').filter(Boolean);
+      el('hist-dec-panel').innerHTML=`<div class="hist-dec-wrap">
+        <div class="hist-dec-title">Histórico de decisões</div>
+        ${entries.map(e=>`<div class="hist-dec-item">${e.replace(/\n/g,'<br>')}</div>`).join('')}
+      </div>`;
     }
   }else{
-    document.getElementById('frm-title').textContent='Novo assunto';
-    ['f-titulo','f-resp','f-notas','f-proposta'].forEach(id=>sv(id,''));
-    sv('f-data',today());sv('f-tipo','Deliberativo');sv('f-estado','Em aberto');sv('f-enc','—');sv('f-dec','Pendente');sv('f-nivel-origem','Departamento');sv('f-nivel-atual','Departamento');
+    el('frm-title').textContent='Novo assunto';
+    ['f-titulo','f-resp','f-notas','f-proposta'].forEach(id=>sv2(id,''));
+    sv2('f-data',today());sv2('f-tipo','Deliberativo');sv2('f-estado','Em aberto');sv2('f-enc','—');sv2('f-dec','Pendente');
+    sv2('f-nivel-origem','Departamento');sv2('f-nivel-atual','Departamento');
     setTog('conf',false);setTog('atras',false);
   }
 }
 function editItem(id){openForm(id);}
-function closeForm(){document.getElementById('frm-ov').classList.remove('open');editId=null;}
+function closeForm(){el('frm-ov').classList.remove('open');editId=null;}
 
-async function removeAttach(itemId,fileName){
+async function removeAttach(list,itemId,fileName){
   if(!confirm(`Remover "${fileName}"?`))return;
   try{
-    await deleteAttachment(itemId,fileName);
-    await loadItems();
-    if(editId)openForm(editId);
+    await getSPToken();const digest=await getDigest();
+    await fetch(`${SP}/_api/web/lists/getbytitle('${list}')/items(${itemId})/AttachmentFiles/getByFileName('${encodeURIComponent(fileName)}')`,{method:'DELETE',headers:{Authorization:`Bearer ${spToken}`,'X-RequestDigest':digest,'IF-MATCH':'*'}});
+    await loadItems();if(editId)openForm(editId);
   }catch(e){showNotif('Erro: '+e.message,'error');}
 }
 
 async function saveItem(){
-  const titulo=document.getElementById('f-titulo').value.trim();
+  const titulo=el('f-titulo').value.trim();
   if(!titulo){alert('Por favor indique o assunto.');return;}
-  const btn=document.getElementById('save-btn');btn.textContent='A guardar...';btn.disabled=true;
+  const btn=el('save-btn');btn.textContent='A guardar...';btn.disabled=true;
   try{
-    const body={__metadata:{type:SP_TYPE},
-      Title:titulo,
-      TipoReuni_x00e3_o:gv('f-reuniao'),
-      TipoAssunto:gv('f-tipo'),
-      Notas:gv2('f-notas'),
-      Proposta:gv2('f-proposta'),
-      Estado:gv('f-estado'),
-      Encaminhamento:gv('f-enc'),
-      Decis_x00e3_o:gv('f-dec'),
-      NivelOrigem:gv('f-nivel-origem'),
-      NivelAtual:gv('f-nivel-atual'),
-      Confidencial:T.conf,
-      Atrasado:T.atras
+    const body={__metadata:{type:'SP.Data.FJ_x005f_AssuntosListItem'},
+      Title:titulo,TipoReuni_x00e3_o:gv('f-reuniao'),TipoAssunto:gv('f-tipo'),
+      Notas:gv2t('f-notas'),Proposta:gv2t('f-proposta'),Estado:gv('f-estado'),
+      Encaminhamento:gv('f-enc'),Decis_x00e3_o:gv('f-dec'),
+      NivelOrigem:gv('f-nivel-origem'),NivelAtual:gv('f-nivel-atual'),
+      Confidencial:T.conf,Atrasado:T.atras
     };
     if(gv('f-data'))body.DataReuniao=gv('f-data')+'T00:00:00Z';
     let itemId=editId;
     if(editId){
-      await spWrite(`${SP}/_api/web/lists/getbytitle('${LIST}')/items(${editId})`,body,'MERGE',items.find(x=>x.id===editId)?.etag);
+      await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Assuntos')/items(${editId})`,body,'MERGE',items.find(x=>x.id===editId)?.etag);
     }else{
-      const r=await spWrite(`${SP}/_api/web/lists/getbytitle('${LIST}')/items`,body,'POST');
+      const r=await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Assuntos')/items`,body,'POST');
       const d=await r.json();itemId=d.d.Id;
     }
-    const files=document.getElementById('f-file').files;
-    for(const f of files)await uploadAttachment(itemId,f);
-    closeForm();await loadItems();
-    showNotif('Assunto guardado!','success');
+    const files=el('f-file').files;
+    for(const f of files)await uploadAttachment('FJ_Assuntos',itemId,f);
+    closeForm();await loadItems();showNotif('Guardado!','success');
   }catch(e){showNotif('Erro: '+e.message,'error');}
   btn.textContent='Guardar';btn.disabled=false;
 }
@@ -626,43 +825,251 @@ async function saveItem(){
 async function deleteItem(id){
   if(!confirm('Eliminar este assunto?'))return;
   try{
-    await getToken();const digest=await getDigest();
-    await fetch(`${SP}/_api/web/lists/getbytitle('${LIST}')/items(${id})`,{method:'DELETE',headers:{Authorization:`Bearer ${token}`,'X-RequestDigest':digest,'IF-MATCH':'*'}});
+    await getSPToken();const digest=await getDigest();
+    await fetch(`${SP}/_api/web/lists/getbytitle('FJ_Assuntos')/items(${id})`,{method:'DELETE',headers:{Authorization:`Bearer ${spToken}`,'X-RequestDigest':digest,'IF-MATCH':'*'}});
     await loadItems();showNotif('Eliminado.','success');
   }catch(e){showNotif('Erro: '+e.message,'error');}
 }
 
-/* CARROCEL */
+// REUNIÕES EXTERNAS
+async function loadExtItems(){
+  try{
+    const d=await spRead(`${SP}/_api/web/lists/getbytitle('FJ_ReunioesExternas')/items?$select=*,AttachmentFiles&$expand=AttachmentFiles&$orderby=DataReuniao desc&$top=500`);
+    extItems=d.d.results.map(r=>({
+      id:r.Id,etag:r.__metadata?.etag||'*',
+      titulo:r.Title||'',entidade:r.Entidade||'',
+      data:r.DataReuniao?r.DataReuniao.split('T')[0]:'',
+      local:r.Local||'',participantes:r.Participantes||'',
+      resumo:r.Resumo||'',proximosPassos:r.ProximosPassos||'',
+      departamento:r.Departamento||'',responsavel:r.Responsavel?.Title||'',
+      attachments:(r.AttachmentFiles?.results||[]).map(a=>({name:a.FileName,url:a.ServerRelativeUrl}))
+    }));
+    renderExtTable();
+  }catch(e){console.warn('Ext items error',e);}
+}
+function renderExtTable(){
+  const q=(el('qe')||{value:''}).value.toLowerCase();
+  const fd_=gv('ffe-dep'),ff=gv('ffe-from'),ft=gv('ffe-to');
+  let list=extItems.filter(i=>{
+    if(q&&!(i.titulo.toLowerCase().includes(q)||i.entidade.toLowerCase().includes(q)))return false;
+    if(fd_&&i.departamento!==fd_)return false;
+    if(ff&&i.data&&i.data<ff)return false;
+    if(ft&&i.data&&i.data>ft)return false;
+    return true;
+  });
+  const tb=el('tbody-ext');
+  if(!list.length){tb.innerHTML=`<tr><td colspan="7"><div class="empty">Nenhuma reunião externa.<br>Clique em "+ Nova reunião".</div></td></tr>`;el('tcount-ext').textContent='';return;}
+  tb.innerHTML=list.map(i=>`<tr>
+    <td>${fd(i.data)}</td>
+    <td style="font-weight:500" title="${i.titulo}">${i.titulo}${i.attachments?.length?` <span class="badge" style="background:var(--blue-l);color:var(--blue-d);font-size:10px">&#128206; ${i.attachments.length}</span>`:''}</td>
+    <td>${i.entidade||'—'}</td>
+    <td><span class="badge b-gestao" style="font-size:10px">${i.departamento||'—'}</span></td>
+    <td>${i.responsavel||'—'}</td>
+    <td title="${i.proximosPassos}" style="white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${i.proximosPassos||'—'}</td>
+    <td><div class="actions">
+      <button class="btn btn-sm" onclick="editExt(${i.id})">Editar</button>
+      <button class="btn btn-sm btn-danger" onclick="deleteExt(${i.id})">&#10005;</button>
+    </div></td>
+  </tr>`).join('');
+  el('tcount-ext').textContent=`${list.length} reunião${list.length!==1?'es':''}`;
+}
+function openExtForm(id){
+  editExtId=id||null;
+  el('frm-ext-ov').classList.add('open');
+  el('fe-attachments').innerHTML='';el('fe-file').value='';
+  if(id){
+    const i=extItems.find(x=>x.id===id);if(!i)return;
+    el('frm-ext-title').textContent='Editar reunião externa';
+    sv2('fe-titulo',i.titulo);sv2('fe-entidade',i.entidade);sv2('fe-data',i.data);
+    sv2('fe-local',i.local||'');sv2('fe-dep',i.departamento||'Gestão');sv2('fe-resp',i.responsavel||'');
+    sv2('fe-part',i.participantes||'');sv2('fe-resumo',i.resumo||'');sv2('fe-passos',i.proximosPassos||'');
+    if(i.attachments?.length){
+      el('fe-attachments').innerHTML=i.attachments.map(a=>`
+        <div class="attach-item"><a href="${SP}${a.url}" target="_blank">&#128206; ${a.name}</a>
+        <button class="attach-remove" onclick="removeAttach('FJ_ReunioesExternas',${id},'${a.name}')">&#10005;</button></div>`).join('');
+    }
+  }else{
+    el('frm-ext-title').textContent='Nova reunião externa';
+    ['fe-titulo','fe-entidade','fe-local','fe-resp','fe-part','fe-resumo','fe-passos'].forEach(id=>sv2(id,''));
+    sv2('fe-data',today());sv2('fe-dep','Gestão');
+  }
+}
+function editExt(id){openExtForm(id);}
+function closeExtForm(){el('frm-ext-ov').classList.remove('open');editExtId=null;}
+async function saveExt(){
+  const titulo=el('fe-titulo').value.trim();
+  if(!titulo){alert('Por favor indique o título.');return;}
+  const btn=el('save-ext-btn');btn.textContent='A guardar...';btn.disabled=true;
+  try{
+    const body={__metadata:{type:'SP.Data.FJ_x005f_ReunioesExternasListItem'},
+      Title:titulo,Entidade:gv('fe-entidade'),Local:gv('fe-local'),
+      Participantes:gv2t('fe-part'),Resumo:gv2t('fe-resumo'),
+      ProximosPassos:gv2t('fe-passos'),Departamento:gv('fe-dep')
+    };
+    if(gv('fe-data'))body.DataReuniao=gv('fe-data')+'T00:00:00Z';
+    let itemId=editExtId;
+    if(editExtId){
+      await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_ReunioesExternas')/items(${editExtId})`,body,'MERGE');
+    }else{
+      const r=await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_ReunioesExternas')/items`,body,'POST');
+      const d=await r.json();itemId=d.d.Id;
+    }
+    const files=el('fe-file').files;
+    for(const f of files)await uploadAttachment('FJ_ReunioesExternas',itemId,f);
+    closeExtForm();await loadExtItems();showNotif('Reunião externa guardada!','success');
+  }catch(e){showNotif('Erro: '+e.message,'error');}
+  btn.textContent='Guardar';btn.disabled=false;
+}
+async function deleteExt(id){
+  if(!confirm('Eliminar esta reunião?'))return;
+  try{
+    await getSPToken();const digest=await getDigest();
+    await fetch(`${SP}/_api/web/lists/getbytitle('FJ_ReunioesExternas')/items(${id})`,{method:'DELETE',headers:{Authorization:`Bearer ${spToken}`,'X-RequestDigest':digest,'IF-MATCH':'*'}});
+    await loadExtItems();showNotif('Eliminado.','success');
+  }catch(e){showNotif('Erro: '+e.message,'error');}
+}
+
+// TAREFAS
+async function loadTarefas(){
+  try{
+    const d=await spRead(`${SP}/_api/web/lists/getbytitle('FJ_Tarefas')/items?$select=*&$orderby=DataLimite asc&$top=500`);
+    tarefas=d.d.results.map(r=>({
+      id:r.Id,etag:r.__metadata?.etag||'*',
+      titulo:r.Title||'',descricao:r.Descricao||'',
+      responsavel:r.Responsavel?.Title||'',
+      data:r.DataLimite?r.DataLimite.split('T')[0]:'',
+      estado:r.Estado||'Por fazer',prioridade:r.Prioridade||'Média',
+      departamento:r.Departamento||'',projeto:r.Projeto||'',
+      objetivo:r.Objetivo||'',origem:r.Origem||'',
+      reuniaoOrigem:r.ReuniaoOrigem||''
+    }));
+    renderTarefasTable();renderTarefasStats();
+  }catch(e){console.warn('Tarefas error',e);}
+}
+function renderTarefasStats(){
+  el('t-total').textContent=tarefas.length;
+  el('t-pfazer').textContent=tarefas.filter(t=>t.estado==='Por fazer').length;
+  el('t-emcurso').textContent=tarefas.filter(t=>t.estado==='Em curso').length;
+  const hoje=today();
+  el('t-atrasadas').textContent=tarefas.filter(t=>t.data&&t.data<hoje&&t.estado!=='Concluída'&&t.estado!=='Cancelada').length;
+}
+function renderTarefasTable(){
+  const q=(el('qt')||{value:''}).value.toLowerCase();
+  const fe=gv('fft-est'),fd_=gv('fft-dep'),fp=gv('fft-prior');
+  const hoje=today();
+  let list=tarefas.filter(i=>{
+    if(q&&!i.titulo.toLowerCase().includes(q))return false;
+    if(fe&&i.estado!==fe)return false;
+    if(fd_&&i.departamento!==fd_)return false;
+    if(fp&&i.prioridade!==fp)return false;
+    return true;
+  });
+  const tb=el('tbody-tar');
+  if(!list.length){tb.innerHTML=`<tr><td colspan="8"><div class="empty">Nenhuma tarefa.<br>Clique em "+ Nova tarefa".</div></td></tr>`;el('tcount-tar').textContent='';return;}
+  const PM={'Alta':'b-alta','Média':'b-media','Baixa':'b-baixa'};
+  const EM2={'Por fazer':'b-pfazer','Em curso':'b-emcurso','Concluída':'b-concluido','Cancelada':'b-cancelado'};
+  tb.innerHTML=list.map(i=>{
+    const atrasada=i.data&&i.data<hoje&&i.estado!=='Concluída'&&i.estado!=='Cancelada';
+    return `<tr style="${atrasada?'background:#fff8f8':''}">
+      <td style="font-weight:500" title="${i.titulo}">${i.titulo}</td>
+      <td>${i.responsavel||'—'}</td>
+      <td style="${atrasada?'color:var(--red);font-weight:600':''}">${fd(i.data)}${atrasada?' ⚠️':''}</td>
+      <td>${bdg(EM2,i.estado)}</td>
+      <td>${bdg(PM,i.prioridade)}</td>
+      <td>${i.departamento||'—'}</td>
+      <td>${i.projeto||'—'}</td>
+      <td><div class="actions">
+        <button class="btn btn-sm" onclick="editTar(${i.id})">Editar</button>
+        <button class="btn btn-sm btn-danger" onclick="deleteTar(${i.id})">&#10005;</button>
+      </div></td>
+    </tr>`;
+  }).join('');
+  el('tcount-tar').textContent=`${list.length} tarefa${list.length!==1?'s':''}`;
+}
+function openTarForm(id){
+  editTarId=id||null;
+  el('frm-tar-ov').classList.add('open');
+  if(id){
+    const t=tarefas.find(x=>x.id===id);if(!t)return;
+    el('frm-tar-title').textContent='Editar tarefa';
+    sv2('ft-titulo',t.titulo);sv2('ft-desc',t.descricao||'');sv2('ft-resp',t.responsavel||'');
+    sv2('ft-data',t.data);sv2('ft-estado',t.estado);sv2('ft-prior',t.prioridade);
+    sv2('ft-dep',t.departamento||'Gestão');sv2('ft-proj',t.projeto||'');
+    sv2('ft-origem',t.origem||'Reunião Externa');sv2('ft-reuniao-orig',t.reuniaoOrigem||'');
+  }else{
+    el('frm-tar-title').textContent='Nova tarefa';
+    ['ft-titulo','ft-desc','ft-resp','ft-proj','ft-reuniao-orig'].forEach(id=>sv2(id,''));
+    sv2('ft-data','');sv2('ft-estado','Por fazer');sv2('ft-prior','Média');sv2('ft-dep','Gestão');sv2('ft-origem','Reunião Externa');
+  }
+}
+function editTar(id){openTarForm(id);}
+function closeTarForm(){el('frm-tar-ov').classList.remove('open');editTarId=null;}
+async function saveTarefa(){
+  const titulo=el('ft-titulo').value.trim();
+  if(!titulo){alert('Por favor indique o título.');return;}
+  const btn=el('save-tar-btn');btn.textContent='A guardar...';btn.disabled=true;
+  try{
+    const body={__metadata:{type:'SP.Data.FJ_x005f_TarefasListItem'},
+      Title:titulo,Descricao:gv2t('ft-desc'),Estado:gv('ft-estado'),
+      Prioridade:gv('ft-prior'),Departamento:gv('ft-dep'),
+      Projeto:gv('ft-proj'),Origem:gv('ft-origem'),ReuniaoOrigem:gv('ft-reuniao-orig')
+    };
+    if(gv('ft-data'))body.DataLimite=gv('ft-data')+'T00:00:00Z';
+    if(editTarId){
+      await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Tarefas')/items(${editTarId})`,body,'MERGE');
+    }else{
+      await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Tarefas')/items`,body,'POST');
+    }
+    closeTarForm();await loadTarefas();showNotif('Tarefa guardada!','success');
+  }catch(e){showNotif('Erro: '+e.message,'error');}
+  btn.textContent='Guardar';btn.disabled=false;
+}
+async function deleteTar(id){
+  if(!confirm('Eliminar esta tarefa?'))return;
+  try{
+    await getSPToken();const digest=await getDigest();
+    await fetch(`${SP}/_api/web/lists/getbytitle('FJ_Tarefas')/items(${id})`,{method:'DELETE',headers:{Authorization:`Bearer ${spToken}`,'X-RequestDigest':digest,'IF-MATCH':'*'}});
+    await loadTarefas();showNotif('Eliminado.','success');
+  }catch(e){showNotif('Erro: '+e.message,'error');}
+}
+
+// CONDUZIR REUNIÃO
 function iniciarReuniao(){
   const tipo=gv('r-tipo'),filtro=gv('r-filtro');
+  if(!canSeeReuniao(tipo)){
+    el('carr-wrap').style.display='none';
+    el('reuniao-setup').innerHTML=`<div class="access-denied"><h3>Sem acesso</h3><p>Não tens permissão para conduzir este tipo de reunião.</p></div>`;
+    return;
+  }
   let lista=items.filter(i=>i.reuniao===tipo);
   if(filtro==='abertos')lista=lista.filter(i=>i.estado!=='Concluído'&&i.estado!=='Cancelado');
   if(filtro==='pendentes')lista=lista.filter(i=>i.decisao==='Pendente');
   if(!lista.length){alert('Nenhum assunto encontrado.');return;}
-  carrItems=lista;carrIdx=0;carrDec={};currReuniaoNome=tipo;
-  document.getElementById('reuniao-setup').style.display='none';
-  document.getElementById('carousel-wrap').style.display='block';
-  document.getElementById('sumario-wrap').style.display='none';
-  document.getElementById('carr-nome').textContent=tipo;
+  carrItems=lista;carrIdx=0;carrDec={};currReuniao=tipo;
+  el('reuniao-setup').style.display='none';
+  el('carr-wrap').style.display='block';
+  el('sumario-wrap').style.display='none';
+  el('carr-nome').textContent=tipo;
   renderCarr();
 }
 
 function renderCarr(){
   const it=carrItems[carrIdx],total=carrItems.length,pct=Math.round(((carrIdx+1)/total)*100);
-  document.getElementById('carr-prog-txt').textContent=`Assunto ${carrIdx+1} de ${total}`;
-  document.getElementById('prog-bar').style.width=pct+'%';
-  document.getElementById('btn-prev').disabled=carrIdx===0;
-  document.getElementById('btn-next').textContent=carrIdx===total-1?'Ver sumário →':'Seguinte →';
-  document.getElementById('carr-content').innerHTML=renderContentHTML(it);
-  document.getElementById('carr-side').innerHTML=renderSideHTML(it);
-  document.getElementById('carr-saved-msg').textContent='';
+  el('carr-prog-txt').textContent=`Assunto ${carrIdx+1} de ${total}`;
+  el('prog-bar').style.width=pct+'%';
+  el('btn-prev').disabled=carrIdx===0;
+  el('btn-next').textContent=carrIdx===total-1?'Ver sumário →':'Seguinte →';
+  el('carr-content').innerHTML=renderContentHTML(it);
+  el('carr-side').innerHTML=renderSideHTML(it);
+  el('carr-saved-msg').textContent='';
 }
 
 function renderContentHTML(it){
   const isD=it.tipo==='Deliberativo';
-  const attHtml=it.attachments?.length?`<div style="margin-bottom:1.25rem">${it.attachments.map(a=>`<a class="doc-link" href="${SP}${a.url}" target="_blank">&#128206; ${a.name}</a> `).join('')}</div>`:'';
+  const attHtml=it.attachments?.length?`<div style="margin-bottom:1.25rem;display:flex;gap:6px;flex-wrap:wrap">${it.attachments.map(a=>`<a href="${SP}${a.url}" target="_blank" class="badge" style="background:var(--blue-l);color:var(--blue-d)">&#128206; ${a.name}</a>`).join('')}</div>`:'';
+  const histEnc=it.encaminhamento&&it.encaminhamento!=='—'?`<div class="hist-enc-box">&#128257; Encaminhado anteriormente: <strong>${it.encaminhamento}</strong>${it.historicoDecisoes?`<br><small>${it.historicoDecisoes.split('\n---\n').pop()}</small>`:''}</div>`:'';
   return `
-    <div class="assunto-badges">
+    <div style="display:flex;gap:8px;margin-bottom:1rem;flex-wrap:wrap;align-items:center">
       <span class="badge ${isD?'b-delib':'b-info'}">${it.tipo}</span>
       ${it.confidencial?'<span class="badge b-na">&#128274; Confidencial</span>':''}
       ${it.atrasado?'<span class="badge b-nap">Atrasado</span>':''}
@@ -674,10 +1081,11 @@ function renderContentHTML(it){
       ${bdg(EM,it.estado)}
     </div>
     ${attHtml}
-    <div class="section-label">Contextualização</div>
-    <div class="content-box ${it.notas?'':'empty'}">${it.notas||'Sem contextualização definida.'}</div>
-    ${isD?`<div class="section-label">Proposta de Decisão</div>
-    <div class="proposta-box ${it.proposta?'':'empty'}">${it.proposta||'Sem proposta de decisão definida.'}</div>`:''}
+    ${histEnc}
+    <div class="sec-label">Contextualização</div>
+    <div class="content-box ${it.notas?'':'empty'}">${it.notas||'Sem contextualização.'}</div>
+    ${isD?`<div class="sec-label">Proposta de Decisão</div>
+    <div class="proposta-box ${it.proposta?'':'empty'}">${it.proposta||'Sem proposta definida.'}</div>`:''}
   `;
 }
 
@@ -710,19 +1118,19 @@ function selDec(val,btn){
   carrDec[it.id].decisao=val;
   document.querySelectorAll('.dec-btn').forEach(b=>b.classList.remove('sel-aprov','sel-nap','sel-pend'));
   btn.classList.add(val==='Aprovado'?'sel-aprov':val==='Não aprovado'?'sel-nap':'sel-pend');
-  if(fsOpen)renderFSSide();
+  if(fsOpen){const fsB=document.querySelectorAll('#fs-side .dec-btn');fsB.forEach(b=>{const t=b.textContent.includes('Aprovado')?'Aprovado':b.textContent.includes('Não')? 'Não aprovado':'Pendente';b.classList.toggle('sel-aprov',t==='Aprovado'&&val==='Aprovado');b.classList.toggle('sel-nap',t==='Não aprovado'&&val==='Não aprovado');b.classList.toggle('sel-pend',t==='Pendente'&&val==='Pendente');});}
 }
 function selEnc(val,btn){
   const it=carrItems[carrIdx];
   if(!carrDec[it.id])carrDec[it.id]={decisao:'',encaminhamento:'—',notas:''};
   carrDec[it.id].encaminhamento=val;
-  document.querySelectorAll('.enc-btn').forEach(b=>b.classList.remove('sel'));
+  const container=btn.closest('.enc-grid');
+  if(container)container.querySelectorAll('.enc-btn').forEach(b=>b.classList.remove('sel'));
   btn.classList.add('sel');
-  if(fsOpen)renderFSSide();
 }
 function saveNotas(){
   const it=carrItems[carrIdx];
-  const n=document.getElementById('notas-dec-input')||document.getElementById('fs-notas-input');
+  const n=el('notas-dec-input')||el('fs-notas-input');
   if(n){if(!carrDec[it.id])carrDec[it.id]={decisao:'Pendente',encaminhamento:'—',notas:''};carrDec[it.id].notas=n.value;}
 }
 
@@ -731,16 +1139,35 @@ async function guardarDec(){
   const it=carrItems[carrIdx],dec=carrDec[it.id];
   if(!dec?.decisao){showNotif('Seleciona uma decisão primeiro.','error');return;}
   try{
-    const body={__metadata:{type:SP_TYPE},
+    // Build history entry
+    const now=new Date();
+    const quem=user.name||user.username;
+    const histEntry=`[${now.toLocaleDateString('pt-PT')} ${now.toLocaleTimeString('pt-PT',{hour:'2-digit',minute:'2-digit'})}] ${dec.decisao} | Encam: ${dec.encaminhamento} | Por: ${quem}${dec.notas?' | Notas: '+dec.notas:''}`;
+    const newHist=(it.historicoDecisoes?it.historicoDecisoes+'\n---\n':'')+histEntry;
+
+    // Auto-update TipoReuniao based on encaminhamento
+    let novoTipo=it.reuniao;
+    if(dec.encaminhamento==='Segue para CA')novoTipo='Reunião com CAdm';
+    else if(dec.encaminhamento==='Presidente Executivo'||dec.encaminhamento==='Ambos')novoTipo='Reunião Gestão';
+
+    const body={__metadata:{type:'SP.Data.FJ_x005f_AssuntosListItem'},
       Decis_x00e3_o:dec.decisao,
       Encaminhamento:dec.encaminhamento||'—',
-      Notas:(it.notas?it.notas+'\n\n':'')+'['+new Date().toLocaleDateString('pt-PT')+']: '+dec.notas
+      HistoricoDecisoes:newHist,
+      TipoReuni_x00e3_o:novoTipo
     };
-    await spWrite(`${SP}/_api/web/lists/getbytitle('${LIST}')/items(${it.id})`,body,'MERGE',it.etag);
-    const msg=document.getElementById('dec-saved-msg');
-    if(msg){msg.textContent='✓ Guardado';setTimeout(()=>msg.textContent='',2500);}
-    document.getElementById('carr-saved-msg').textContent='✓ Decisão guardada';
-    showNotif('Decisão guardada no SharePoint!','success');
+    if(dec.notas){body.Notas=(it.notas?it.notas+'\n\n':'')+`[${now.toLocaleDateString('pt-PT')}] ${dec.notas}`;}
+    await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Assuntos')/items(${it.id})`,body,'MERGE',it.etag);
+
+    // Update local item
+    const idx=items.findIndex(x=>x.id===it.id);
+    if(idx>=0){items[idx].decisao=dec.decisao;items[idx].encaminhamento=dec.encaminhamento;items[idx].historicoDecisoes=newHist;items[idx].reuniao=novoTipo;}
+    const cidx=carrItems.findIndex(x=>x.id===it.id);
+    if(cidx>=0){carrItems[cidx].historicoDecisoes=newHist;carrItems[cidx].reuniao=novoTipo;}
+
+    const msg=el('dec-saved-msg');if(msg){msg.textContent='✓ Guardado';setTimeout(()=>msg.textContent='',2500);}
+    el('carr-saved-msg').textContent='✓ Decisão guardada';
+    showNotif('Decisão guardada!','success');
     setTimeout(()=>document.getElementById('notif').classList.remove('show'),2000);
   }catch(e){showNotif('Erro: '+e.message,'error');}
 }
@@ -751,18 +1178,46 @@ function nextA(){
   if(carrIdx<carrItems.length-1){carrIdx++;renderCarr();if(fsOpen)renderFS();}
   else terminarReuniao();
 }
-function terminarReuniao(){saveNotas();mostrarSumario();}
+function terminarReuniao(){saveNotas();guardarReuniao();mostrarSumario();}
 
-/* FULLSCREEN */
+async function guardarReuniao(){
+  try{
+    const body={__metadata:{type:'SP.Data.FJ_x005f_ReunioesListItem'},
+      Title:currReuniao+' — '+new Date().toLocaleDateString('pt-PT'),
+      TipoReuniao:currReuniao,
+      Data:new Date().toISOString(),
+      Participantes:user.name||user.username,
+      Estado:'Concluída',
+      NotasGerais:`${carrItems.length} assuntos tratados. Decisões: ${carrItems.filter(i=>carrDec[i.id]?.decisao==='Aprovado').length} aprovados, ${carrItems.filter(i=>carrDec[i.id]?.decisao==='Não aprovado').length} não aprovados.`
+    };
+    await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Reunioes')/items`,body,'POST');
+    loadHistReunioes();
+  }catch(e){console.warn('Erro ao guardar reunião',e);}
+}
+
+async function loadHistReunioes(){
+  try{
+    const d=await spRead(`${SP}/_api/web/lists/getbytitle('FJ_Reunioes')/items?$select=*&$orderby=Created desc&$top=20`);
+    const reunioes=d.d.results.filter(r=>canSeeReuniao(r.TipoReuniao||''));
+    const wrap=el('hist-reunioes-wrap');
+    if(!reunioes.length){wrap.innerHTML='';return;}
+    wrap.innerHTML=`<div class="hist-reunioes">
+      <div class="hist-reunioes-title">&#128196; Histórico de reuniões recentes</div>
+      ${reunioes.map(r=>`<div class="hist-item">
+        <div style="font-weight:500;font-size:13px">${r.Title||'Reunião'}</div>
+        <div style="font-size:11px;color:var(--text2);margin-top:3px">${r.NotasGerais||''}</div>
+      </div>`).join('')}
+    </div>`;
+  }catch(e){console.warn('Hist reunioes error',e);}
+}
+
+// FULLSCREEN
 function openFS(){
-  fsOpen=true;
-  document.getElementById('fs-wrap').classList.add('open');
-  renderFS();
+  fsOpen=true;el('fs-wrap').classList.add('open');renderFS();
   document.addEventListener('keydown',fsKey);
 }
 function closeFS(){
-  fsOpen=false;
-  document.getElementById('fs-wrap').classList.remove('open');
+  fsOpen=false;el('fs-wrap').classList.remove('open');
   document.removeEventListener('keydown',fsKey);
 }
 function fsKey(e){
@@ -772,18 +1227,18 @@ function fsKey(e){
 }
 function renderFS(){
   const it=carrItems[carrIdx],total=carrItems.length,pct=Math.round(((carrIdx+1)/total)*100);
-  document.getElementById('fs-reuniao-nome').textContent=currReuniaoNome;
-  document.getElementById('fs-prog-txt').textContent=`Assunto ${carrIdx+1} de ${total}`;
-  document.getElementById('fs-prog-fill').style.width=pct+'%';
-  document.getElementById('fs-prev').disabled=carrIdx===0;
-  document.getElementById('fs-next').textContent=carrIdx===total-1?'Ver sumário →':'Seguinte →';
+  el('fs-nome').textContent=currReuniao;
+  el('fs-prog-txt').textContent=`Assunto ${carrIdx+1} de ${total}`;
+  el('fs-prog-fill').style.width=pct+'%';
+  el('fs-prev').disabled=carrIdx===0;
+  el('fs-next').textContent=carrIdx===total-1?'Ver sumário →':'Seguinte →';
   const isD=it.tipo==='Deliberativo';
-  const attHtml=it.attachments?.length?`<div style="margin-bottom:1.75rem">${it.attachments.map(a=>`<a class="doc-link" href="${SP}${a.url}" target="_blank" style="margin-right:6px">&#128206; ${a.name}</a>`).join('')}</div>`:'';
-  document.getElementById('fs-content').innerHTML=`
-    <div class="assunto-badges" style="margin-bottom:1.25rem">
+  const attHtml=it.attachments?.length?`<div style="margin-bottom:1.75rem;display:flex;gap:8px;flex-wrap:wrap">${it.attachments.map(a=>`<a href="${SP}${a.url}" target="_blank" class="badge" style="background:var(--blue-l);color:var(--blue-d)">&#128206; ${a.name}</a>`).join('')}</div>`:'';
+  const histEnc=it.encaminhamento&&it.encaminhamento!=='—'?`<div class="hist-enc-box" style="background:rgba(99,59,6,.1);border-color:rgba(99,59,6,.3);color:var(--amber)">&#128257; Encaminhado: <strong>${it.encaminhamento}</strong></div>`:'';
+  el('fs-content').innerHTML=`
+    <div style="display:flex;gap:8px;margin-bottom:1.25rem;flex-wrap:wrap">
       <span class="badge ${isD?'b-delib':'b-info'}">${it.tipo}</span>
       ${it.confidencial?'<span class="badge b-na">&#128274; Confidencial</span>':''}
-      ${it.atrasado?'<span class="badge b-nap">Atrasado</span>':''}
     </div>
     <div class="fs-titulo">${it.titulo}</div>
     <div class="fs-meta">
@@ -791,88 +1246,59 @@ function renderFS(){
       ${it.data?`<span>&#128197; ${fd(it.data)}</span>`:''}
       ${bdg(EM,it.estado)}
     </div>
-    ${attHtml}
-    <div class="fs-section-label">Contextualização</div>
-    <div class="fs-content-box ${it.notas?'':'empty'}">${it.notas||'Sem contextualização definida.'}</div>
-    ${isD?`<div class="fs-section-label">Proposta de Decisão</div>
+    ${attHtml}${histEnc}
+    <div class="fs-sec-label">Contextualização</div>
+    <div class="fs-content-box ${it.notas?'':'empty'}">${it.notas||'Sem contextualização.'}</div>
+    ${isD?`<div class="fs-sec-label">Proposta de Decisão</div>
     <div class="fs-proposta-box ${it.proposta?'':'empty'}">${it.proposta||'Sem proposta definida.'}</div>`:''}
   `;
-  renderFSSide();
-}
-function renderFSSide(){
-  const it=carrItems[carrIdx],dec=carrDec[it.id]||{decisao:'',encaminhamento:'—',notas:''};
-  document.getElementById('fs-side').innerHTML=`
-    <div class="dec-label">Decisão</div>
-    <button class="dec-btn ${dec.decisao==='Aprovado'?'sel-aprov':''}" onclick="selDec('Aprovado',this)">&#10003; Aprovado</button>
-    <button class="dec-btn ${dec.decisao==='Não aprovado'?'sel-nap':''}" onclick="selDec('Não aprovado',this)">&#10007; Não aprovado</button>
-    <button class="dec-btn ${dec.decisao==='Pendente'?'sel-pend':''}" onclick="selDec('Pendente',this)">&#9646; Pendente</button>
-    <hr style="border:none;border-top:0.5px solid var(--border);margin:.25rem 0">
-    <div class="dec-label">Encaminhamento</div>
-    <div class="enc-grid">
-      <button class="enc-btn ${dec.encaminhamento==='—'?'sel':''}" onclick="selEnc('—',this)">—</button>
-      <button class="enc-btn ${dec.encaminhamento==='Presidente Executivo'?'sel':''}" onclick="selEnc('Presidente Executivo',this)">Pres. Exec.</button>
-      <button class="enc-btn ${dec.encaminhamento==='Segue para CA'?'sel':''}" onclick="selEnc('Segue para CA',this)">Segue CA</button>
-      <button class="enc-btn ${dec.encaminhamento==='Ambos'?'sel':''}" onclick="selEnc('Ambos',this)">Ambos</button>
-    </div>
-    <hr style="border:none;border-top:0.5px solid var(--border);margin:.25rem 0">
-    <div class="dec-label">Notas da decisão</div>
-    <textarea class="notas-dec" id="fs-notas-input" placeholder="Registe as observações...">${dec.notas}</textarea>
-    <button class="guardar-dec-btn" onclick="guardarDec()">&#10003; Guardar decisão</button>
-    <div class="dec-saved-msg" id="dec-saved-msg"></div>
-  `;
+  el('fs-side').innerHTML=renderSideHTML(it).replace('notas-dec-input','fs-notas-input').replace("id='dec-saved-msg'","id='fs-dec-saved-msg'");
 }
 
-/* SUMÁRIO */
+// SUMÁRIO
 function mostrarSumario(){
-  document.getElementById('carousel-wrap').style.display='none';
-  document.getElementById('sumario-wrap').style.display='block';
+  el('carr-wrap').style.display='none';
+  el('sumario-wrap').style.display='block';
   if(fsOpen)closeFS();
-  document.getElementById('sumario-meta').textContent=`${currReuniaoNome} · ${carrItems.length} assunto${carrItems.length!==1?'s':''} · ${new Date().toLocaleDateString('pt-PT')}`;
-  document.getElementById('sumario-body').innerHTML=carrItems.map(it=>{
+  el('sumario-meta').textContent=`${currReuniao} · ${carrItems.length} assunto${carrItems.length!==1?'s':''} · ${new Date().toLocaleDateString('pt-PT')}`;
+  el('sumario-body').innerHTML=carrItems.map(it=>{
     const dec=carrDec[it.id]||{decisao:'—',encaminhamento:'—',notas:''};
     return `<div class="sumario-item">
       <div class="sumario-item-title">${it.titulo}</div>
-      <div class="sumario-item-meta">
+      <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:6px">
         <span class="badge ${it.tipo==='Deliberativo'?'b-delib':'b-info'}">${it.tipo}</span>
         <span class="badge ${DM[dec.decisao]||'b-na'}">${dec.decisao||'—'}</span>
         <span class="badge ${CM[dec.encaminhamento]||'b-na'}">${dec.encaminhamento||'—'}</span>
       </div>
-      ${dec.notas?`<div class="sumario-item-notas">${dec.notas}</div>`:''}
+      ${dec.notas?`<div style="font-size:12px;color:var(--text2);font-style:italic">${dec.notas}</div>`:''}
     </div>`;
   }).join('');
 }
 function novaReuniao(){
-  document.getElementById('reuniao-setup').style.display='block';
-  document.getElementById('carousel-wrap').style.display='none';
-  document.getElementById('sumario-wrap').style.display='none';
+  el('reuniao-setup').style.display='block';
+  el('carr-wrap').style.display='none';
+  el('sumario-wrap').style.display='none';
   loadItems();
 }
 
-/* EXPORTAR PPT */
+// PPT EXPORT
 async function exportPPT(){
   if(!carrItems.length){alert('Nenhum assunto.');return;}
-  const pptx=new PptxGenJS();
-  pptx.layout='LAYOUT_WIDE';
+  const pptx=new PptxGenJS();pptx.layout='LAYOUT_WIDE';
   const W=13.33,H=7.5,B='003087',O='FF6B00',WH='FFFFFF',GR='5F5E5A';
-
-  // Capa
   const cp=pptx.addSlide();
   cp.addShape(pptx.ShapeType.rect,{x:0,y:0,w:W,h:H,fill:{color:'EEF1F6'}});
   cp.addShape(pptx.ShapeType.rect,{x:0,y:0,w:W,h:1.4,fill:{color:B}});
   cp.addShape(pptx.ShapeType.rect,{x:0,y:H-.6,w:W,h:.6,fill:{color:B}});
   cp.addText('Fundação da Juventude',{x:.5,y:0,w:W-1,h:1.4,fontSize:13,color:'AACCEE',valign:'middle',fontFace:'Calibri'});
-  cp.addText(currReuniaoNome,{x:.6,y:1.6,w:W-1.2,h:2,fontSize:48,bold:true,color:B,align:'center',valign:'middle',fontFace:'Calibri'});
-  cp.addText(new Date().toLocaleDateString('pt-PT'),{x:.6,y:3.8,w:W-1.2,h:.6,fontSize:22,color:GR,align:'center',fontFace:'Calibri'});
-  cp.addText(`${carrItems.length} assunto${carrItems.length!==1?'s':''}`,{x:.6,y:4.5,w:W-1.2,h:.4,fontSize:14,color:GR,align:'center',fontFace:'Calibri'});
-
+  cp.addText(currReuniao,{x:.6,y:1.6,w:W-1.2,h:2,fontSize:44,bold:true,color:B,align:'center',valign:'middle',fontFace:'Calibri'});
+  cp.addText(new Date().toLocaleDateString('pt-PT'),{x:.6,y:3.8,w:W-1.2,h:.6,fontSize:20,color:GR,align:'center',fontFace:'Calibri'});
   for(const it of carrItems){
-    const sl=pptx.addSlide();
-    const dec=carrDec[it.id]||{decisao:'Pendente',encaminhamento:'—',notas:''};
-    const isD=it.tipo==='Deliberativo';
+    const sl=pptx.addSlide();const dec=carrDec[it.id]||{decisao:'Pendente',encaminhamento:'—',notas:''};const isD=it.tipo==='Deliberativo';
     sl.addShape(pptx.ShapeType.rect,{x:0,y:0,w:W,h:H,fill:{color:'F5F6F8'}});
     sl.addShape(pptx.ShapeType.rect,{x:0,y:0,w:W,h:1.1,fill:{color:B}});
     sl.addShape(pptx.ShapeType.rect,{x:0,y:H-.06,w:W,h:.06,fill:{color:O}});
-    sl.addText(it.titulo,{x:.3,y:0,w:9.5,h:1.1,fontSize:20,bold:true,color:WH,valign:'middle',fontFace:'Calibri',wrap:true});
+    sl.addText(it.titulo,{x:.3,y:0,w:9.5,h:1.1,fontSize:19,bold:true,color:WH,valign:'middle',fontFace:'Calibri',wrap:true});
     if(it.responsavel)sl.addText(it.responsavel,{x:9.8,y:.1,w:3.2,h:.42,fontSize:12,color:'AACCEE',align:'right',fontFace:'Calibri'});
     if(it.data)sl.addText(fd(it.data),{x:9.8,y:.58,w:3.2,h:.34,fontSize:11,color:'AACCEE',align:'right',fontFace:'Calibri'});
     sl.addText(isD?'Para decisão':'Informativo',{shape:pptx.ShapeType.roundRect,rectRadius:.1,x:.3,y:.76,w:1.6,h:.26,fill:{color:isD?'534AB7':GR},line:{color:isD?'534AB7':GR,width:0},fontSize:10,color:WH,align:'center',valign:'middle',fontFace:'Calibri'});
@@ -880,13 +1306,12 @@ async function exportPPT(){
     sl.addShape(pptx.ShapeType.roundRect,{x:.3,y:1.52,w:W-.6,h:isD?1.9:3.8,fill:{color:WH},line:{color:'DDE2EE',width:.8},rectRadius:.12});
     if(it.notas)sl.addText(it.notas,{x:.5,y:1.62,w:W-1,h:isD?1.7:3.6,fontSize:13,color:'1a1a2e',valign:'top',fontFace:'Calibri',wrap:true});
     if(isD&&it.proposta){
-      sl.addText('Proposta de Decisão:',{x:.3,y:3.52,w:2.8,h:.3,fontSize:11,bold:true,color:B,fontFace:'Calibri'});
+      sl.addText('Proposta:',{x:.3,y:3.52,w:2.8,h:.3,fontSize:11,bold:true,color:B,fontFace:'Calibri'});
       sl.addShape(pptx.ShapeType.roundRect,{x:.3,y:3.86,w:W-.6,h:1.6,fill:{color:WH},line:{color:'C8D0E0',width:1.2,dashType:'dash'},rectRadius:.12});
       if(it.proposta)sl.addText(it.proposta,{x:.5,y:3.96,w:W-1,h:1.4,fontSize:13,color:'1a1a2e',valign:'top',fontFace:'Calibri',wrap:true});
     }
     if(isD){
-      const fy=H-.88;
-      const dC=dec.decisao==='Aprovado'?'639922':dec.decisao==='Não aprovado'?'C00000':'888780';
+      const fy=H-.88;const dC=dec.decisao==='Aprovado'?'639922':dec.decisao==='Não aprovado'?'C00000':'888780';
       sl.addText('Decisão:',{x:.3,y:fy,w:1.4,h:.26,fontSize:10,bold:true,color:GR,fontFace:'Calibri'});
       sl.addText(dec.decisao||'Pendente',{shape:pptx.ShapeType.roundRect,rectRadius:.1,x:.3,y:fy+.3,w:1.4,h:.3,fill:{color:dC},line:{color:dC,width:0},fontSize:11,color:WH,bold:true,align:'center',valign:'middle',fontFace:'Calibri'});
       const eC={'Presidente Executivo':'534AB7','Segue para CA':'185FA5','Ambos':'854F0B','—':'888780'}[dec.encaminhamento||'—'];
@@ -895,13 +1320,11 @@ async function exportPPT(){
       if(dec.notas){sl.addText('Notas:',{x:4.3,y:fy,w:8.7,h:.26,fontSize:10,bold:true,color:GR,fontFace:'Calibri'});sl.addText(dec.notas,{x:4.3,y:fy+.3,w:8.7,h:.3,fontSize:11,color:'1a1a2e',fontFace:'Calibri',wrap:true});}
     }
   }
-  await pptx.writeFile({fileName:`${currReuniaoNome.replace(/\s+/g,'_')}_${today()}.pptx`});
+  await pptx.writeFile({fileName:`${currReuniao.replace(/\s+/g,'_')}_${today()}.pptx`});
 }
-
 function exportPDF(){
   const linhas=carrItems.map((it,i)=>{
-    const dec=carrDec[it.id]||{decisao:'—',encaminhamento:'—',notas:''};
-    const isD=it.tipo==='Deliberativo';
+    const dec=carrDec[it.id]||{decisao:'—',encaminhamento:'—',notas:''};const isD=it.tipo==='Deliberativo';
     const dC=dec.decisao==='Aprovado'?'#639922':dec.decisao==='Não aprovado'?'#C00000':'#888780';
     return `<div style="margin-bottom:20px;padding:16px;border:1px solid #dde2ee;border-radius:8px;page-break-inside:avoid">
       <div style="font-size:16px;font-weight:700;margin-bottom:6px;color:#003087">${i+1}. ${it.titulo}</div>
@@ -916,32 +1339,28 @@ function exportPDF(){
     </div>`;
   }).join('');
   const w=window.open('','_blank');
-  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8">
-    <style>body{font-family:Arial,sans-serif;padding:40px;max-width:800px;margin:0 auto;color:#1a1a2e}
-    h1{color:#003087;font-size:22px;margin-bottom:4px}.sub{color:#5a6278;font-size:13px;margin-bottom:24px}
-    @media print{body{padding:20px}}</style></head><body>
-    <h1>Gestão de Reuniões — Fundação da Juventude</h1>
-    <div class="sub">${currReuniaoNome} · ${new Date().toLocaleDateString('pt-PT')}</div>
-    ${linhas}</body></html>`);
+  w.document.write(`<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:Arial,sans-serif;padding:40px;max-width:800px;margin:0 auto;color:#1a1a2e}h1{color:#003087;font-size:22px;margin-bottom:4px}.sub{color:#5a6278;font-size:13px;margin-bottom:24px}@media print{body{padding:20px}}</style></head><body><h1>Gestão de Reuniões — Fundação da Juventude</h1><div class="sub">${currReuniao} · ${new Date().toLocaleDateString('pt-PT')}</div>${linhas}</body></html>`);
   w.document.close();w.print();
 }
 
-/* UTILS */
+// UTILS
 function showPage(p){
-  document.querySelectorAll('.page').forEach(el=>el.classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
-  document.getElementById('page-'+p).classList.add('active');
-  document.getElementById('nav-'+p).classList.add('active');
+  document.querySelectorAll('.page').forEach(e=>e.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active'));
+  el('page-'+p).classList.add('active');
+  el('nav-'+p).classList.add('active');
 }
 function showNotif(msg,type='info'){
-  const n=document.getElementById('notif');
-  n.textContent=msg;n.className='notif show'+(type==='success'?' success':type==='error'?' error':'');
+  const n=el('notif');n.textContent=msg;
+  n.className='notif show'+(type==='success'?' success':type==='error'?' error':'');
 }
-function tog(k){T[k]=!T[k];const b=document.getElementById('t-'+k),l=document.getElementById('l-'+k);if(b)b.className='toggle'+(T[k]?' on':'');if(l)l.textContent=T[k]?'Sim':'Não';}
-function setTog(k,v){T[k]=v;const b=document.getElementById('t-'+k),l=document.getElementById('l-'+k);if(b)b.className='toggle'+(v?' on':'');if(l)l.textContent=v?'Sim':'Não';}
-function gv(id){const el=document.getElementById(id);return el?el.value:'';}
-function gv2(id){const el=document.getElementById(id);return el?el.value:'';}
-function sv(id,v){const el=document.getElementById(id);if(el)el.value=v;}
+function tog(k){T[k]=!T[k];const b=el('t-'+k),l=el('l-'+k);if(b)b.className='toggle'+(T[k]?' on':'');if(l)l.textContent=T[k]?'Sim':'Não';}
+function setTog(k,v){T[k]=v;const b=el('t-'+k),l=el('l-'+k);if(b)b.className='toggle'+(v?' on':'');if(l)l.textContent=v?'Sim':'Não';}
+function el(id){return document.getElementById(id);}
+function gv(id){const e=el(id);return e?e.value:'';}
+function gv2t(id){const e=el(id);return e?e.value:'';}
+function sv(id,v){const e=el(id);if(e&&e.tagName==='DIV')e.textContent=v;}
+function sv2(id,v){const e=el(id);if(e)e.value=v;}
 function today(){return new Date().toISOString().slice(0,10);}
 function fd(d){if(!d)return'—';try{const[y,m,day]=d.split('-');return`${day}/${m}/${y}`;}catch(e){return d;}}
 
