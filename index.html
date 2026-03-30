@@ -219,6 +219,35 @@ tr:hover td{background:var(--bg3)}
 .access-denied{background:var(--red-bg);border:0.5px solid var(--red);border-radius:var(--r-lg);padding:2rem;text-align:center;color:var(--red)}
 .access-denied h3{font-size:16px;font-weight:600;margin-bottom:8px}
 
+/* PREP MODE */
+.prep-wrap{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden;margin-top:1rem;display:none}
+.prep-header{background:var(--fj-blue);color:#fff;padding:1rem 1.5rem;display:flex;align-items:center;justify-content:space-between}
+.prep-header h3{font-size:15px;font-weight:500}
+.prep-body{padding:1rem}
+.prep-item{display:flex;align-items:center;gap:10px;background:var(--bg3);border:0.5px solid var(--border);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:6px;cursor:grab;user-select:none}
+.prep-item.dragging{opacity:.5;border-style:dashed}
+.prep-item.drag-over{border-color:var(--fj-orange);background:var(--amber-bg)}
+.prep-item-num{width:24px;height:24px;border-radius:50%;background:var(--fj-blue);color:#fff;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;flex-shrink:0}
+.prep-item-title{flex:1;font-size:13px;font-weight:500}
+.prep-item-remove{background:none;border:none;cursor:pointer;color:var(--text3);font-size:16px;padding:2px 4px}
+.prep-item-remove:hover{color:var(--red)}
+.prep-footer{padding:1rem 1.5rem;border-top:0.5px solid var(--border);display:flex;gap:8px;justify-content:space-between;align-items:center}
+
+/* AGENDA BAR */
+.agenda-bar{background:var(--bg3);border-bottom:0.5px solid var(--border);padding:.5rem 1.5rem;display:flex;gap:6px;align-items:center;overflow-x:auto;flex-shrink:0}
+.agenda-dot{width:8px;height:8px;border-radius:50%;background:var(--border2);flex-shrink:0;transition:all .2s}
+.agenda-dot.done{background:var(--green-mid)}
+.agenda-dot.current{background:var(--fj-orange);width:10px;height:10px}
+.agenda-dot.pending{background:var(--border2)}
+.agenda-item-chip{font-size:11px;padding:3px 8px;border-radius:12px;background:var(--bg2);border:0.5px solid var(--border);color:var(--text2);white-space:nowrap;cursor:default;flex-shrink:0}
+.agenda-item-chip.current{background:var(--fj-orange);color:#fff;border-color:var(--fj-orange);font-weight:600}
+.agenda-item-chip.done{background:var(--green-bg);color:var(--green);border-color:var(--green-mid)}
+
+/* SAVED SESSIONS */
+.saved-sessions{margin-top:1rem}
+.saved-session-item{background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:6px;display:flex;align-items:center;justify-content:space-between;cursor:pointer}
+.saved-session-item:hover{background:var(--bg3)}
+
 @media(max-width:900px){
   .sidebar{display:none}.stats{grid-template-columns:repeat(2,1fr)}
   .fgrid{grid-template-columns:1fr}
@@ -385,17 +414,41 @@ tr:hover td{background:var(--bg3)}
           </table>
         </div>
         <div id="tcount" style="margin-top:8px;font-size:12px;color:var(--text3)"></div>
+        <div id="ca-topics-panel"></div>
       </div>
 
       <!-- CONDUZIR REUNIÃO -->
       <div class="page" id="page-reuniao">
         <div class="page-title">Conduzir reunião</div>
-        <div id="reuniao-setup" class="reuniao-setup">
+        <div id="reuniao-setup" class="reuniao-setup" style="max-width:700px">
           <h2>Iniciar reunião</h2>
           <p style="font-size:14px;color:var(--text2);margin-bottom:1.5rem">Seleciona o tipo de reunião para carregar os assuntos.</p>
-          <select id="r-tipo"><option>Reunião com CAdm</option><option>Reunião Gestão</option><option>Reunião O.Norte</option><option>Reunião O.Sul</option><option>Reunião Financeiro</option><option>Reunião Impacto</option></select>
+          <select id="r-tipo" onchange="loadSavedSessions()"><option>Reunião com CAdm</option><option>Reunião Gestão</option><option>Reunião O.Norte</option><option>Reunião O.Sul</option><option>Reunião Financeiro</option><option>Reunião Impacto</option></select>
           <select id="r-filtro"><option value="todos">Incluir todos os assuntos</option><option value="abertos">Apenas não concluídos</option><option value="pendentes">Apenas pendentes de decisão</option></select>
-          <button class="btn btn-orange" style="width:100%;padding:14px;font-size:16px;border-radius:var(--r);margin-top:1rem" onclick="iniciarReuniao()">Iniciar reunião</button>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:1rem">
+            <button class="btn" style="padding:12px;font-size:14px" onclick="prepararReuniao()">&#128203; Preparar ordem de trabalhos</button>
+            <button class="btn btn-orange" style="padding:12px;font-size:14px" onclick="iniciarReuniao()">&#9654; Iniciar reunião</button>
+          </div>
+          <div id="saved-sessions-wrap" class="saved-sessions"></div>
+        </div>
+
+        <!-- PREP MODE -->
+        <div id="prep-wrap" class="prep-wrap">
+          <div class="prep-header">
+            <div>
+              <h3 id="prep-title">Preparar ordem de trabalhos</h3>
+              <div style="font-size:12px;opacity:.7;margin-top:2px">Arraste para reordenar · Clique no × para remover da sessão</div>
+            </div>
+            <div style="display:flex;gap:8px">
+              <button class="btn" style="background:rgba(255,255,255,.15);color:#fff;border-color:rgba(255,255,255,.3);font-size:12px" onclick="guardarSessao()">&#128190; Guardar para amanhã</button>
+              <button class="btn" style="background:rgba(255,255,255,.1);color:rgba(255,255,255,.7);border-color:rgba(255,255,255,.2);font-size:12px" onclick="fecharPrep()">Cancelar</button>
+            </div>
+          </div>
+          <div class="prep-body" id="prep-body"></div>
+          <div class="prep-footer">
+            <div style="font-size:12px;color:var(--text2)" id="prep-count"></div>
+            <button class="btn btn-orange" onclick="iniciarComPrep()">&#9654; Iniciar com esta ordem</button>
+          </div>
         </div>
         <div id="hist-reunioes-wrap" style="max-width:600px;margin:1.5rem auto 0"></div>
         <div id="carr-wrap" class="carr-wrap">
@@ -407,6 +460,7 @@ tr:hover td{background:var(--bg3)}
             </div>
           </div>
           <div class="prog-bar-wrap"><div class="prog-bar" id="prog-bar"></div></div>
+          <div id="agenda-bar" class="agenda-bar"></div>
           <div class="carr-body">
             <div class="carr-content" id="carr-content"></div>
             <div class="carr-side" id="carr-side"></div>
@@ -655,7 +709,7 @@ function showApp(){
   document.getElementById('dd-email').textContent=user.username;
   const groupNames=Object.entries(GROUPS).filter(([k,v])=>userGroups.includes(v)).map(([k])=>k).join(', ')||'Sem grupos';
   document.getElementById('dd-groups').textContent=groupNames;
-  loadItems();loadExtItems();loadTarefas();loadHistReunioes();
+  loadItems();loadExtItems();loadTarefas();loadHistReunioes();loadSavedSessions();
 }
 
 async function getDigest(){
@@ -723,9 +777,45 @@ async function loadItems(){
       nivelOrigem:r.NivelOrigem||'',nivelAtual:r.NivelAtual||'',
       attachments:(r.AttachmentFiles?.results||[]).map(a=>({name:a.FileName,url:a.ServerRelativeUrl}))
     }));
-    renderStats();renderTable();
+    renderStats();renderTable();renderCATopics();
     showNotif('Carregado!','success');setTimeout(()=>document.getElementById('notif').classList.remove('show'),1500);
   }catch(e){showNotif('Erro: '+e.message,'error');}
+}
+
+function renderCATopics(){
+  const panel=el('ca-topics-panel');
+  if(!panel)return;
+  // Show to Gestao group (not CA, they see everything already)
+  if(!userGroups.includes(GROUPS.Gestao)||userGroups.includes(GROUPS.CA)){panel.innerHTML='';return;}
+  const caItems=items.filter(i=>i.reuniao==='Reunião com CAdm'&&i.estado!=='Concluído'&&i.estado!=='Cancelado');
+  if(!caItems.length){panel.innerHTML='';return;}
+  panel.innerHTML=`<div style="margin-top:1.5rem">
+    <div style="font-size:13px;font-weight:600;color:var(--text2);margin-bottom:.75rem;display:flex;align-items:center;gap:8px">
+      <span class="badge b-ca">CA</span>
+      Tópicos em Conselho de Administração
+      <span style="font-size:11px;font-weight:400;color:var(--text3)">(só leitura)</span>
+    </div>
+    <div style="background:var(--bg2);border:0.5px solid var(--border);border-radius:var(--r-lg);overflow:hidden">
+      <table style="width:100%;border-collapse:collapse">
+        <thead style="background:var(--bg3)">
+          <tr>
+            <th style="padding:8px 12px;font-size:11px;font-weight:600;color:var(--text2);text-align:left;border-bottom:0.5px solid var(--border)">Tópico</th>
+            <th style="padding:8px 12px;font-size:11px;font-weight:600;color:var(--text2);text-align:left;border-bottom:0.5px solid var(--border)">Tipo</th>
+            <th style="padding:8px 12px;font-size:11px;font-weight:600;color:var(--text2);text-align:left;border-bottom:0.5px solid var(--border)">Estado</th>
+            <th style="padding:8px 12px;font-size:11px;font-weight:600;color:var(--text2);text-align:left;border-bottom:0.5px solid var(--border)">Data</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${caItems.map(i=>`<tr style="border-bottom:0.5px solid var(--border)">
+            <td style="padding:8px 12px;font-size:13px;font-weight:500">${i.titulo}</td>
+            <td style="padding:8px 12px"><span class="badge ${i.tipo==='Deliberativo'?'b-delib':'b-info'}">${i.tipo==='Deliberativo'?'Delib.':'Inform.'}</span></td>
+            <td style="padding:8px 12px"><span class="badge ${{'Em aberto':'b-aberto','Em processo':'b-processo','Concluído':'b-concluido'}[i.estado]||'b-na'}">${i.estado}</span></td>
+            <td style="padding:8px 12px;font-size:12px;color:var(--text2)">${fd(i.data)}</td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
 }
 
 const RM={'Reunião com CAdm':'b-ca','Reunião Gestão':'b-gestao','Reunião O.Norte':'b-opnorte','Reunião O.Sul':'b-opsul','Reunião Financeiro':'b-fin','Reunião Impacto':'b-imp'};
@@ -1098,12 +1188,144 @@ async function deleteTar(id){
   }catch(e){showNotif('Erro: '+e.message,'error');}
 }
 
+// PREP MODE & SAVED SESSIONS
+let prepItems=[];
+let dragSrc=null;
+
+function prepararReuniao(){
+  const tipo=gv('r-tipo'),filtro=gv('r-filtro');
+  if(!canSeeReuniao(tipo)){
+    el('reuniao-setup').innerHTML=`<div class="access-denied"><h3>Sem acesso</h3><p>Não tens permissão para este tipo de reunião.</p><br><button class="btn btn-primary" onclick="location.reload()">← Regressar</button></div>`;
+    return;
+  }
+  let lista=items.filter(i=>i.reuniao===tipo);
+  if(filtro==='abertos')lista=lista.filter(i=>i.estado!=='Concluído'&&i.estado!=='Cancelado');
+  if(filtro==='pendentes')lista=lista.filter(i=>i.decisao==='Pendente');
+  if(!lista.length){alert('Nenhum assunto encontrado.');return;}
+  prepItems=lista.map(i=>({...i}));
+  el('reuniao-setup').style.display='none';
+  el('prep-wrap').style.display='block';
+  el('prep-title').textContent='Preparar — '+tipo;
+  renderPrepItems();
+}
+
+function renderPrepItems(){
+  el('prep-count').textContent=`${prepItems.length} assunto${prepItems.length!==1?'s':''}`;
+  el('prep-body').innerHTML=prepItems.map((it,i)=>`
+    <div class="prep-item" draggable="true" data-idx="${i}"
+      ondragstart="dragStart(event,${i})"
+      ondragover="dragOver(event,${i})"
+      ondrop="dragDrop(event,${i})"
+      ondragend="dragEnd(event)">
+      <div class="prep-item-num">${i+1}</div>
+      <span class="badge ${it.tipo==='Deliberativo'?'b-delib':'b-info'}" style="font-size:10px">${it.tipo==='Deliberativo'?'D':'I'}</span>
+      <div class="prep-item-title">${it.titulo}</div>
+      ${it.decisao&&it.decisao!=='Pendente'?`<span class="badge ${it.decisao==='Aprovado'?'b-aprov':'b-nap'}" style="font-size:10px">${it.decisao}</span>`:''}
+      <button class="prep-item-remove" onclick="removePrepItem(${i})" title="Remover desta sessão">&#10005;</button>
+    </div>`).join('');
+}
+
+function removePrepItem(idx){
+  prepItems.splice(idx,1);
+  renderPrepItems();
+}
+
+function dragStart(e,idx){dragSrc=idx;e.currentTarget.classList.add('dragging');}
+function dragOver(e,idx){e.preventDefault();document.querySelectorAll('.prep-item').forEach((el,i)=>{el.classList.toggle('drag-over',i===idx&&idx!==dragSrc);});}
+function dragDrop(e,idx){
+  e.preventDefault();
+  if(dragSrc===null||dragSrc===idx)return;
+  const moved=prepItems.splice(dragSrc,1)[0];
+  prepItems.splice(idx,0,moved);
+  dragSrc=null;
+  renderPrepItems();
+}
+function dragEnd(e){e.currentTarget.classList.remove('dragging');document.querySelectorAll('.prep-item').forEach(el=>el.classList.remove('drag-over'));}
+
+function fecharPrep(){
+  el('prep-wrap').style.display='none';
+  el('reuniao-setup').style.display='block';
+}
+
+function iniciarComPrep(){
+  if(!prepItems.length){alert('Adiciona pelo menos um assunto.');return;}
+  carrItems=prepItems;carrIdx=0;carrDec={};currReuniao=gv('r-tipo');
+  el('prep-wrap').style.display='none';
+  el('carr-wrap').style.display='block';
+  el('sumario-wrap').style.display='none';
+  el('carr-nome').textContent=currReuniao;
+  const cores=getCores(currReuniao);
+  el('carr-wrap').querySelector('.carr-header').style.background=cores.bg;
+  renderCarr();renderAgendaBar();
+}
+
+function guardarSessao(){
+  const tipo=gv('r-tipo');
+  const sessao={tipo,items:prepItems.map(i=>i.id),data:today()};
+  const key='fj_sessao_'+tipo.replace(/\s+/g,'_');
+  localStorage.setItem(key,JSON.stringify(sessao));
+  showNotif('Sessão guardada! Estará disponível amanhã.','success');
+  fecharPrep();
+  loadSavedSessions();
+}
+
+function loadSavedSessions(){
+  const tipo=gv('r-tipo');
+  const key='fj_sessao_'+tipo.replace(/\s+/g,'_');
+  const wrap=el('saved-sessions-wrap');
+  try{
+    const saved=localStorage.getItem(key);
+    if(!saved){wrap.innerHTML='';return;}
+    const sessao=JSON.parse(saved);
+    wrap.innerHTML=`<div style="margin-top:1rem;font-size:12px;color:var(--text2);margin-bottom:6px">Sessão guardada:</div>
+      <div class="saved-session-item" onclick="retormarSessao('${tipo}')">
+        <div>
+          <div style="font-weight:600;font-size:13px">&#128203; ${sessao.tipo}</div>
+          <div style="font-size:11px;color:var(--text2)">${sessao.items?.length||0} assuntos · Guardada em ${sessao.data||'—'}</div>
+        </div>
+        <div style="display:flex;gap:6px">
+          <button class="btn btn-primary btn-sm" onclick="event.stopPropagation();retormarSessao('${tipo}')">Retomar</button>
+          <button class="btn btn-sm btn-danger" onclick="event.stopPropagation();apagarSessao('${tipo}')">&#10005;</button>
+        </div>
+      </div>`;
+  }catch(e){wrap.innerHTML='';}
+}
+
+function retormarSessao(tipo){
+  const key='fj_sessao_'+tipo.replace(/\s+/g,'_');
+  try{
+    const sessao=JSON.parse(localStorage.getItem(key));
+    const ids=sessao.items||[];
+    prepItems=ids.map(id=>items.find(i=>i.id===id)).filter(Boolean);
+    if(!prepItems.length){alert('Os assuntos guardados já não existem.');return;}
+    el('reuniao-setup').style.display='none';
+    el('prep-wrap').style.display='block';
+    el('prep-title').textContent='Retomar — '+tipo;
+    renderPrepItems();
+  }catch(e){showNotif('Erro ao retomar sessão.','error');}
+}
+
+function apagarSessao(tipo){
+  const key='fj_sessao_'+tipo.replace(/\s+/g,'_');
+  localStorage.removeItem(key);
+  loadSavedSessions();
+}
+
+function renderAgendaBar(){
+  const bar=el('agenda-bar');
+  if(!bar||!carrItems.length){return;}
+  bar.innerHTML=carrItems.map((it,i)=>`
+    <div class="agenda-item-chip ${i===carrIdx?'current':i<carrIdx?'done':'pending'}" title="${it.titulo}">
+      ${i+1}. ${it.titulo.length>25?it.titulo.slice(0,25)+'…':it.titulo}
+    </div>`).join('<span style="color:var(--border2);font-size:10px">›</span>');
+}
+
 // CONDUZIR REUNIÃO
 function iniciarReuniao(){
   const tipo=gv('r-tipo'),filtro=gv('r-filtro');
   if(!canSeeReuniao(tipo)){
     el('carr-wrap').style.display='none';
-    el('reuniao-setup').innerHTML=`<div class="access-denied"><h3>Sem acesso</h3><p>Não tens permissão para conduzir este tipo de reunião.</p></div>`;
+    el('reuniao-setup').innerHTML=`<div class="access-denied"><h3>Sem acesso</h3><p>Não tens permissão para conduzir este tipo de reunião.</p><br><button class="btn btn-primary" onclick="location.reload()" style="margin-top:8px">← Regressar</button></div>`;
     return;
   }
   let lista=items.filter(i=>i.reuniao===tipo);
@@ -1118,7 +1340,7 @@ function iniciarReuniao(){
   const cores=getCores(tipo);
   el('carr-wrap').querySelector('.carr-header').style.background=cores.bg;
   el('prog-bar').style.background=cores.bg==='#003087'?'#FF6B00':cores.accent||cores.bg;
-  renderCarr();
+  renderCarr();renderAgendaBar();
 }
 
 function renderCarr(){
@@ -1130,6 +1352,7 @@ function renderCarr(){
   el('carr-content').innerHTML=renderContentHTML(it);
   el('carr-side').innerHTML=renderSideHTML(it);
   el('carr-saved-msg').textContent='';
+  renderAgendaBar();
 }
 
 function renderContentHTML(it){
@@ -1435,6 +1658,7 @@ function showPage(p){
   document.querySelectorAll('.nav-item').forEach(e=>e.classList.remove('active'));
   el('page-'+p).classList.add('active');
   el('nav-'+p).classList.add('active');
+  if(p==='reuniao')loadSavedSessions();
 }
 function showNotif(msg,type='info'){
   const n=el('notif');n.textContent=msg;
