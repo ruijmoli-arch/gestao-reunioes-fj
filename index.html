@@ -487,18 +487,18 @@ function mapItem(r){
   return {
     id:r.Id,etag:r.__metadata?.etag,
     titulo:r.Title||'',
-    reuniao:r.TipoReuni_x00e3_o?.Value||r.TipoReuniao||'',
+    reuniao:r.TipoReuni_x00e3_o?.Value||r.TipoReuni_x00e3_o||'',
     data:r.DataReuniao?r.DataReuniao.split('T')[0]:'',
     tipo:r.TipoAssunto?.Value||r.TipoAssunto||'',
-    responsavel:r.Respons_x00e1_vel?.Title||r.Responsavel||'',
-    estado:r.Estado?.Value||r.Estado||'Em aberto',
-    encaminhamento:r.Encaminhamento?.Value||r.Encaminhamento||'—',
-    decisao:r.Decis_x00e3_o?.Value||r.Decisao||'Pendente',
+    responsavel:r.Respons_x00e1_vel?.Title||'',
+    estado:r.Estado?.Value||'Em aberto',
+    encaminhamento:r.Encaminhamento?.Value||'—',
+    decisao:r.Decis_x00e3_o?.Value||'Pendente',
     confidencial:r.Confidencial||false,
     atrasado:r.Atrasado||false,
     notas:r.Notas||'',
-    nivelOrigem:r.NivelOrigem?.Value||r.NivelOrigem||'',
-    nivelAtual:r.NivelAtual?.Value||r.NivelAtual||'',
+    nivelOrigem:r.NivelOrigem?.Value||'',
+    nivelAtual:r.NivelAtual?.Value||'',
     historicoEscalada:r.HistoricoEsclada||''
   };
 }
@@ -530,8 +530,8 @@ async function saveItem(){
       Confidencial:T.conf,
       Atrasado:T.atras
     };
+    if(gv('f-data')) body.DataReuniao=gv('f-data')+'T00:00:00Z';
     const dataVal=gv('f-data');
-    if(dataVal) body.DataReuniao=dataVal+'T00:00:00Z';
     let r;
     if(editId){
       headers['X-HTTP-Method']='MERGE';
