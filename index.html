@@ -679,10 +679,27 @@ async function getGraphToken(){
 async function loadUserGroups(){
   try{
     await getGraphToken();
-    const r=await fetch('https://graph.microsoft.com/v1.0/me/memberOf?$select=id,displayName',{headers:{Authorization:`Bearer ${graphToken}`}});
-    const d=await r.json();
-    userGroups=(d.value||[]).map(g=>g.id);
-  }catch(e){console.warn('Could not load groups',e);}
+    // Use transitiveMemberOf to catch all group memberships including nested
+    let url='https://graph.microsoft.com/v1.0/me/transitiveMemberOf/microsoft.graph.group?$select=id,displayName&$top=100';
+    let allGroups=[];
+    while(url){
+      const r=await fetch(url,{headers:{Authorization:`Bearer ${graphToken}`}});
+      const d=await r.json();
+      if(d.value)allGroups=[...allGroups,...d.value];
+      url=d['@odata.nextLink']||null;
+    }
+    userGroups=allGroups.map(g=>g.id);
+    console.log('User groups loaded:',allGroups.map(g=>g.displayName));
+  }catch(e){
+    console.warn('Could not load groups, trying fallback',e);
+    // Fallback: try memberOf
+    try{
+      await getGraphToken();
+      const r=await fetch('https://graph.microsoft.com/v1.0/me/memberOf?$select=id,displayName&$top=100',{headers:{Authorization:`Bearer ${graphToken}`}});
+      const d=await r.json();
+      userGroups=(d.value||[]).map(g=>g.id);
+    }catch(e2){console.warn('Both group methods failed',e2);}
+  }
 }
 function hasGroupAccess(groupId){return userGroups.includes(groupId)||userGroups.includes(GROUPS.CA);}
 function canSeeReuniao(tipoReuniao){
@@ -1473,17 +1490,62 @@ function terminarReuniao(){saveNotas();guardarReuniao();mostrarSumario();}
 
 async function guardarReuniao(){
   try{
+    const now=new Date();
+    const aprovados=carrItems.filter(i=>carrDec[i.id]?.decisao==='Aprovado').length;
+    const nAprovados=carrItems.filter(i=>carrDec[i.id]?.decisao==='Não aprovado').length;
+    const pendentes=carrItems.filter(i=>!carrDec[i.id]?.decisao||carrDec[i.id]?.decisao==='Pendente').length;
+    
+    // Build detailed notes with all decisions
+    const detalhe=carrItems.map((it,i)=>{
+      const dec=carrDec[it.id]||{decisao:'Pendente',encaminhamento:'—',notas:''};
+      return `${i+1}. ${it.titulo} → ${dec.decisao||'Pendente'}${dec.encaminhamento&&dec.encaminhamento!=='—'?' | Encam: '+dec.encaminhamento:''}${dec.notas?' | '+dec.notas:''}`;
+    }).join('\n');
+
+    const titulo=`${currReuniao} — ${now.toLocaleDateString('pt-PT')}`;
     const body={__metadata:{type:'SP.Data.FJ_x005f_ReunioesListItem'},
-      Title:currReuniao+' — '+new Date().toLocaleDateString('pt-PT'),
+      Title:titulo,
       TipoReuniao:currReuniao,
-      Data:new Date().toISOString(),
+      Data:now.toISOString(),
       Participantes:user.name||user.username,
       Estado:'Concluída',
-      NotasGerais:`${carrItems.length} assuntos tratados. Decisões: ${carrItems.filter(i=>carrDec[i.id]?.decisao==='Aprovado').length} aprovados, ${carrItems.filter(i=>carrDec[i.id]?.decisao==='Não aprovado').length} não aprovados.`
+      NotasGerais:`${carrItems.length} assuntos tratados | ${aprovados} aprovados | ${nAprovados} não aprovados | ${pendentes} pendentes\n\n${detalhe}`
     };
-    await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Reunioes')/items`,body,'POST');
+    const r=await spWrite(`${SP}/_api/web/lists/getbytitle('FJ_Reunioes')/items`,body,'POST');
+    const d=await r.json();
+    const reuniaoId=d.d.Id;
+    
+    // Generate and attach PDF summary as text attachment
+    const pdfContent=gerarResumoPDF();
+    const blob=new Blob([pdfContent],{type:'text/html'});
+    const file=new File([blob],`Resumo_${currReuniao.replace(/ /g,'_')}_${now.toISOString().slice(0,10)}.html`,{type:'text/html'});
+    try{await uploadAttachment('FJ_Reunioes',reuniaoId,file);}catch(e){console.warn('Anexo PDF falhou',e);}
+    
     loadHistReunioes();
-  }catch(e){console.warn('Erro ao guardar reunião',e);}
+    showNotif('Reunião registada no SharePoint!','success');
+  }catch(e){
+    console.warn('Erro ao guardar reunião',e);
+    showNotif('Aviso: reunião não registada — '+e.message,'error');
+  }
+}
+
+function gerarResumoPDF(){
+  const linhas=carrItems.map((it,i)=>{
+    const dec=carrDec[it.id]||{decisao:'—',encaminhamento:'—',notas:''};
+    const isD=it.tipo==='Deliberativo';
+    const dC=dec.decisao==='Aprovado'?'#639922':dec.decisao==='Não aprovado'?'#C00000':'#888780';
+    return `<div style="margin-bottom:16px;padding:14px;border:1px solid #dde2ee;border-radius:8px;page-break-inside:avoid">
+      <div style="font-size:15px;font-weight:700;margin-bottom:5px;color:#003087">${i+1}. ${it.titulo}</div>
+      <div style="font-size:12px;color:#5a6278;margin-bottom:8px">${it.tipo} · ${it.responsavel||'—'} · ${fd(it.data)}</div>
+      ${it.notas?`<div style="background:#eef1f6;padding:8px;border-radius:6px;font-size:12px;margin-bottom:8px">${it.notas.replace(/\n/g,'<br>')}</div>`:''}
+      ${isD&&it.proposta?`<div style="border:2px dashed #c8d0e0;padding:8px;border-radius:6px;font-size:12px;margin-bottom:8px"><strong>Proposta:</strong> ${it.proposta}</div>`:''}
+      ${isD?`<div style="display:flex;gap:8px;font-size:12px;flex-wrap:wrap">
+        <span style="background:${dC};color:#fff;padding:2px 10px;border-radius:12px">${dec.decisao||'—'}</span>
+        <span style="background:#eef1f6;color:#5a6278;padding:2px 10px;border-radius:12px">${dec.encaminhamento||'—'}</span>
+        ${dec.notas?`<span style="color:#5a6278;font-style:italic">${dec.notas}</span>`:''}
+      </div>`:''}
+    </div>`;
+  }).join('');
+  return `<!DOCTYPE html><html><head><meta charset="UTF-8"><style>body{font-family:Arial,sans-serif;padding:40px;max-width:800px;margin:0 auto;color:#1a1a2e}h1{color:#003087;font-size:20px;margin-bottom:4px}.sub{color:#5a6278;font-size:12px;margin-bottom:20px}</style></head><body><h1>Gestão de Reuniões — Fundação da Juventude</h1><div class="sub">${currReuniao} · ${new Date().toLocaleDateString('pt-PT')} · Conduzida por: ${user.name||user.username}</div>${linhas}</body></html>`;
 }
 
 async function loadHistReunioes(){
@@ -1510,7 +1572,7 @@ async function loadHistReunioes(){
           <span class="badge ${RM2[r.TipoReuniao]||'b-na'}" style="font-size:10px">${(r.TipoReuniao||'').replace('Reunião ','')}</span>
         </div>
         <div style="font-size:11px;color:var(--text2);margin-bottom:4px">📅 ${dataFmt} · 👤 ${r.Participantes||'—'}</div>
-        ${r.NotasGerais?`<div style="font-size:12px;color:var(--text2);background:var(--bg3);padding:6px 8px;border-radius:6px">${r.NotasGerais}</div>`:''}
+        ${r.NotasGerais?`<div style="font-size:12px;color:var(--text2);background:var(--bg3);padding:6px 8px;border-radius:6px;white-space:pre-line">${r.NotasGerais.slice(0,300)}${r.NotasGerais.length>300?'…':''}</div>`:''}
       </div>`;
     }).join('')}`;
   }catch(e){console.warn('Hist reunioes error',e);}
